@@ -17,17 +17,17 @@ typedef struct{
 
 //Funzioni
 comando_e leggiComando(void);
-int leggiFile(char *nomeFile, sTratta tratte[MAXR]);
+int leggiFile(char* nomeFile, sTratta tratte[MAXR]);
 int main(void) {
     //Inizializzazione variabili
+    char nomeFile[MAXL];
     comando_e comando;
     int nr=0;
     sTratta tratte[MAXL];
-    char nomeFile[MAXR];
     //Apertura file
     printf("Inserisci il nome del file:");
     scanf(" %s", nomeFile);
-    //nr = leggiFile(nomeFile, tratte);
+    nr = leggiFile(nomeFile,tratte);
     //Lettura Comando
     comando = leggiComando();
     printf("Il comando vale: %d", comando);
@@ -71,3 +71,29 @@ comando_e leggiComando(void){
     return comandoE;
 }
 
+int leggiFile(char *nomeFile, sTratta tratte[MAXR]){
+    FILE* fp;
+    int i = 0, nr = 0;
+    fp = fopen(nomeFile, "r");
+    if(fp != NULL){
+        printf("Il file contiene: \n");
+        fscanf(fp,"%d", &nr);
+        while(!feof(fp)){
+            fscanf(fp, "%s %s %s", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+            fscanf(fp, "%d/%d/%d", &tratte[i].data[0], &tratte[i].data[1], &tratte[i].data[2]);
+            fscanf(fp, "%d:%d:%d", &tratte[i].ora_partenza[0], &tratte[i].ora_partenza[1], &tratte[i].ora_partenza[2]);
+            fscanf(fp, "%d:%d:%d", &tratte[i].ora_arrivo[0], &tratte[i].ora_arrivo[1], &tratte[i].ora_arrivo[2]);
+            fscanf(fp,"%d", &tratte[i].ritardo);
+
+            printf("%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+            printf("%d/%d/%d ", tratte[i].data[0], tratte[i].data[1], tratte[i].data[2]);
+            printf("%d:%d:%d ", tratte[i].ora_partenza[0], tratte[i].ora_partenza[1], tratte[i].ora_partenza[2]);
+            printf("%d:%d:%d ", tratte[i].ora_arrivo[0], tratte[i].ora_arrivo[1], tratte[i].ora_arrivo[2]);
+            printf("%d\n", tratte[i].ritardo);
+            i++;
+        }
+    }
+    else{
+        printf("Errore nell'apertura del file!\n");
+    }
+}
