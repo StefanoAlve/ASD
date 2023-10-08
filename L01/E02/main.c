@@ -22,6 +22,7 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXR], int *pfine);
 void elencaCorseDate(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], int nr);
 void elencaCorsePartenza(sTratta tratte[MAXR], char partenza[MAXL], int nr);
 void elencaCorseCapolinea(sTratta tratte[MAXR], char capolinea[MAXL], int nr);
+void elencaCorseRitardo(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], int nr);
 void elencaRitardoCompl(sTratta tratte[MAXR], char codiceTratta[MAXL], int nr);
 int main(void) {
     //Inizializzazione variabili
@@ -35,15 +36,12 @@ int main(void) {
     scanf(" %s", nomeFile);
     nr = leggiFile(nomeFile,tratte);
 
-    while(!fine) {
+    while(!fine && nr != -1) {
         //Lettura Comando
         comando = leggiComando();
-        printf("Il comando vale: %d", comando);
         //Corpo programma
         if (comando != r_errore) {
             selezionaDati(nr, comando, tratte, pfine);
-        } else {
-            return 1;
         }
     }
     //Chiusura file
@@ -56,10 +54,18 @@ comando_e leggiComando(void){
     comando_e comandoE;
 
     //Corpo funzione
+    printf("\n-------------------------------------------------------------------------------------------------------\n");
+    printf("\t\t\t\t\tLISTA COMANDI\n");
+    printf("-------------------------------------------------------------------------------------------------------\n\n");
+    printf("date -> elenca corse partite tra due date\n");
+    printf("partenza -> elenca corse partite dalla fermata inserita\n");
+    printf("capolinea -> elenca corse che hanno il capolinea inserito\n");
+    printf("ritardo -> elenca le corse che hanno effettuato un ritardo nel periodo inserito\n");
+    printf("ritardo_tot -> indica il ritardo complessivo effettuato dalle corse con il codice di tratta inserito\n");
+    printf("fine -> termina il programma\n\n");
+    printf("-------------------------------------------------------------------------------------------------------\n\n");
     printf("Inserisci comando:");
     scanf(" %s", comando);
-    //r_date, r_partenza, r_capolinea, r_ritardo,
-    //             r_ritardo_tot, r_fine, r_errore
     if(strcmp("date", comando) == 0){
         comandoE = 0;
     }
@@ -79,7 +85,7 @@ comando_e leggiComando(void){
         comandoE = 5;
     }
     else{
-        printf("\nComando non riconosciuto!\n");
+        printf("\nComando non riconosciuto! Riprova\n");
         comandoE = 6;
     }
     return comandoE;
@@ -87,7 +93,7 @@ comando_e leggiComando(void){
 
 int leggiFile(char *nomeFile, sTratta tratte[MAXR]){
     FILE* fp;
-    int i = 0, nr = 0;
+    int i = 0, nr = -1;
     fp = fopen(nomeFile, "r");
     if(fp != NULL){
         printf("Il file contiene: \n");
@@ -100,18 +106,18 @@ int leggiFile(char *nomeFile, sTratta tratte[MAXR]){
             fscanf(fp,"%d", &tratte[i].ritardo);
 
             printf("%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
-            printf("%d/%d/%d ", tratte[i].data[0], tratte[i].data[1], tratte[i].data[2]);
-            printf("%d:%d:%d ", tratte[i].ora_partenza[0], tratte[i].ora_partenza[1], tratte[i].ora_partenza[2]);
-            printf("%d:%d:%d ", tratte[i].ora_arrivo[0], tratte[i].ora_arrivo[1], tratte[i].ora_arrivo[2]);
+            printf("%s ", tratte[i].data);
+            printf("%s ", tratte[i].ora_partenza);
+            printf("%s ", tratte[i].ora_arrivo);
             printf("%d\n", tratte[i].ritardo);
             i++;
         }
-        //Chiusura file
-        fclose(fp);
     }
     else{
         printf("Errore nell'apertura del file!\n");
     }
+    //Chiusura file
+    fclose(fp);
     return nr;
 }
 
@@ -150,44 +156,84 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXR], int *pfine){
             break;
         case r_fine:
             *pfine = 1;
+            printf("Programma terminato correttamente!\n");
             break;
     }
 }
 
 
 void elencaRitardoCompl(sTratta tratte[MAXR], char codiceTratta[MAXL], int nr){
-    int ritardo_tot = 0;
+    int ritardo_tot = 0, flag = 0;
     for(int i = 0; i < nr; i++){
-        if(strcmp(tratte[i].codice_tratta, codiceTratta) == 0){
+        if(strcasecmp(tratte[i].codice_tratta, codiceTratta) == 0){
             ritardo_tot += tratte[i].ritardo;
+            flag = 1;
         }
     }
-    printf("Il ritardo complessivo delle corse con codice di tratta %s vale: %d minuti\n", codiceTratta,ritardo_tot);
+    if(!flag){
+        printf("\nNon sono presenti tratte aventi tale codice di tratta.\n");
+    }
+    else {
+        printf("\nIl ritardo complessivo delle corse con codice di tratta %s vale: %d minuti\n", codiceTratta,
+               ritardo_tot);
+    }
 }
 
 void elencaCorseCapolinea(sTratta tratte[MAXR], char capolinea[MAXL], int nr){
-    printf("Le tratte che hanno come capolinea %s sono:\n", capolinea);
+    int flag = 0;
+    printf("\nLe tratte che hanno come capolinea %s sono:\n", capolinea);
     for(int i = 0; i < nr; i++){
-        if(strcmp(tratte[i].destinazione, capolinea) == 0){
-            printf("%s - %s\n", tratte[i].partenza, tratte[i].destinazione);
+        if(strcasecmp(tratte[i].destinazione, capolinea) == 0){
+            printf("%s - %s del %s partito alle ore %s\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data, tratte[i].ora_partenza);
+            flag = 1;
         }
     }
+    if(!flag){
+        printf("\nNon sono presenti tratte aventi tale capolinea.\n");
+    }
+
 }
 
 void elencaCorsePartenza(sTratta tratte[MAXR], char partenza[MAXL], int nr){
-    printf("Le tratte che sono partite da %s sono:\n", partenza);
+    int flag = 0;
+    printf("\nLe tratte che sono partite da %s sono:\n", partenza);
     for(int i = 0; i < nr; i++){
-        if(strcmp(tratte[i].partenza, partenza) == 0){
-            printf("%s - %s\n", tratte[i].partenza, tratte[i].destinazione);
+        if(strcasecmp(tratte[i].partenza, partenza) == 0){
+            printf("%s - %s del %s partito alle ore %s\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data, tratte[i].ora_partenza);
+            flag =1;
         }
+    }
+    if(!flag){
+        printf("\nNon sono presenti tratte aventi tale fermata di partenza.\n");
     }
 }
 
 void elencaCorseDate(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], int nr){
-    printf("Le tratte che sono partite tra il %s e il %s sono:\n",datai,dataf);
+    int flag = 0;
+    printf("\nLe tratte che sono partite tra il %s e il %s sono:\n",datai,dataf);
     for(int i = 0; i < nr; i++){
-        if(strcmp(tratte[i].data,datai) >= 0 || strcmp(tratte[i].data, dataf) <= 0){
-            printf("%s - %s\n", tratte[i].partenza, tratte[i].destinazione);
+        if(strcmp(tratte[i].data,datai) >= 0 && strcmp(tratte[i].data, dataf) <= 0){
+            printf("%s - %s del %s partito alle ore %s\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data, tratte[i].ora_partenza);
+            flag =1;
         }
+    }
+    if(!flag){
+        printf("\nNon sono presenti tratte partite nell'intervallo richiesto.\n");
+    }
+}
+
+void elencaCorseRitardo(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], int nr){
+    int flag = 0;
+    printf("\nLe tratte che sono partite in ritardo tra il %s e il %s sono:\n",datai,dataf);
+    for(int i = 0; i < nr; i++){
+        if(strcmp(tratte[i].data,datai) >= 0 && strcmp(tratte[i].data, dataf) <= 0){
+            if(tratte[i].ritardo > 0){
+                printf("%s - %s del %s partito alle ore %s con un ritardo di %d\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data, tratte[i].ora_partenza, tratte[i].ritardo);
+                flag =1;
+            }
+        }
+    }
+    if(!flag){
+        printf("\nNon sono presenti tratte arrivate al capolinea in ritardo nell'intervallo richiesto.\n");
     }
 }
