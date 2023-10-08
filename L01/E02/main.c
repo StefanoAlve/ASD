@@ -18,20 +18,31 @@ typedef struct{
 //Funzioni
 comando_e leggiComando(void);
 int leggiFile(char* nomeFile, sTratta tratte[MAXR]);
+void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXR], int *pfine);
+
 int main(void) {
     //Inizializzazione variabili
     char nomeFile[MAXL];
     comando_e comando;
-    int nr=0;
+    int nr=0, *pfine = NULL, fine = 0;
     sTratta tratte[MAXL];
+    pfine = &fine;
     //Apertura file
     printf("Inserisci il nome del file:");
     scanf(" %s", nomeFile);
     nr = leggiFile(nomeFile,tratte);
-    //Lettura Comando
-    comando = leggiComando();
-    printf("Il comando vale: %d", comando);
-    //Corpo programma
+
+    while(!fine) {
+        //Lettura Comando
+        comando = leggiComando();
+        printf("Il comando vale: %d", comando);
+        //Corpo programma
+        if (comando != r_errore) {
+            selezionaDati(nr, comando, tratte, pfine);
+        } else {
+            return 1;
+        }
+    }
     //Chiusura file
     return 0;
 }
@@ -92,8 +103,51 @@ int leggiFile(char *nomeFile, sTratta tratte[MAXR]){
             printf("%d\n", tratte[i].ritardo);
             i++;
         }
+        //Chiusura file
+        fclose(fp);
     }
     else{
         printf("Errore nell'apertura del file!\n");
+    }
+    return nr;
+}
+
+void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXR], int *pfine){
+    //Inizializzazione variabili
+    int datai[3], dataf[3];
+    char partenza[MAXL], capolinea[MAXL], codiceTratta[MAXL];
+    switch(comando){
+        case r_date:
+            printf("\nInserisci la data da cui iniziare la ricerca nel formato aaaa/mm/gg: ");
+            scanf("%d/%d/%d", &datai[0], &datai[1], &datai[2]);
+            printf("\nInserisci la data in cui terminare la ricerca nel formato aaaa/mm/gg: ");
+            scanf("%d/%d/%d", &dataf[0], &dataf[1], &dataf[2]);
+            elencaCorseDate(tratte, datai, dataf);
+            break;
+        case r_partenza:
+            printf("\nInserire nome fermata di partenza: ");
+            scanf("%s",partenza);
+            elencaCorsePartenza(tratte, partenza);
+            break;
+        case r_capolinea:
+            printf("\nInserire nome capolinea: ");
+            scanf("%s",capolinea);
+            elencaCorseCapolinea(tratte, capolinea);
+            break;
+        case r_ritardo:
+            printf("\nInserisci la data da cui iniziare la ricerca nel formato aaaa/mm/gg: ");
+            scanf("%d/%d/%d", &datai[0], &datai[1], &datai[2]);
+            printf("\nInserisci la data in cui terminare la ricerca nel formato aaaa/mm/gg: ");
+            scanf("%d/%d/%d", &dataf[0], &dataf[1], &dataf[2]);
+            elencaCorseRitardo(tratte, datai, dataf);
+            break;
+        case r_ritardo_tot:
+            printf("\nInserire codice di tratta: ");
+            scanf("%s", codiceTratta);
+            elencaRitardoCompl(tratte, codiceTratta);
+            break;
+        case r_fine:
+            *pfine = 1;
+            break;
     }
 }
