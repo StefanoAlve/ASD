@@ -17,13 +17,13 @@ typedef struct{
 
 //Funzioni
 comando_e leggiComando(void);
-int leggiFile(char* nomeFile, sTratta tratte[MAXR]);
-void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXR], int *pfine);
-void elencaCorseDate(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], int nr);
-void elencaCorsePartenza(sTratta tratte[MAXR], char partenza[MAXL], int nr);
-void elencaCorseCapolinea(sTratta tratte[MAXR], char capolinea[MAXL], int nr);
-void elencaCorseRitardo(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], int nr);
-void elencaRitardoCompl(sTratta tratte[MAXR], char codiceTratta[MAXL], int nr);
+int leggiFile(char* nomeFile, sTratta tratte[]);
+void selezionaDati(int nr, comando_e comando, sTratta tratte[], int *pfine);
+void elencaCorseDate(sTratta tratte[], char datai[], char dataf[], int nr);
+void elencaCorsePartenza(sTratta tratte[], char partenza[], int nr);
+void elencaCorseCapolinea(sTratta tratte[], char capolinea[], int nr);
+void elencaCorseRitardo(sTratta tratte[], char datai[], char dataf[], int nr);
+void elencaRitardoCompl(sTratta tratte[], char codiceTratta[], int nr);
 int main(void) {
     //Inizializzazione variabili
     char nomeFile[MAXL];
@@ -91,7 +91,7 @@ comando_e leggiComando(void){
     return comandoE;
 }
 
-int leggiFile(char *nomeFile, sTratta tratte[MAXR]){
+int leggiFile(char *nomeFile, sTratta tratte[]){
     FILE* fp;
     int i = 0, nr = -1;
     fp = fopen(nomeFile, "r");
@@ -121,7 +121,7 @@ int leggiFile(char *nomeFile, sTratta tratte[MAXR]){
     return nr;
 }
 
-void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXR], int *pfine){
+void selezionaDati(int nr, comando_e comando, sTratta tratte[], int *pfine){
     //Inizializzazione variabili
     char partenza[MAXL], capolinea[MAXL], codiceTratta[MAXL], datai[MAXL], dataf[MAXL];
     switch(comando){
@@ -162,7 +162,7 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXR], int *pfine){
 }
 
 
-void elencaRitardoCompl(sTratta tratte[MAXR], char codiceTratta[MAXL], int nr){
+void elencaRitardoCompl(sTratta tratte[], char codiceTratta[], int nr){
     int ritardo_tot = 0, flag = 0;
     for(int i = 0; i < nr; i++){
         if(strcasecmp(tratte[i].codice_tratta, codiceTratta) == 0){
@@ -179,7 +179,7 @@ void elencaRitardoCompl(sTratta tratte[MAXR], char codiceTratta[MAXL], int nr){
     }
 }
 
-void elencaCorseCapolinea(sTratta tratte[MAXR], char capolinea[MAXL], int nr){
+void elencaCorseCapolinea(sTratta tratte[], char capolinea[], int nr){
     int flag = 0;
     printf("\nLe tratte che hanno come capolinea %s sono:\n", capolinea);
     for(int i = 0; i < nr; i++){
@@ -194,7 +194,7 @@ void elencaCorseCapolinea(sTratta tratte[MAXR], char capolinea[MAXL], int nr){
 
 }
 
-void elencaCorsePartenza(sTratta tratte[MAXR], char partenza[MAXL], int nr){
+void elencaCorsePartenza(sTratta tratte[], char partenza[], int nr){
     int flag = 0;
     printf("\nLe tratte che sono partite da %s sono:\n", partenza);
     for(int i = 0; i < nr; i++){
@@ -208,7 +208,7 @@ void elencaCorsePartenza(sTratta tratte[MAXR], char partenza[MAXL], int nr){
     }
 }
 
-void elencaCorseDate(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], int nr){
+void elencaCorseDate(sTratta tratte[], char datai[], char dataf[], int nr){
     int flag = 0;
     printf("\nLe tratte che sono partite tra il %s e il %s sono:\n",datai,dataf);
     for(int i = 0; i < nr; i++){
@@ -222,7 +222,7 @@ void elencaCorseDate(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], i
     }
 }
 
-void elencaCorseRitardo(sTratta tratte[MAXR], char datai[MAXL], char dataf[MAXL], int nr){
+void elencaCorseRitardo(sTratta tratte[], char datai[], char dataf[], int nr){
     int flag = 0;
     printf("\nLe tratte che sono partite in ritardo tra il %s e il %s sono:\n",datai,dataf);
     for(int i = 0; i < nr; i++){
