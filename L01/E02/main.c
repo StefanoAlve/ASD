@@ -29,7 +29,7 @@ int main(void) {
     char nomeFile[MAXL];
     comando_e comando;
     int nr, *pfine = NULL, fine = 0;
-    sTratta tratte[MAXL];
+    sTratta tratte[MAXR];
     pfine = &fine;
     //Apertura file
     printf("Inserisci il nome del file:");
