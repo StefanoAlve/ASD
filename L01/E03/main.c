@@ -4,7 +4,7 @@
 #define MAXR 1000
 //Variabili globali
 typedef enum{r_date, r_partenza, r_capolinea, r_ritardo,
-             r_ritardo_tot, r_fine, r_errore}comando_e;
+             r_ritardo_tot, r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza, r_fine, r_errore}comando_e;
 typedef struct{
     char codice_tratta[MAXL];
     char partenza[MAXL];
@@ -24,6 +24,12 @@ void elencaCorsePartenza(sTratta tratte[], char partenza[], int nr);
 void elencaCorseCapolinea(sTratta tratte[], char capolinea[], int nr);
 void elencaCorseRitardo(sTratta tratte[], char datai[], char dataf[], int nr);
 void elencaRitardoCompl(sTratta tratte[], char codiceTratta[], int nr);
+void ordinaPerData(sTratta *pTratte[]);
+void ordinaPerCodice(sTratta *pTratte[]);
+void ordinaPerPartenza(sTratta *pTratte[]);
+void ordinaPerArrivo(sTratta *pTratte[]);
+void ricercaPerPartenza();
+
 int main(void) {
     //Inizializzazione variabili
     char nomeFile[MAXL];
@@ -81,12 +87,27 @@ comando_e leggiComando(void){
     else if(strcmp("ritardo_tot", comando) == 0){
         comandoE = 4;
     }
-    else if(strcmp("fine", comando) == 0){
+    else if(strcmp("ordina_data", comando) == 0){
         comandoE = 5;
+    }
+    else if(strcmp("ordina_codice", comando) == 0){
+        comandoE = 6;
+    }
+    else if(strcmp("ordina_partenza",comando) == 0){
+        comandoE = 7;
+    }
+    else if(strcmp("ordina_arrivo",comando) == 0){
+        comandoE = 8;
+    }
+    else if(strcmp("ricerca_partenza",comando) == 0){
+        comandoE = 9;
+    }
+    else if(strcmp("fine", comando) == 0){
+        comandoE = 10;
     }
     else{
         printf("\nComando non riconosciuto! Riprova\n");
-        comandoE = 6;
+        comandoE = 11;
     }
     return comandoE;
 }
@@ -124,6 +145,10 @@ int leggiFile(char *nomeFile, sTratta tratte[]){
 void selezionaDati(int nr, comando_e comando, sTratta tratte[], int *pfine){
     //Inizializzazione variabili
     char partenza[MAXL], capolinea[MAXL], codiceTratta[MAXL], datai[MAXL], dataf[MAXL];
+    sTratta *pTratte[nr];
+    for(int i = 0; i < nr; i++){
+        pTratte[i] = &tratte[i];
+    }
     switch(comando){
         case r_date:
             printf("\nInserisci la data da cui iniziare la ricerca nel formato aaaa/mm/gg: ");
@@ -153,6 +178,21 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[], int *pfine){
             printf("\nInserire codice di tratta: ");
             scanf("%s", codiceTratta);
             elencaRitardoCompl(tratte, codiceTratta, nr);
+            break;
+        case r_ordina_data:
+            ordinaPerData(pTratte);
+            break;
+        case r_ordina_codice:
+            ordinaPerCodice(pTratte);
+            break;
+        case r_ordina_partenza:
+            ordinaPerPartenza(pTratte);
+            break;
+        case r_ordina_arrivo:
+            ordinaPerArrivo(pTratte);
+            break;
+        case r_ricerca_partenza:
+            ricercaPerPartenza(pTratte);
             break;
         case r_fine:
             *pfine = 1;
