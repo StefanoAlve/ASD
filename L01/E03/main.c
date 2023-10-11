@@ -25,9 +25,9 @@ void elencaCorseCapolinea(sTratta tratte[], char capolinea[], int nr);
 void elencaCorseRitardo(sTratta tratte[], char datai[], char dataf[], int nr);
 void elencaRitardoCompl(sTratta tratte[], char codiceTratta[], int nr);
 void ordinaPerData(sTratta *pTratte[], int nr);
-/*void ordinaPerCodice(sTratta *pTratte[], int nr);
+//void ordinaPerCodice(sTratta *pTratte[], int nr);
 void ordinaPerPartenza(sTratta *pTratte[], int nr);
-void ordinaPerArrivo(sTratta *pTratte[], int nr);*/
+//void ordinaPerArrivo(sTratta *pTratte[], int nr);
 void stampa(sTratta *pTratte[], int nr);
 //void ricercaPerPartenza();
 
@@ -187,7 +187,7 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[], int *pfine){
             //ordinaPerCodice(pTratte, nr);
             break;
         case r_ordina_partenza:
-            //ordinaPerPartenza(pTratte, nr);
+            ordinaPerPartenza(pTratte, nr);
             break;
         case r_ordina_arrivo:
             //ordinaPerArrivo(pTratte, nr);
@@ -307,6 +307,24 @@ void ordinaPerData(sTratta *pTratte[], int nr){
         pTratte[j+1] = key;
     }
     printf("Ecco le corse ordinate per data:\n");
+    stampa(pTratte, nr);
+}
+
+void ordinaPerPartenza(sTratta *pTratte[], int nr){
+    //Inserction sort
+    int i, j;
+    sTratta *key;
+
+    for(i=1; i<nr; i++){
+        key = pTratte[i];
+        j = i-1;
+        while(j >= 0 && strcmp(key -> partenza, pTratte[j] -> partenza) < 0){
+            pTratte[j+1] = pTratte[j];
+            j--;
+        }
+        pTratte[j+1] = key;
+    }
+    printf("Ecco le corse ordinate per partenza:\n");
     stampa(pTratte, nr);
 }
 
