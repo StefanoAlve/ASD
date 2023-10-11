@@ -24,11 +24,12 @@ void elencaCorsePartenza(sTratta tratte[], char partenza[], int nr);
 void elencaCorseCapolinea(sTratta tratte[], char capolinea[], int nr);
 void elencaCorseRitardo(sTratta tratte[], char datai[], char dataf[], int nr);
 void elencaRitardoCompl(sTratta tratte[], char codiceTratta[], int nr);
-void ordinaPerData(sTratta *pTratte[]);
-void ordinaPerCodice(sTratta *pTratte[]);
-void ordinaPerPartenza(sTratta *pTratte[]);
-void ordinaPerArrivo(sTratta *pTratte[]);
-void ricercaPerPartenza();
+void ordinaPerData(sTratta *pTratte[], int nr);
+/*void ordinaPerCodice(sTratta *pTratte[], int nr);
+void ordinaPerPartenza(sTratta *pTratte[], int nr);
+void ordinaPerArrivo(sTratta *pTratte[], int nr);*/
+void stampa(sTratta *pTratte[], int nr);
+//void ricercaPerPartenza();
 
 int main(void) {
     //Inizializzazione variabili
@@ -180,19 +181,19 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[], int *pfine){
             elencaRitardoCompl(tratte, codiceTratta, nr);
             break;
         case r_ordina_data:
-            ordinaPerData(pTratte);
+            ordinaPerData(pTratte, nr);
             break;
         case r_ordina_codice:
-            ordinaPerCodice(pTratte);
+            //ordinaPerCodice(pTratte, nr);
             break;
         case r_ordina_partenza:
-            ordinaPerPartenza(pTratte);
+            //ordinaPerPartenza(pTratte, nr);
             break;
         case r_ordina_arrivo:
-            ordinaPerArrivo(pTratte);
+            //ordinaPerArrivo(pTratte, nr);
             break;
         case r_ricerca_partenza:
-            ricercaPerPartenza(pTratte);
+            //ricercaPerPartenza(pTratte, nr);
             break;
         case r_fine:
             *pfine = 1;
@@ -276,4 +277,28 @@ void elencaCorseRitardo(sTratta tratte[], char datai[], char dataf[], int nr){
     if(!flag){
         printf("\nNon sono presenti tratte arrivate al capolinea in ritardo nell'intervallo richiesto.\n");
     }
+}
+
+void ordinaPerData(sTratta *pTratte[], int nr){
+    //Insertion sort
+    int i, j;
+    sTratta *key;
+    for(i = 1; i < nr; i++){
+        key = pTratte[i];
+        j=i-1;
+        while(j >= 0 && strcmp(pTratte[j] -> data, key -> data) > 0){
+            pTratte[j+1] = pTratte[j];
+            j = j-1;
+        }
+        pTratte[j+1] = key;
+    }
+    printf("Ecco le corse ordinate per data:\n");
+    stampa(pTratte, nr);
+}
+
+void stampa(sTratta *pTratte[], int nr){
+    for(int i=0; i<nr; i++){
+        printf("%s %s %s %s %s %s %d\n", pTratte[i] -> codice_tratta, pTratte[i] -> partenza, pTratte[i] -> destinazione, pTratte[i] -> data, pTratte[i] -> ora_partenza, pTratte[i] -> ora_arrivo, pTratte[i] -> ritardo);
+    }
+    printf("\n");
 }
