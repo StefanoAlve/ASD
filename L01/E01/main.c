@@ -18,47 +18,74 @@ int main() {
 
 char *cercaRegexp(char *src, char *regexp) {
     char *puntatore = NULL;
-    int i, j, k, contaparentesi=0, inizio=0, flagUg=1, avanzaSrc=1, regexpLenght = cercaLenghtRegexp(regexp);
+    int i, j, k,uguale=0, contaparentesi=0, inizio=0, flag=1, avanzaSrc=1, regexpLenght = cercaLenghtRegexp(regexp);
 
     if (regexpLenght < strlen(src)) {
-        for (i = 0; i < strlen(src); i++) {             //itero sorgente
-            for (j = 0; j<regexpLenght && flagUg != 0; j++) {           //itero regexp
+        for (i = 0; i < strlen(src) && flag!=2; i++) {             //itero sorgente
+            for (j = 0; j<regexpLenght && flag!=0; j++) {           //itero regexp
 
                 // caso del punto (.)
                 if (regexp[j] == '.')
-                    flagUg=0;
+                    flag=0;
 
                 // caso \a \A
                 else if (regexp[j] == '\\') {
 
                     if(regexp[j+1] == 'A' && isupper(src[i]) || regexp[j+1] == 'a' && islower(src[i])) {
-                        flagUg = 0;
+                        flag = 0;
                         j++;            //aumento per saltare la a
                     }
                 }
+
                 // caso []
                 else if (regexp[j] == '[' && regexp[j+1] != '^') {
 
-                    for (k=0; regexp[j+1+k] != ']' && flagUg!=0; k++){          //itero dentro la parentesi
-                        if (regexp[j+k+1] == src[i])
-                            flagUg=0;
+                    for (k=1; regexp[j+k] != ']' && flag != 0; k++){          //itero dentro la parentesi
+                        if (regexp[j+k] == src[i])
+                            flag=0;
                         contaparentesi++;
                     }
-
+                    j=j+contaparentesi;  //salto tutti i caratteri dentro le parentesi + la parentesi finale
                 }
 
+                // caso [^]
+                else if (regexp[j] == '[' && regexp[j+1] == '^') {
+                    flag = 0;
+                    for (k=2; regexp[j+k] != ']' && flag == 0; k++){          //itero dentro la parentesi
+                        if (regexp[j+k] == src[i])
+                            flag=1;
+                        contaparentesi++;
+                    }
+                    j=j+contaparentesi;  //salto tutti i caratteri dentro le parentesi + la parentesi finale
+                }
 
+            }
+
+            if (flag == 1)          // condizione per ripartire con la conta caratteri uguali
+                uguale = 0;
+
+            if (flag==0&& inizio==0) {   //condizione per trovare indice inizio e contare i caratteri giusti
+                inizio = i;
+                uguale++;
+                flag=1;
+            }
+            if(flag==0){                   //condizione per contare caratteri uguali
+                uguale++;
+            }
+
+            flag=1;
+            if(uguale == regexpLenght){                       // condizione di trovata uguaglianza
+                flag = 2;
             }
 
 
         }
     }
 
-
     return puntatore;
 }
 
-int cercaLenghtRegexp(char *regexp) {//
+int cercaLenghtRegexp(char *regexp) {
     int lenght = 0, j;
     for (j = 0; j < strlen(regexp); j++)
     {
