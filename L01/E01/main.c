@@ -40,7 +40,7 @@ char *cercaRegexp(char *src, char *regexp) {
     return puntatore;
 }
 
-int cercaLenghtRegexp(char *regexp) {
+int cercaLenghtRegexp(char *regexp) {//
     int lenght = 0, j;
     for (j = 0; j < strlen(regexp); j++)
     {
