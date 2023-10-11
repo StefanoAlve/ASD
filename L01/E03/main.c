@@ -281,14 +281,28 @@ void elencaCorseRitardo(sTratta tratte[], char datai[], char dataf[], int nr){
 
 void ordinaPerData(sTratta *pTratte[], int nr){
     //Insertion sort
-    int i, j;
+    int i, j, swap = 1;
     sTratta *key;
     for(i = 1; i < nr; i++){
         key = pTratte[i];
         j=i-1;
-        while(j >= 0 && strcmp(pTratte[j] -> data, key -> data) > 0){
-            pTratte[j+1] = pTratte[j];
-            j = j-1;
+        swap = 1;
+        while(j >= 0 && swap){
+            if(strcmp(key->data, pTratte[j]->data) < 0){
+                pTratte[j + 1] = pTratte[j];
+            }
+            else if(strcmp(key->data, pTratte[j]->data) == 0 && strcmp(key->ora_partenza, pTratte[j]->ora_partenza) < 0) {
+                pTratte[j + 1] = pTratte[j];
+            }
+            else if(strcmp(key->data, pTratte[j]->data) == 0 && strcmp(key->ora_partenza, pTratte[j]->ora_partenza) == 0 && strcmp(key->ora_arrivo, pTratte[j]->ora_arrivo) < 0) {
+                pTratte[j + 1] = pTratte[j];
+            }
+            else {
+                swap = 0;
+            }
+            if (swap) {
+                j--;
+            }
         }
         pTratte[j+1] = key;
     }
