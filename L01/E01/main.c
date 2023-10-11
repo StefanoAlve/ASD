@@ -18,22 +18,40 @@ int main() {
 
 char *cercaRegexp(char *src, char *regexp) {
     char *puntatore = NULL;
-    int i=0, j=0, flagUg=1, avanzaSrc=1, regexpLenght= cercaLenghtRegexp(regexp);
+    int i, j, k, contaparentesi=0, inizio=0, flagUg=1, avanzaSrc=1, regexpLenght = cercaLenghtRegexp(regexp);
 
-    for (i=0; i< strlen(src); i++){             //itero sorgente
-        for (j=0; regexp+j != "\0" && flagUg != 0 && avanzaSrc != 0;j++) {           //itero regexp
+    if (regexpLenght < strlen(src)) {
+        for (i = 0; i < strlen(src); i++) {             //itero sorgente
+            for (j = 0; j<regexpLenght && flagUg != 0; j++) {           //itero regexp
 
-            if (regexp+j == src+i) {            //ricerca uguaglianza
-                flagUg=0;
+                // caso del punto (.)
+                if (regexp[j] == '.')
+                    flagUg=0;
+
+                // caso \a \A
+                else if (regexp[j] == '\\') {
+
+                    if(regexp[j+1] == 'A' && isupper(src[i]) || regexp[j+1] == 'a' && islower(src[i])) {
+                        flagUg = 0;
+                        j++;            //aumento per saltare la a
+                    }
+                }
+                // caso []
+                else if (regexp[j] == '[' && regexp[j+1] != '^') {
+
+                    for (k=0; regexp[j+1+k] != ']' && flagUg!=0; k++){          //itero dentro la parentesi
+                        if (regexp[j+k+1] == src[i])
+                            flagUg=0;
+                        contaparentesi++;
+                    }
+
+                }
+
+
             }
 
 
-            if (flag){
-                avanzaSrc=0;                //condizione uscita dal for in j
-            }
         }
-        avanzaSrc=1;
-
     }
 
 
