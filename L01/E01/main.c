@@ -1,1 +1,35 @@
 #include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAXS 100
+
+char *cercaRegexp(char *src, char *regexp);
+
+int main() {
+    char src[MAXS], regexp[MAXS], *pRegext;
+
+    printf("inserire la stringa da ricercare: ");
+    scanf("%s", regexp);
+    printf("inserire la stringa da controllare: ");
+    scanf("%s", src);
+}
+
+char *cercaRegexp(char *src, char *regexp) {
+    char *puntatore = NULL;
+    int i=0, j=0, flagUg=1;
+
+    for (i=0; i< strlen(src); i++){             //itero sorgente
+        for (j=0; regexp+j != "\0" && flagUg != 0;j++) {           //itero regexp
+
+            if (regexp+j == src+i) { //
+                flagUg=0;
+
+            }
+        }
+
+    }
+
+
+    return puntatore;
+}
