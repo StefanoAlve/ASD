@@ -9,7 +9,7 @@
 					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
 					"minimumCMakeVersion" : 
 					{
-						"string" : "3.25"
+						"string" : "3.24.2"
 					},
 					"projectIndex" : 0,
 					"source" : ".",
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/ASD/L01/E01/cmake-build-debug",
-		"source" : "C:/ASD/L01/E01"
+		"build" : "C:/Users/alebe/Documents/UNI Polito/ASD/L01/E01/cmake-build-debug",
+		"source" : "C:/Users/alebe/Documents/UNI Polito/ASD/L01/E01"
 	},
 	"version" : 
 	{

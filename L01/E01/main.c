@@ -1,131 +1,178 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#define MAXN 50
 
-#define MAXL 100
-
+// Prototipi delle funzioni
 char *cercaRegexp(char *src, char *regexp);
-int cercaLenghtRegexp(char *regexp);
+int controlloCondizioni(char **pippo, char **pluto);
+int validitaStringa(char *p_stringa);
+int validitaEspReg(char *p_espreg);
 
+int main() {
+    char str[MAXN], RegExp[MAXN], *p_str;
+    int pos = 0;
 
-int main(void)
-{
-    char source[MAXL], *regexpPointer, regexp[MAXL];
-    int lenght = 0;
+    // Input della stringa e dell'espressione regolare
+    printf("Digitare la stringa senza spazi: (Max 50 caratteri)\n");
+    scanf("%s", str);
+    printf("Inserire l'espressione regolare:\n");
+    scanf("%s", RegExp);
 
-    printf("Inserisci la stringa sorgente da cercare:");
-    gets(source);
-    printf("Inserisci l'espressione regolare da cercare:");
-    scanf("%s", regexp);
-    lenght = cercaLenghtRegexp(regexp);
-    printf("La regular expression è lunga: %d", lenght);
-    regexpPointer = cercaRegexp(source, regexp);
-    printf("\nIl puntatore indica la prima occorrenza regolare:%s", regexpPointer);
+    // Verifica la validità della stringa
+    if (!validitaStringa(str)){
+        printf("Caratteri in stringa non validi");
+        return 0;
+    }
+
+    // Verifica la validità dell'espressione regolare
+    if (!validitaEspReg(RegExp)){
+        printf("Caratteri in espressione regolare non validi");
+        return 0;
+    }
+
+    // Cerca l'espressione regolare nella stringa
+    p_str = cercaRegexp(str, RegExp);
+    if (p_str == NULL){
+        printf("NULL: Nessuna corrispondenza o sintassi espressione regolare non valida");
+    } else {
+        pos = (strlen(str) - strlen(p_str)) + 1; //individuo la posizione del puntatore in cui è presente il primo riscontro
+        printf("L'espressione regolare ha trovato riscontro alla lettera: %c (posizione %d)", *p_str, pos);
+    }
     return 0;
 }
 
-
-
-char *cercaRegexp(char *src, char *regexp)
-{
-    char* regexpPointer = NULL;
-    int i, j, regexpLenght, flag, equals = 0, first = 1, pos = 0;
-    // Cerco la lunghezza effettiva della Regular Expression:
-    regexpLenght = cercaLenghtRegexp(regexp);
-    if ((int)strlen(src) - regexpLenght >= 0) // Condizione utile per verificare che sia possibile cercare nella source
-        for(i = 0; i < strlen(src) && equals != regexpLenght; i++) //verifico di non sforare la stringa e che non abbia trovato un match
-        {
-            flag = 0;
-            for (j = pos; j < strlen(regexp) && !flag; j++)
-            {
-                /// CASO PUNTO
-                if (regexp[j] == '.' && (isalpha(src[i]) || isdigit(src[i]))) // Se c'è un punto mi va bene qualsiasi carattere alfanumerico
-                    flag = 1;
-                    /// CASI /A E /a
-                else if (regexp[j] == '\\')
-                    if ((regexp[j + 1] == 'A' && isupper(src[i])) || (regexp[j + 1] == 'a' && islower(src[i])))
-                    {
-                        flag = 1;
-                        pos++;
-                    }
-                        /// CASI PARENTESI QUADRE
-                    else if (regexp[j] == '[')
-                    {
-                        if(regexp[j+1] == '^')
-                        {
-                            flag = 1;
-                            for(int k = j+2; regexp[k] != ']'; k++) // Inizio a cercare dal carattere successivo all'apice
-                            {
-                                if(regexp[k] == src[i] && flag)
-                                    flag = 0;
-                                pos++;
-                            }
-                            pos+=2; //incrementa la posizione sia per l'^ che per la ]
-                        }
-                        else
-                        {
-                            for(int k = j+1; k < pos; k++) //[abc] aasa basa casa
-                            {
-                                if(regexp[k] == src[i] && !flag)
-                                    flag = 1;
-                                pos++;
-                            }
-                            pos++;
-                        }
-                    }
-                        /// UGUAGLIANZA SEMPLICE
-                    else if (regexp[j] == src[i])
-                        flag = 1;
-                /// GESTIONE DELLE CONDIZIONI
-                if(flag) {
-                    equals++;
-                    pos++;
-                }
-                else {
-                    equals = 0;
-                    pos = 0;
-                    flag = 1; // esce dal for più interno
-                }
-            }
-            /// CASI DI MATCH
-            if (equals == regexpLenght){
-                if(first) {
-                    printf("\nLe parole che contengono espressioni regolari sono:\n");
-                    regexpPointer = &src[i - regexpLenght + 1];
-                    first = 0;
-                }
-                for (int k = 0; k < regexpLenght; k++)
-                    printf("%c", src[i-regexpLenght+1+k]);
-                printf("; ");
-                equals = 0;
-                pos = 0;
-            }
+// Funzione per verificare la validità della stringa
+int validitaStringa(char *p_stringa){
+    while (*p_stringa != '\0'){
+        if (!isupper(*p_stringa) && !islower(*p_stringa)){
+            return 0;
         }
-    else
-        printf("\nImpossibile ricercare l'espressione regolare nella stringa di origine");
-
-    return regexpPointer;
+        p_stringa++;
+    }
+    return 1;
 }
 
-
-// DETERMINO LA LUNGHEZZA DELLA STRINGA "REGOLARE" DA CERCARE
-int cercaLenghtRegexp(char *regexp) {
-    int lenght = 0, j;
-    for (j = 0; j < strlen(regexp); j++)
-    {
-        if (regexp[j] == '[')
-        {
-            while (regexp[j] != ']')
-                j++;
-            lenght++;
+// Funzione per verificare la validità dell'espressione regolare
+// (controlla che non siano presenti caratteri non previsti)
+int validitaEspReg(char *p_espreg){
+    while (*p_espreg != '\0'){
+        if (*p_espreg != '.' && *p_espreg != '\\' && *p_espreg != '[' && *p_espreg != ']' && *p_espreg != '^' && !isupper(*p_espreg) && !islower(*p_espreg)){
+            return 0;
         }
-        else if (regexp[j] == '.' || isalpha(regexp[j]))
-            lenght++;
-        else if (regexp[j] == '\\' && (regexp[j+1] == 'a' || regexp[j+1] == 'A'))
-        {
-            lenght++;
-            j = j+1;
+        p_espreg++;
+    }
+    return 1;
+}
+
+// Funzione per cercare l'espressione regolare nella stringa
+char *cercaRegexp(char *src, char *regexp){
+    int trovata = 0, vero, cont = 0; // cont serve per capire di quante lettere far retrocedere il puntatore quando necessario
+    char *espReg;
+    espReg = regexp; // il puntatore espReg serve per tornare all'inizio di RegExp quando non trova riscontri
+
+    while (*regexp != '\0' && *src != '\0'){
+        vero = controlloCondizioni(&src, &regexp); // vero mi dice se trovo riscontri o meno nella funzione chiamata
+        if (vero == 2){
+            return NULL;
+        }
+        if (vero == 1){
+            trovata = 1;
+            cont++;
+        } else {
+            src = src - cont; // faccio retrocedere il puntatore al primo carattere che non verifica la condizione della espr reg
+            regexp = espReg; // faccio ripartire il puntatore della espr reg dal primo carattere per il nuovo ciclo di verifa condizini
+            cont = 0;
+            trovata = 0;
         }
     }
-    return lenght;
+
+    // non vi è nessun riscontro se non ho finito di controllare l'espressione regolare
+    if (*regexp != '\0' && *src == '\0'){
+        return NULL;
+    }
+
+    if (trovata){
+        src = src - cont; // posiziono il puntatore al 1 carattere che verifica tutta l'espr reg
+        return src;
+    } else {
+        return NULL;
+    }
+}
+
+// Funzione per il controllo delle condizioni dell'espressione regolare
+// se ritorna 2 significa che è stato trovato un errore di sintassi nella espressione regolare
+// pippo è il puntatore al puntatore a str, mentre pluto è il puntatore al puntatore a RegExp
+int controlloCondizioni(char **pippo, char **pluto) {
+    int a = 0; // mi consente di individuare il riscontro positivo nel controllo delle quadre con più caratteri possibili
+
+    if (isupper(**pluto) || islower(**pluto)) {
+        if (**pippo == **pluto) {
+            (*pluto)++;
+            (*pippo)++;
+            return 1;
+        }
+    }
+    if (**pluto == '.') {
+        (*pluto)++;
+        (*pippo)++;
+        return 1;
+    }
+    if (**pluto == '\\') {
+        (*pluto)++;
+        if (**pluto == 'a') {
+            if (islower(**pippo)) {
+                (*pluto)++;
+                (*pippo)++;
+                return 1;
+            }
+        }
+        if (**pluto == 'A') {
+            if (isupper(**pippo)) {
+                (*pluto)++;
+                (*pippo)++;
+                return 1;
+            }
+        } else {
+            return 2;
+        }
+    }
+    if (**pluto == ']'){
+        return 2;
+    }
+    if (**pluto == '['){
+        (*pluto)++;
+        if (**pluto == '^'){
+            (*pluto)++;
+            if (!isupper(**pluto) && !islower(**pluto)){
+                return 2;
+            }
+            if (**pippo != **pluto){
+                (*pluto)++;
+                if (**pluto != ']'){
+                    return 2;
+                } else {
+                    (*pluto)++; // muovo il puntatore al primo carattere != da ]
+                    (*pippo)++;
+                    return 1;
+                }
+            }
+        }
+        if (**pluto != '^'){
+            if (!isupper(**pluto) && !islower(**pluto)){
+                return 2;
+            }
+            while (**pluto != ']'){
+                if (**pippo == **pluto){
+                    a = 1;
+                }
+                (*pluto)++;
+            }
+            (*pluto)++; // muovo il puntatore al primo carattere != da ]
+            (*pippo)++;
+            return a;
+        }
+    }
+    (*pippo)++; // sposto il puntatore al carattere successivo in caso di nessun riscontro
+    return 0;
 }
