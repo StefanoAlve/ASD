@@ -4,7 +4,7 @@
 #define MAXR 1000
 //Variabili globali
 typedef enum{r_date, r_partenza, r_capolinea, r_ritardo,
-             r_ritardo_tot, r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza, r_fine, r_errore}comando_e;
+             r_ritardo_tot, r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza_dico, r_fine, r_errore}comando_e;
 typedef struct{
     char codice_tratta[MAXL];
     char partenza[MAXL];
@@ -29,7 +29,7 @@ void ordinaPerCodice(sTratta *pTratte[], int nr);
 void ordinaPerPartenza(sTratta *pTratte[], int nr);
 void ordinaPerArrivo(sTratta *pTratte[], int nr);
 void stampa(sTratta *pTratte[], int nr);
-void ricercaPerPartenza(sTratta tratte[], int nr, char partenza[MAXL]);
+void ricercaPerPartenzaDico(sTratta *pTratte[], int nr, char partenza[]);
 
 int main(void) {
     //Inizializzazione variabili
@@ -59,7 +59,6 @@ comando_e leggiComando(void){
     //Inizializzazione variabili
     char comando[MAXL];
     comando_e comandoE;
-
     //Corpo funzione
     printf("\n-------------------------------------------------------------------------------------------------------\n");
     printf("\t\t\t\t\tLISTA COMANDI\n");
@@ -69,6 +68,11 @@ comando_e leggiComando(void){
     printf("capolinea -> elenca corse che hanno il capolinea inserito\n");
     printf("ritardo -> elenca le corse che hanno effettuato un ritardo nel periodo inserito\n");
     printf("ritardo_tot -> indica il ritardo complessivo effettuato dalle corse con il codice di tratta inserito\n");
+    printf("ordina_data -> ordina le corse per data, in caso di data uguale verranno ordinate per ora\n");
+    printf("ordina_codice -> ordina le corse per codice\n");
+    printf("ordina_partenza -> ordina le corse secondo il nome della partenza\n");
+    printf("ordina_arrivo -> ordina le corse secondo il nome della destinazione\n");
+    printf("ricerca_partenza_dico -> esegue la ricerca dicotomica della partenza inserita\n");
     printf("fine -> termina il programma\n\n");
     printf("-------------------------------------------------------------------------------------------------------\n\n");
     printf("Inserisci comando:");
@@ -100,7 +104,7 @@ comando_e leggiComando(void){
     else if(strcmp("ordina_arrivo",comando) == 0){
         comandoE = 8;
     }
-    else if(strcmp("ricerca_partenza",comando) == 0){
+    else if(strcmp("ricerca_partenza_dico",comando) == 0){
         comandoE = 9;
     }
     else if(strcmp("fine", comando) == 0){
@@ -145,8 +149,8 @@ int leggiFile(char *nomeFile, sTratta tratte[]){
 
 void selezionaDati(int nr, comando_e comando, sTratta tratte[], int *pfine){
     //Inizializzazione variabili
-    char partenza[MAXL], capolinea[MAXL], codiceTratta[MAXL], datai[MAXL], dataf[MAXL];
-    sTratta *pTratte[nr], partenza1[MAXL];
+    char partenza[MAXL], capolinea[MAXL], codiceTratta[MAXL], datai[MAXL], dataf[MAXL],partenza1[MAXL];
+    sTratta *pTratte[nr];
     for(int i = 0; i < nr; i++){
         pTratte[i] = &tratte[i];
     }
@@ -192,10 +196,10 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[], int *pfine){
         case r_ordina_arrivo:
             ordinaPerArrivo(pTratte, nr);
             break;
-        case r_ricerca_partenza:
+        case r_ricerca_partenza_dico:
             printf("Inserisci partenza da ricercare: ");
-            scanf("%s ", partenza1);
-            ricercaPerPartenza(tratte, nr, partenza1);
+            scanf("%s", partenza1);
+            ricercaPerPartenzaDico(pTratte, nr, partenza1);
             break;
         case r_fine:
             *pfine = 1;
@@ -226,7 +230,7 @@ void elencaCorseCapolinea(sTratta tratte[], char capolinea[], int nr){
     int flag = 0;
     printf("\nLe tratte che hanno come capolinea %s sono:\n", capolinea);
     for(int i = 0; i < nr; i++){
-        if(strcasecmp(tratte[i].destinazione, capolinea) == 0){
+        if(strncasecmp(tratte[i].destinazione, capolinea, 4) == 0){
             printf("%s - %s del %s partito alle ore %s\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data, tratte[i].ora_partenza);
             flag = 1;
         }
@@ -241,7 +245,7 @@ void elencaCorsePartenza(sTratta tratte[], char partenza[], int nr){
     int flag = 0;
     printf("\nLe tratte che sono partite da %s sono:\n", partenza);
     for(int i = 0; i < nr; i++){
-        if(strcasecmp(tratte[i].partenza, partenza) == 0){
+        if(strncasecmp(tratte[i].partenza, partenza, 4) == 0){
             printf("%s - %s del %s partito alle ore %s\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data, tratte[i].ora_partenza);
             flag =1;
         }
@@ -283,7 +287,7 @@ void elencaCorseRitardo(sTratta tratte[], char datai[], char dataf[], int nr){
 
 void ordinaPerData(sTratta *pTratte[], int nr){
     //Insertion sort
-    int i, j, swap = 1;
+    int i, j, swap;
     sTratta *key;
     for(i = 1; i < nr; i++){
         key = pTratte[i];
@@ -366,10 +370,28 @@ void ordinaPerCodice(sTratta *pTratte[], int nr){
     stampa(pTratte, nr);
 }
 
-void ricercaPerPartenza(sTratta tratte[], int nr, char partenza[]){
-    for(int i = 0; i< nr; i++) {
-        if (strncasecmp(tratte[i].partenza, partenza, 4) == 0 ){
-
+void ricercaPerPartenzaDico(sTratta *pTratte[], int nr, char partenza[]){
+    ordinaPerPartenza(pTratte,nr);
+    int l, r, cont = 0, pm;
+    l=0;
+    r=nr-1;
+    printf("Le corse trovate sono:\n");
+    while(l<=r && !cont){
+        pm = (l+r)/2;
+        if(strncasecmp(partenza, pTratte[pm]->partenza, 3) < 0){
+            r = pm -1;
+        }
+        else if(strncasecmp(partenza, pTratte[pm]->partenza, 3) > 0){
+            l = pm + 1;
+        }
+        else if(strncasecmp(partenza, pTratte[pm]->partenza, 3) == 0){
+            printf("%s %s %s %s %s %s %d\n", pTratte[pm] -> codice_tratta, pTratte[pm] -> partenza, pTratte[pm] -> destinazione, pTratte[pm] -> data, pTratte[pm] -> ora_partenza, pTratte[pm] -> ora_arrivo, pTratte[pm] -> ritardo);
+            //Controllo i vicini
+            if (pm+1 < nr && strncasecmp(partenza, pTratte[pm+1]->partenza, 3) == 0)
+                printf("%s %s %s %s %s %s %d\n", pTratte[pm+1]->codice_tratta, pTratte[pm+1]->partenza, pTratte[pm+1]->destinazione, pTratte[pm+1]->data, pTratte[pm+1]->ora_partenza, pTratte[pm+1]->ora_arrivo, pTratte[pm+1]->ritardo);
+            if (pm -1 > 0 && strncasecmp(partenza, pTratte[pm-1]->partenza, 3) == 0)
+                printf("%s %s %s %s %s %s %d\n", pTratte[pm-1]->codice_tratta, pTratte[pm-1]->partenza, pTratte[pm-1]->destinazione, pTratte[pm-1]->data, pTratte[pm-1]->ora_partenza, pTratte[pm-1]->ora_arrivo, pTratte[pm-1]->ritardo);
+            cont = 1;
         }
     }
 }
