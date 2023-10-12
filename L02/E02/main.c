@@ -3,24 +3,24 @@
 #define MAXL 30
 
 int  **malloc2dR(char nomeFile[], int *nr, int *nc);
-void separa(int **pMatrice, int nr, int nc, int **vBianchi, int **vNeri, int *nb, int *nn);
+void separa(int **matrice, int nr, int nc, int **vBianchi, int **vNeri, int *nb, int *nn);
 
 int main(void) {
     //Inizializzazione variabili
     char nomeFile[MAXL];
-    int **pMatrice, nr, nc, *vBianchi = NULL, *vNeri = NULL, nb=0, nn=0;
+    int **matrice, nr, nc, *vBianchi = NULL, *vNeri = NULL, nb=0, nn=0;
 
     //Corpo Programma
     printf("Inserisci il nome del file:");
     scanf("%s", nomeFile);
-    pMatrice = malloc2dR(nomeFile, &nr, &nc);
+    matrice = malloc2dR(nomeFile, &nr, &nc);
     for(int i = 0; i<nr; i++){
         for(int j = 0; j<nc; j++){
-            printf("%d ", (pMatrice[i][j]));
+            printf("%d ", (matrice[i][j]));
         }
         printf("\n");
     }
-    separa(pMatrice, nr, nc, &vBianchi, &vNeri, &nb, &nn);
+    separa(matrice, nr, nc, &vBianchi, &vNeri, &nb, &nn);
     printf("\nLe caselle nere sono:\n\t");
     for(int i = 0; i < nn; i++){
         printf("%d ",vNeri[i]);
@@ -33,9 +33,9 @@ int main(void) {
 
     //Deallocazione
     for(int i=0; i<nr; i++){
-        free(pMatrice[i]);
+        free(matrice[i]);
     }
-    free(pMatrice);
+    free(matrice);
     free(vNeri);
     free(vBianchi);
     return 0;
@@ -44,7 +44,7 @@ int main(void) {
 int **malloc2dR(char nomeFile[], int *nr, int *nc){
     //Inizializzazione variabili
     FILE* fp;
-    int **pMatrice;
+    int **matrice;
     int i, j;
 
     //Lettura file
@@ -59,31 +59,31 @@ int **malloc2dR(char nomeFile[], int *nr, int *nc){
     }
 
     //Allocazione dinamica matrice
-    pMatrice = (int **)malloc((*nr)*sizeof(int *));
-    if(pMatrice == NULL){
+    matrice = (int **)malloc((*nr)*sizeof(int *));
+    if(matrice == NULL){
         printf("Errore nell'allocazione delle righe\n");
         exit(1);
     }
     for(i=0; i<(*nr); i++){
-        pMatrice[i] = (int *)malloc((*nc)*sizeof(int));
-        if(pMatrice[i] == NULL){
+        matrice[i] = (int *)malloc((*nc)*sizeof(int));
+        if(matrice[i] == NULL){
             printf("Errore nell'allocazione delle colonne\n");
             exit(1);
         }
 
         //Riempimento matrice
         for (j=0;j<(*nc);j++){
-            fscanf(fp ,"%d", &(pMatrice[i][j]));
+            fscanf(fp ,"%d", &(matrice[i][j]));
         }
     }
 
     //Chiusura file
     fclose(fp);
 
-    return pMatrice;
+    return matrice;
 }
 
-void separa(int **pMatrice, int nr, int nc, int **vBianchi, int **vNeri, int *nb, int *nn){
+void separa(int **matrice, int nr, int nc, int **vBianchi, int **vNeri, int *nb, int *nn){
     //Inizializzazione variabili
     int dimensioneTot = nr*nc;
 
@@ -109,9 +109,9 @@ void separa(int **pMatrice, int nr, int nc, int **vBianchi, int **vNeri, int *nb
     for(int i = 0; i<nr; i++){
         for(int j = 0; j<nc; j++){
             if (j % 2 == 0 && i % 2 == 0 || j % 2 != 0 && i % 2 != 0) {
-                (*vNeri)[(*nn)++] = pMatrice[i][j];
+                (*vNeri)[(*nn)++] = matrice[i][j];
             } else {
-                (*vBianchi)[(*nb)++] = pMatrice[i][j];
+                (*vBianchi)[(*nb)++] = matrice[i][j];
             }
         }
     }
