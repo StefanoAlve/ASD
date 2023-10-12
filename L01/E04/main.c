@@ -16,7 +16,6 @@ typedef struct{
 }sTratta;
 
 typedef struct{
-    sTratta *nonOrdinate[MAXR];
     sTratta *ordinateData[MAXR];
     sTratta *ordinateCodice[MAXR];
     sTratta *ordinatePartenza[MAXR];
@@ -160,7 +159,6 @@ int leggiFile(char *nomeFile, sTratta tratte[]){
 
 void inizializzaSPOrdinamenti(spOrdinamenti *pSPOrdinamenti, int nr, sTratta tratte[]){
     for(int i=0; i<nr; i++){
-        pSPOrdinamenti -> nonOrdinate[i] = &tratte[i];
         pSPOrdinamenti -> ordinateData[i] = &tratte[i];
         pSPOrdinamenti -> ordinateArrivo[i] = &tratte[i];
         pSPOrdinamenti -> ordinateCodice[i] = &tratte[i];
