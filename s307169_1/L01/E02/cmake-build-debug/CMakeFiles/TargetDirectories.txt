@@ -1,3 +1,0 @@
-C:/Users/gianb/Desktop/UNI/ASD/L01/E02/cmake-build-debug/CMakeFiles/E02.dir
-C:/Users/gianb/Desktop/UNI/ASD/L01/E02/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/gianb/Desktop/UNI/ASD/L01/E02/cmake-build-debug/CMakeFiles/rebuild_cache.dir
