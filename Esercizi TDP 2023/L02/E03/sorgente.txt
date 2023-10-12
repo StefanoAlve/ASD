@@ -1,4 +1,0 @@
- Partenza      Destinazione    Costo
-   Parigi          New York     1000
-     Roma            Londra      700
-   Sidney       Los Angeles     2222
