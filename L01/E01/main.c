@@ -45,20 +45,20 @@ char *cercaRegxp(char *src, char *regexp){
 
 
 int lunghezzaRegexp(char *regexp) {
-    int lenght = 0, i = 0, flag= 1;
+    int lenght = 0, i = 0, flag = 1;
     char x;
 
     for (i = 0; i <= strlen(regexp); i++) {
         x = regexp[i];
         if (regexp[i] == '[') {
             i++;
-            while (regexp[i]!=']') {
+            while (regexp[i] != ']') {
                 /*x = regexp[i];
                 if(x == ']'){
                     flag = 0;
                 }*/
                 x = regexp[i];
-                if (regexp[i] != '^' & regexp[i] != '['& regexp[i] != ']' ) {
+                if (regexp[i] != '^' & regexp[i] != '[' & regexp[i] != ']') {
                     lenght++;
                 }
                 i++;
@@ -66,11 +66,10 @@ int lunghezzaRegexp(char *regexp) {
         }
 
 
-
         x = regexp[i];
-        if (regexp[i] == '\a' ||regexp[i] == '\A' || regexp[i] == ']') {
+        if (regexp[i] == '\a' || regexp[i] == '\A' || regexp[i] == ']') {
             i++;
-            while (regexp[i] != '[' & regexp[i] != '\0')  {
+            while (regexp[i] != '[' & regexp[i] != '\0') {
                 x = regexp[i];
                 lenght++;
                 i++;
