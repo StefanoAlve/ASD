@@ -65,7 +65,6 @@ int lunghezzaRegexp(char *regexp) {
             }
         }
 
-
         x = regexp[i];
         if (regexp[i] == '\a' || regexp[i] == '\A' || regexp[i] == ']') {
             i++;
@@ -75,6 +74,5 @@ int lunghezzaRegexp(char *regexp) {
                 i++;
             }
         }
-
     }
 }
