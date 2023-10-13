@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "E02::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-E02-Debug-700e11e8d370a0561ce8.json",
+					"jsonFile" : "target-E02-Debug-0b349383bbdea32c3a85.json",
 					"name" : "E02",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/ASD/L01/E02/cmake-build-debug",
-		"source" : "C:/ASD/L01/E02"
+		"build" : "C:/ASD/L02/E02/cmake-build-debug",
+		"source" : "C:/ASD/L02/E02"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 5
 	}
 }

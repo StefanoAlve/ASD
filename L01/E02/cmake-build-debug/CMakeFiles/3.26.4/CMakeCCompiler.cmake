@@ -1,7 +1,7 @@
 set(CMAKE_C_COMPILER "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc.exe")
 set(CMAKE_C_COMPILER_ARG1 "")
 set(CMAKE_C_COMPILER_ID "GNU")
-set(CMAKE_C_COMPILER_VERSION "11.2.0")
+set(CMAKE_C_COMPILER_VERSION "13.1.0")
 set(CMAKE_C_COMPILER_VERSION_INTERNAL "")
 set(CMAKE_C_COMPILER_WRAPPER "")
 set(CMAKE_C_STANDARD_COMPUTED_DEFAULT "17")
@@ -15,7 +15,7 @@ set(CMAKE_C23_COMPILE_FEATURES "c_std_23")
 
 set(CMAKE_C_PLATFORM_ID "MinGW")
 set(CMAKE_C_SIMULATE_ID "")
-set(CMAKE_C_COMPILER_FRONTEND_VARIANT "")
+set(CMAKE_C_COMPILER_FRONTEND_VARIANT "GNU")
 set(CMAKE_C_SIMULATE_VERSION "")
 
 
@@ -66,7 +66,7 @@ endif()
 
 
 
-set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/include;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/x86_64-w64-mingw32/include")
-set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "mingw32;gcc;moldname;mingwex;kernel32;pthread;advapi32;shell32;user32;kernel32;iconv;mingw32;gcc;moldname;mingwex;kernel32")
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/11.2.0;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/lib/gcc;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/x86_64-w64-mingw32/lib;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/lib")
+set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/include;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include-fixed;C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/x86_64-w64-mingw32/include")
+set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "")
+set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "")
 set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")
