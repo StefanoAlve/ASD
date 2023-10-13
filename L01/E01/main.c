@@ -45,34 +45,41 @@ char *cercaRegxp(char *src, char *regexp){
 
 
 int lunghezzaRegexp(char *regexp) {
-    int lenght = 0, i = 0, flag = 1;
-    char x;
+    int lenght = 0, flag = 1;
 
-    for (i = 0; i <= strlen(regexp); i++) {
-        x = regexp[i];
+    for (int i = 0; i <= strlen(regexp); i++) {
         if (regexp[i] == '[') {
             i++;
-            while (regexp[i] != ']') {
-                /*x = regexp[i];
-                if(x == ']'){
-                    flag = 0;
-                }*/
-                x = regexp[i];
-                if (regexp[i] != '^' & regexp[i] != '[' & regexp[i] != ']') {
+            while (regexp[i]!=']'){
+                if (regexp[i] != '^'){
                     lenght++;
                 }
                 i++;
             }
         }
 
-        x = regexp[i];
-        if (regexp[i] == '\a' || regexp[i] == '\A' || regexp[i] == ']') {
+        if ( regexp[i] == '\a' || regexp[i] == 'A'|| regexp[i] == ']') {//verifica se il carattere è un metacarattere, se lo è incrementa l'indice della stringa ed effettua controllo sui caratteri successivi
             i++;
-            while (regexp[i] != '[' & regexp[i] != '\0') {
-                x = regexp[i];
+
+            while(regexp[i] != '[' && regexp[i] != '\a' && regexp[i] != 'A' && regexp[i] != '\000' ){
                 lenght++;
                 i++;
+                flag = 0;
+            }
+
+            if(flag){ //se ho un metacarattere ma non entro nel ciclo while, torno indietro di 1 per verificare i caratteri nella giusta successione
+                i--;
             }
         }
+
+        if (regexp[i] != '[' && regexp[i] != '\a' && regexp[i] != 'A' && x != ']' && regexp[i] != '\000' ){
+            lenght++; //nel caso in cui il primo carattere non entrasse in nessuno dei costrutti, viene contato come carattere valido
+            //nel caso di uscita dal terzo if e quindi dal while prima di incrementare verifica se sia effettivamente un carattere valido
+        }
+        else if(regexp[i] == '['){//nel caso di uscita dal ciclo interno se mi trovo nella condizione di regexp[i]
+            i--;                     //devo tornare indietro di un indice affinche i controlli successivi siano corretti
+        }
+
     }
+    return lenght;
 }
