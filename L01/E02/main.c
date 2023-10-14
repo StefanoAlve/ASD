@@ -16,18 +16,33 @@ typedef struct{
     int ritardo;
 } struct_tratte;
 
+typedef enum {
+    r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_fine, invalid // in caso venga inserito un valore dal menu non valido
+} comando_e; // comando_e è un tipo di dato
+
 // Funzioni utilizzate
+comando_e LeggiComando();
 int LeggiFile(char *NomeFile, struct_tratte v_tratte[]);
+void selezionaDati(int num_righe, struct_tratte v_tratte[], comando_e comando, int *p_fine);
 
 int main() {
     // definizione e inizializzazione variabili
     char NomeFile[MAXN];
+    int fine = 0, *p_fine = &fine; // fine mi dice se dal menu comando è stato scelto di terminare il programma, il puntatore per passarne il valore alle funzioni
     struct_tratte v_tratte[MAXR]; // vettore di struct di ogni tratta
-    int num_righe; //serve per sapere quante tratte ci sono nel file
+    int num_righe = 0; //serve per sapere quante tratte ci sono nel file
+    comando_e comando;
 
     printf("Inserire il nome file:\n");
     scanf("%s",NomeFile);
     num_righe = LeggiFile(NomeFile,v_tratte);
+    while (!fine && num_righe != 0){
+        comando = LeggiComando();
+        if (comando != invalid){
+            selezionaDati(num_righe,v_tratte,comando,p_fine);
+        }
+    }
+
     return 0;
 }
 
@@ -50,7 +65,7 @@ int LeggiFile(char *NomeFile, struct_tratte v_tratte[]){
             i++;
         }
     } else {
-        printf("ERRORE: Impossibile aprire il file");
+        printf("ERRORE: Impossibile aprire il file\n");
     }
 
     fclose(fp);

@@ -81,7 +81,7 @@ char *cercaRegexp(char *src, char *regexp){
             cont++;
         } else {
             src = src - cont; // faccio retrocedere il puntatore al primo carattere che non verifica la condizione della espr reg
-            regexp = espReg; // faccio ripartire il puntatore della espr reg dal primo carattere per il nuovo ciclo di verifa condizini
+            regexp = espReg; // faccio ripartire il puntatore della espr reg dal primo carattere per il nuovo ciclo di verifa condizioni
             cont = 0;
             trovata = 0;
         }
