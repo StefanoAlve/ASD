@@ -19,10 +19,10 @@ typedef struct{
 }sTratta;
 
 typedef struct{
-    sTratta *ordinateData[MAXR];
-    sTratta *ordinateCodice[MAXR];
-    sTratta *ordinatePartenza[MAXR];
-    sTratta *ordinateArrivo[MAXR];
+    sTratta **ordinateData;
+    sTratta **ordinateCodice;
+    sTratta **ordinatePartenza;
+    sTratta **ordinateArrivo;
 }spOrdinamenti;
 
 //Funzioni
@@ -41,6 +41,7 @@ void ordinaPerPartenza(sTratta *pTratte[], int nr);
 void ordinaPerArrivo(sTratta *pTratte[], int nr);
 void stampa(sTratta *pTratte[], int nr);
 void ricercaPerPartenzaDico(sTratta *pTratte[], int nr, char partenza[]);
+void deallocaOrdinamenti(spOrdinamenti *pSPOrdinamenti);
 
 int main(void) {
     //Inizializzazione variabili
@@ -63,6 +64,7 @@ int main(void) {
         }
     }
 
+    deallocaOrdinamenti(pOrdinamenti);
     free(tratte);
     return 0;
 }
@@ -135,11 +137,11 @@ comando_e leggiComando(void){
 int leggiFile(sTratta **tratte){
     //Inizializzazione variabili
     FILE* fp;
-    int i = 0, nr = -1;
+    int i, nr = -1;
     char nomeFile[MAXL];
     //Apertura file
     printf("Inserisci il nome del file:");
-    scanf(" %s", nomeFile);
+    scanf("%s", nomeFile);
     fp = fopen(nomeFile, "r");
     if(fp != NULL){
         printf("Il file contiene: \n");
@@ -149,6 +151,10 @@ int leggiFile(sTratta **tratte){
         for(i=0; i<nr; i++){
             //Alloco la memoria dinamicamente
             tratte[i] = (sTratta*)malloc(sizeof(sTratta));
+            if(tratte[i] == NULL){
+                printf("Errore nell'assegnazione della memoria\n");
+                exit(1);
+            }
             fscanf(fp, "%s %s %s", tratte[i]->codice_tratta, tratte[i]->partenza, tratte[i]->destinazione);
             fscanf(fp, "%s", tratte[i]->data);
             fscanf(fp, "%s", tratte[i]->ora_partenza);
@@ -170,18 +176,31 @@ int leggiFile(sTratta **tratte){
     return nr;
 }
 
-void inizializzaSPOrdinamenti(spOrdinamenti *pSPOrdinamenti, int nr, sTratta tratte[]){
-    for(int i=0; i<nr; i++){
-        pSPOrdinamenti -> ordinateData[i] = &tratte[i];
-        pSPOrdinamenti -> ordinateArrivo[i] = &tratte[i];
-        pSPOrdinamenti -> ordinateCodice[i] = &tratte[i];
-        pSPOrdinamenti -> ordinatePartenza[i] = &tratte[i];
+void inizializzaSPOrdinamenti(spOrdinamenti *pSPOrdinamenti, int nr, sTratta tratte[]) {
+    // Alloca memoria per gli array all'interno di pSPOrdinamenti
+    pSPOrdinamenti->ordinateData = (sTratta**)malloc(nr * sizeof(sTratta*));
+    pSPOrdinamenti->ordinateArrivo = (sTratta**)malloc(nr * sizeof(sTratta*));
+    pSPOrdinamenti->ordinateCodice = (sTratta**)malloc(nr * sizeof(sTratta*));
+    pSPOrdinamenti->ordinatePartenza = (sTratta**)malloc(nr * sizeof(sTratta*));
+
+    if (pSPOrdinamenti->ordinateData && pSPOrdinamenti->ordinateArrivo && pSPOrdinamenti->ordinateCodice && pSPOrdinamenti->ordinatePartenza) {
+        for (int i = 0; i < nr; i++) {
+            pSPOrdinamenti->ordinateData[i] = &tratte[i];
+            pSPOrdinamenti->ordinateArrivo[i] = &tratte[i];
+            pSPOrdinamenti->ordinateCodice[i] = &tratte[i];
+            pSPOrdinamenti->ordinatePartenza[i] = &tratte[i];
+        }
+        ordinaPerData(pSPOrdinamenti->ordinateData, nr);
+        ordinaPerPartenza(pSPOrdinamenti->ordinatePartenza, nr);
+        ordinaPerArrivo(pSPOrdinamenti->ordinateArrivo, nr);
+        ordinaPerCodice(pSPOrdinamenti->ordinateCodice, nr);
+    } else {
+        // Gestione dell'errore di allocazione di memoria
+        printf("Errore nell'allocazione della memoria\n");
+        exit(1);
     }
-    ordinaPerData(pSPOrdinamenti->ordinateData,nr);
-    ordinaPerPartenza(pSPOrdinamenti->ordinatePartenza, nr);
-    ordinaPerArrivo(pSPOrdinamenti->ordinateArrivo,nr);
-    ordinaPerCodice(pSPOrdinamenti->ordinateCodice,nr);
 }
+
 
 void selezionaDati(int nr, comando_e comando, sTratta tratte[], spOrdinamenti *pSOrdinamenti, int *pfine){
     //Inizializzazione variabili
@@ -242,8 +261,10 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[], spOrdinamenti *p
             ricercaPerPartenzaDico(pTratte, nr, partenza1);
             break;
         case r_nuovo_file:
+            deallocaOrdinamenti(pSOrdinamenti);
             free(tratte);
             leggiFile(&tratte);
+            break;
         case r_fine:
             *pfine = 1;
             printf("Programma terminato correttamente!\n");
@@ -436,4 +457,18 @@ void stampa(sTratta *pTratte[], int nr){
         printf("%s %s %s %s %s %s %d\n", pTratte[i] -> codice_tratta, pTratte[i] -> partenza, pTratte[i] -> destinazione, pTratte[i] -> data, pTratte[i] -> ora_partenza, pTratte[i] -> ora_arrivo, pTratte[i] -> ritardo);
     }
     printf("\n");
+}
+
+void deallocaOrdinamenti(spOrdinamenti *pSPOrdinamenti){
+    if (pSPOrdinamenti != NULL) {
+        free(pSPOrdinamenti->ordinateData);
+        free(pSPOrdinamenti->ordinateArrivo);
+        free(pSPOrdinamenti->ordinateCodice);
+        free(pSPOrdinamenti->ordinatePartenza);
+        // Imposto i puntatori su NULL per evitare doppie deallocazioni
+        pSPOrdinamenti->ordinateData = NULL;
+        pSPOrdinamenti->ordinateArrivo = NULL;
+        pSPOrdinamenti->ordinateCodice = NULL;
+        pSPOrdinamenti->ordinatePartenza = NULL;
+    }
 }
