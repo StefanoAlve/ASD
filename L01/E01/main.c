@@ -7,79 +7,133 @@
 char *cercaRegxp(char *src, char *regexp); //src stringa da cercare ,regexp espressione regolare da cercare
 int lunghezzaRegexp(char *regexp); //CERCA LA LUNGHEZZA DELLA REG
 
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+#define MAXL 100
+
+char *cercaRegxp(char *src, char *regexp); //src stringa da cercare ,regexp espressione regolare da cercare
+int lunghezzaRegexp(char *regexp); //CERCA LA LUNGHEZZA DELLA REG
+
 
 
 int main(){
 
-    char source[] = {"ciao"}, *regExpPointer, regexp[]= {"\A[aeiou]5t[123]"};
-    int x = 0 ;
+    char source[] = {"Ciao"}, *regExpPointer, regexp[]= {".iao"};
+    char x, y;
+    int lung_regexp = lunghezzaRegexp(regexp),flag = 1, pos = 0;
 
     //printf("\nInserisci la stringa in cui cercare: ");
     //scanf("%s", source);
     //printf("\nInserisci l'espressione regolare da cercare: ");
     //scanf("%s", regexp);
     //cercaRegxp(source, regexp);
-    x = lunghezzaRegexp(&regexp);
-    printf("%d", x);
+    cercaRegxp(source, regexp);
 
+    return 0;
 
 }
 
-//in una regexpression se ho . indica un carattere, va contato nella lunghezza della regexpression
 
-char *cercaRegxp(char *src, char *regexp){
-    int i, j, k, flag = 0; //flag utilizzato per terminare la ricerca nell'espressione
-    int lunghezza_regexp = strlen(regexp), lunghezza_src = strlen(src);
-    char *x;
+char *cercaRegxp(char *src, char *regexp) {
+    int lunghezza_src = strlen(src), lunghezza_regexp = lunghezzaRegexp(regexp);
+    int flag1 = 1, flag2 = 1; //quando viene trovata la prima regexp fa terminare i cicli di confronto
+    int pos = 0;//utilizzo pos per controllare quanti dei caratteri confrontati siano uguali
+    //potrei introdurre un ulteriore flag per tenere traccia se ho trovato o no almeno una corrispondenza della regexp in src
+    int prima = 1; //utilizzata per mantenere il valore della prima occorrenza della reg exp in src
+    int j = 0, i, k = 0;
+    char x, y;
+    char *pPrimaOccorrenza = NULL;
 
-    //utilizzo prima un ciclo esterno per muovermi nella regexp
-    for(i = 0; i <= lunghezza_regexp; i ++){
-        if(regexp != '.'){
-            for(j = 0; j <= lunghezza_src; j++ ){
 
+    if ((lunghezza_src - lunghezza_regexp >= 0)) {//verifico che la lunghezza della regexp sia compatibile alla lunghezza della stringa in cui cerco
+        for (j = 0; j <= (lunghezza_src - lunghezza_regexp) && flag1 && (strlen((src + j)) - lunghezza_regexp) >= 0; j++) { //mi permette di troncare i primi j caratteri da src
+            for (i = 0; i <= lunghezza_regexp && flag1; i++) {
+
+                if (prima) {
+                    pPrimaOccorrenza = &((src + j)[i]);
+                    prima = 0;
+                }
+
+                x = regexp[i+k];//incremento di un fattore k in caso incontrassi il caso [, il confronto viene eseguito correttamente dal carattere successivo a ]
+
+                y = (src + j)[i];
+
+                if (x == y && y != '\000' && x != '\000') {// caso di regexp più semplice, regexp e src sono la stessa stringa
+                    flag1 = 1;
+                    pos++;
+                } else if (x == '.') {//qualsiasi carattere è valido ai fini della ricerca nella src
+                    pos++;
+                } else if (x == '\a' && islower(y)) {//se in src[i] ho un carattere minuscolo quando in regexp[i] ho \a, tale carattere è valido al conteggio della ricerca
+                    pos++;
+                } else if (x == 'A' && isupper(y)) {//se in src[i] ho un carattere maiuscolo quando in regexp[i] ho A, tale carattere è valido al conteggio della ricerca
+                    pos++;
+                } else if (x == '[') {
+                    if (regexp[i + 1] == '^') {
+                        for (k = i + 1; regexp[k] != ']' && flag2; k++) { //quando trova la prima corrispondenza termina il ciclo
+                            if (regexp[k] != src[i] && regexp[k] != ']' && flag2) { //se ho già trovato una uguaglianza fra una delle lettere in [], non necessito ulteriori confronti
+                                pos++;
+                                flag2 = 0;
+                            }
+                        }
+                    }
+                    else{
+                        for (k = i ; regexp[k] != ']' && flag2; k++) { //quando trova la prima corrispondenza termina il ciclo
+                            if (regexp[k] == src[i] && regexp[k] != ']' && flag2) { //se ho già trovato una uguaglianza fra una delle lettere in  [], non necessito ulteriori confronti
+                                pos++;
+                                flag2 = 0;
+                            }
+                        }
+                    }
+                    if(regexp[k] != ']') {
+                        while (regexp[k] != ']') {
+                            k++;
+                        }
+                    }
+                }
+                else { pos = 0; }
+
+                if (pos == lunghezza_regexp) { //se pos, e' uguale alla lunghezza della regexp la regexp è stata trovata in src
+                    printf("la regexp e stata trovata");
+                    return pPrimaOccorrenza;
+                }
+                else {
+                    printf("la regeexp non è presente nella stringa cercata");
+                    prima = 1;
+                }
             }
         }
     }
 }
 
-
-
-int lunghezzaRegexp(char *regexp) {
+int lunghezzaRegexp(char *regexp){
     int lenght = 0, flag = 1;
 
     for (int i = 0; i <= strlen(regexp); i++) {
         if (regexp[i] == '[') {
-            i++;
-            while (regexp[i]!=']'){
-                if (regexp[i] != '^'){
-                    lenght++;
-                }
+            lenght++;
+            while (regexp[i] != ']') {
                 i++;
             }
         }
 
-        if ( regexp[i] == '\a' || regexp[i] == 'A'|| regexp[i] == ']') {//verifica se il carattere è un metacarattere, se lo è incrementa l'indice della stringa ed effettua controllo sui caratteri successivi
+        if (regexp[i] ==
+            ']') {//verifica se il carattere è un metacarattere, se lo è incrementa l'indice della stringa ed effettua controllo sui caratteri successivi
             i++;
 
-            while(regexp[i] != '[' && regexp[i] != '\a' && regexp[i] != 'A' && regexp[i] != '\000' ){
+            while (regexp[i] != '[' && regexp[i] != '\000') {
                 lenght++;
                 i++;
                 flag = 0;
             }
 
-            if(flag){ //se ho un metacarattere ma non entro nel ciclo while, torno indietro di 1 per verificare i caratteri nella giusta successione
+            if (flag) { //se ho un metacarattere ma non entro nel ciclo while, torno indietro di 1 per verificare i caratteri nella giusta successione
                 i--;
             }
         }
 
-        if (regexp[i] != '[' && regexp[i] != '\a' && regexp[i] != 'A' && x != ']' && regexp[i] != '\000' ){
+        if (regexp[i] != '[' && regexp[i] != ']' && regexp[i] != '\000') {
             lenght++; //nel caso in cui il primo carattere non entrasse in nessuno dei costrutti, viene contato come carattere valido
             //nel caso di uscita dal terzo if e quindi dal while prima di incrementare verifica se sia effettivamente un carattere valido
-        }
-        else if(regexp[i] == '['){//nel caso di uscita dal ciclo interno se mi trovo nella condizione di regexp[i]
-            i--;                     //devo tornare indietro di un indice affinche i controlli successivi siano corretti
-        }
-
-    }
-    return lenght;
-}
+        } else if (regexp[i] ==
