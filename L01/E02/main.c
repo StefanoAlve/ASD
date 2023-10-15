@@ -17,8 +17,8 @@ typedef struct{
 } struct_tratte;
 
 typedef enum {
-    r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_fine, invalid // in caso venga inserito un valore dal menu non valido
-} comando_e; // comando_e è un tipo di dato
+    r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_fine, invalid // in caso venga inserito un comando dal menu non valido
+} comando_e;
 
 // Funzioni utilizzate
 comando_e LeggiComando();
@@ -40,6 +40,8 @@ int main() {
         comando = LeggiComando();
         if (comando != invalid){
             selezionaDati(num_righe,v_tratte,comando,p_fine);
+        } else {
+            printf("Comando non riconosciuto, Riprovare\n");
         }
     }
 
@@ -71,3 +73,74 @@ int LeggiFile(char *NomeFile, struct_tratte v_tratte[]){
     fclose(fp);
     return nr;
 }
+
+comando_e LeggiComando(){
+    char comando[MAXN];
+    comando_e ComandoE;
+
+    // stampa menu comandi
+    printf("\nMENU COMANDI\n");
+    printf("Date: corse in un intervallo di date\n");
+    printf("Partenza: corse partite da una fermata\n");
+    printf("Capolinea: corse terminate in una fermata\n");
+    printf("Ritardo: corse terminate in ritardo in un intervallo di date\n");
+    printf("Ritardo_tot: ritardo complessivo di una determinata tratta\n");
+    printf("Fine: per terminare il programma\n\n");
+    printf("Inserire il comando da eseguire: ");
+    scanf("%s",comando);
+
+    if (strcmp("Date",comando) == 0){
+        ComandoE = 0;
+    } else if (strcmp("Partenza",comando) == 0){
+        ComandoE = 1;
+    } else if (strcmp("Capolinea",comando) == 0){
+        ComandoE = 2;
+    } else if (strcmp("Ritardo",comando) == 0){
+        ComandoE = 3;
+    } else if (strcmp("Ritardo_tot",comando) == 0){
+        ComandoE = 4;
+    } else if (strcmp("Fine",comando) == 0){
+        ComandoE = 5;
+    } else {
+        ComandoE = 6;
+    }
+
+    return ComandoE;
+}
+
+void selezionaDati(int num_righe, struct_tratte v_tratte[], comando_e comando, int *p_fine){
+    char data1[MAXN], data2[MAXN], partenza[MAXN], capolinea[MAXN];
+
+    switch (comando){
+        case r_date:
+            break;
+        case r_partenza:
+            break;
+        case r_capolinea:
+            break;
+        case r_ritardo:
+            break;
+        case r_ritardo_tot:
+            break;
+        case r_fine:
+            break;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
