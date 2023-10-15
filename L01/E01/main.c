@@ -7,21 +7,12 @@
 char *cercaRegxp(char *src, char *regexp); //src stringa da cercare ,regexp espressione regolare da cercare
 int lunghezzaRegexp(char *regexp); //CERCA LA LUNGHEZZA DELLA REG
 
-#include <stdio.h>
-#include <string.h>
-#include <ctype.h>
-
-#define MAXL 100
-
-char *cercaRegxp(char *src, char *regexp); //src stringa da cercare ,regexp espressione regolare da cercare
-int lunghezzaRegexp(char *regexp); //CERCA LA LUNGHEZZA DELLA REG
-
 
 
 int main(){
 
-    char source[] = {"Ciao"}, *regExpPointer, regexp[]= {".iao"};
-    char x, y;
+    char source[] = {"trciao"}, *regExpPointer, regexp[]= {"\a[aeio]ao"};
+    char *primaoccorrenza, y;
     int lung_regexp = lunghezzaRegexp(regexp),flag = 1, pos = 0;
 
     //printf("\nInserisci la stringa in cui cercare: ");
@@ -29,7 +20,7 @@ int main(){
     //printf("\nInserisci l'espressione regolare da cercare: ");
     //scanf("%s", regexp);
     //cercaRegxp(source, regexp);
-    cercaRegxp(source, regexp);
+    primaoccorrenza = cercaRegxp(source, regexp);
 
     return 0;
 
@@ -80,16 +71,18 @@ char *cercaRegxp(char *src, char *regexp) {
                     }
                     else{
                         for (k = i ; regexp[k] != ']' && flag2; k++) { //quando trova la prima corrispondenza termina il ciclo
-                            if (regexp[k] == src[i] && regexp[k] != ']' && flag2) { //se ho già trovato una uguaglianza fra una delle lettere in  [], non necessito ulteriori confronti
+                            x = regexp[k];
+                            if (x == y && x != ']' && flag2) { //se ho già trovato una uguaglianza fra una delle lettere in  [], non necessito ulteriori confronti
                                 pos++;
                                 flag2 = 0;
                             }
                         }
                     }
-                    if(regexp[k] != ']') {
+                    if(regexp[k] != ']' && flag2 == 0) {
                         while (regexp[k] != ']') {
                             k++;
                         }
+                        k = k-i;
                     }
                 }
                 else { pos = 0; }
@@ -98,12 +91,10 @@ char *cercaRegxp(char *src, char *regexp) {
                     printf("la regexp e stata trovata");
                     return pPrimaOccorrenza;
                 }
-                else {
-                    printf("la regeexp non è presente nella stringa cercata");
-                    prima = 1;
-                }
             }
         }
+        printf("la regexp non e' stata trovata");
+        return  pPrimaOccorrenza;
     }
 }
 
@@ -136,4 +127,10 @@ int lunghezzaRegexp(char *regexp){
         if (regexp[i] != '[' && regexp[i] != ']' && regexp[i] != '\000') {
             lenght++; //nel caso in cui il primo carattere non entrasse in nessuno dei costrutti, viene contato come carattere valido
             //nel caso di uscita dal terzo if e quindi dal while prima di incrementare verifica se sia effettivamente un carattere valido
-        } else if (regexp[i] ==
+        } else if (regexp[i] =='[') {//nel caso di uscita dal ciclo interno se mi trovo nella condizione di regexp[i]
+            i--;                     //devo tornare indietro di un indice affinche i controlli successivi siano corretti
+        }
+
+    }
+    return lenght;
+}
