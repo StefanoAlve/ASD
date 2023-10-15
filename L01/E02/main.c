@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
 //Variabili globali
 #define MAXN 30
@@ -24,13 +23,18 @@ typedef enum {
 comando_e LeggiComando();
 int LeggiFile(char *NomeFile, struct_tratte v_tratte[]);
 void selezionaDati(int num_righe, struct_tratte v_tratte[], comando_e comando, int *p_fine);
+void ElencaCorsePerDate(char data1[], char data2[], int num_righe, struct_tratte v_tratte[]);
+void ElencaCorsePerPartenza(char partenza[], int num_righe, struct_tratte v_tratte[]);
+void ElencaCorsePerCapolinea(char capolinea[], int num_righe, struct_tratte v_tratte[]);
+void ElencaCorseRitardoPerDate(char data1[], char data2[], int num_righe, struct_tratte v_tratte[]);
+void CalcoloRitardoTot(char codaTratta[], int num_righe, struct_tratte v_tratte[]);
 
 int main() {
     // definizione e inizializzazione variabili
     char NomeFile[MAXN];
     int fine = 0, *p_fine = &fine; // fine mi dice se dal menu comando è stato scelto di terminare il programma, il puntatore per passarne il valore alle funzioni
     struct_tratte v_tratte[MAXR]; // vettore di struct di ogni tratta
-    int num_righe = 0; //serve per sapere quante tratte ci sono nel file
+    int num_righe; //serve per sapere quante tratte ci sono nel file
     comando_e comando;
 
     printf("Inserire il nome file:\n");
@@ -44,6 +48,7 @@ int main() {
             printf("Comando non riconosciuto, Riprovare\n");
         }
     }
+    printf("Programma terminato Correttamente!");
 
     return 0;
 }
@@ -109,21 +114,55 @@ comando_e LeggiComando(){
 }
 
 void selezionaDati(int num_righe, struct_tratte v_tratte[], comando_e comando, int *p_fine){
-    char data1[MAXN], data2[MAXN], partenza[MAXN], capolinea[MAXN];
+    char data1[MAXN], data2[MAXN], partenza[MAXN], capolinea[MAXN], codTratta[MAXN];
 
     switch (comando){
         case r_date:
+            printf("Inserire la prima data (aaaa/mm/gg) :\n");
+            scanf("%s", data1);
+            printf("Inserire la seconda data (aaaa/mm/gg) :\n");
+            scanf("%s", data2);
+            ElencaCorsePerDate(data1,data2,num_righe,v_tratte);
             break;
         case r_partenza:
+            printf("Inserire la fermata di partenza:\n");
+            scanf("%s",partenza);
+            //ElencaCorsePerPartenza(partenza,num_righe,v_tratte);
             break;
         case r_capolinea:
+            printf("Inserire la fermata capolinea:\n");
+            scanf("%s",capolinea);
+            //ElencaCorsePerCapolinea(capolinea,num_righe,v_tratte);
             break;
         case r_ritardo:
+            printf("Inserire la prima data (aaaa/mm/gg) :\n");
+            scanf("%s", data1);
+            printf("Inserire la seconda data (aaaa/mm/gg) :\n");
+            scanf("%s", data2);
+            //ElencaCorseRitardoPerDate(data1,data2,num_righe,v_tratte);
             break;
         case r_ritardo_tot:
+            printf("Inserire il codice della tratta:\n");
+            scanf("%s",codTratta);
+            //CalcoloRitardoTot(codTratta,num_righe,v_tratte);
             break;
         case r_fine:
+            *p_fine = 1;
             break;
+    }
+}
+
+void ElencaCorsePerDate(char data1[], char data2[], int num_righe, struct_tratte v_tratte[]){
+    int i, no_corse = 1;
+    printf("\nCorse avvenute tra %s e %s\n", data1,data2);
+    for (i = 0; i < num_righe; i++){
+        if (strcmp(v_tratte[i].data,data1) >= 0 && strcmp(v_tratte[i].data,data2) <= 0){
+            printf("%s %s %s del %s; partenza: %s , arrivo: %s\n",v_tratte[i].codiceTratta,v_tratte[i].partenza,v_tratte[i].destinazione,v_tratte[i].data,v_tratte[i].o_partenza,v_tratte[i].o_arrivo);
+            no_corse = 0;
+        }
+    }
+    if (no_corse){
+        printf("Non ci sono corse corrispondenti\n");
     }
 }
 
