@@ -1,4 +1,3 @@
-// E2
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -54,7 +53,7 @@ void stampa_tratta_pointer(s_tratte* tratte[], int NR); // stampa tutte le tratt
 void sortForDate(s_mix_tratte* mix_tratte,  int NR);
 void sortForCode(s_mix_tratte* mix_tratte,  int NR);
 void sortForStation(s_mix_tratte* mix_tratte, int NR);
-
+void freeMIX(s_mix_tratte* mix_tratte);
 
 int main(void)
 {
@@ -67,6 +66,7 @@ int main(void)
         selezionaDati(&mix_tratte, &NR, cmd);
         cmd = leggiComando();
     }
+    freeMIX(&mix_tratte);
     return cmd;
 }
 
@@ -86,9 +86,9 @@ void leggi_file(char *fileName, int* NR, s_mix_tratte* mix_tratte)
     mix_tratte->date_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
     mix_tratte->arrival_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
     mix_tratte->departure_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
-    if (*NR != 0){
+    if (*NR > 0){
         while(fscanf(fp_in, "%s %s %s %s %s %s %d", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione,
-                     tratte[i].data, tratte[i].ora_partenza, tratte[i].ora_arrivo, &tratte[i].ritardo) == 7)
+                     tratte[i].data, tratte[i].ora_partenza, tratte[i].ora_arrivo, &tratte[i].ritardo) == 7 && i < *NR)
         {
             mix_tratte->originale[i] = tratte[i];
             mix_tratte->code_sorted[i] = &tratte[i];
@@ -198,14 +198,8 @@ void selezionaDati(s_mix_tratte* mix_tratte, int* NR, comando_e comando)
             printf("\nInserisci il nome del file:");
             scanf("%s", nome_fermata);
             printf("\nEcco il contenuto del file:\n");
-            if (*NR != 0)
-            {
-                free(mix_tratte->originale);
-                free(mix_tratte->code_sorted);
-                free(mix_tratte->arrival_sorted);
-                free(mix_tratte->departure_sorted);
-                free(mix_tratte->date_sorted);
-            }
+            if (*NR != 0) // se ho già letto un file in precedenza:
+                freeMIX(mix_tratte);
             leggi_file(nome_fermata, NR, mix_tratte);
             sortForCode(mix_tratte, *NR);
             sortForStation(mix_tratte, *NR);
@@ -336,7 +330,6 @@ void sortForStation(s_mix_tratte* mix_tratte, int NR)
 {
     s_tratte *tmp;
     int i, j;
-
     for(i = 1; i < NR; i++)
     {
         tmp = mix_tratte->departure_sorted[i];
@@ -407,4 +400,13 @@ void ricerca_dicotomica(s_tratte* *departure_sorted, int NR, char* nome, int des
             cont = 1;
         }
     }
+}
+
+void freeMIX(s_mix_tratte* mix_tratte)
+{
+    free(mix_tratte->originale);
+    free(mix_tratte->code_sorted);
+    free(mix_tratte->arrival_sorted);
+    free(mix_tratte->departure_sorted);
+    free(mix_tratte->date_sorted);
 }
