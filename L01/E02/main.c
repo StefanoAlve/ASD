@@ -37,7 +37,7 @@ int main() {
     int num_righe; //serve per sapere quante tratte ci sono nel file
     comando_e comando;
 
-    printf("Inserire il nome file:\n");
+    printf("Inserire il nome file:\n"); fflush(stdout);
     scanf("%s",NomeFile);
     num_righe = LeggiFile(NomeFile,v_tratte);
     while (!fine && num_righe != 0){
@@ -48,7 +48,7 @@ int main() {
             printf("Comando non riconosciuto, Riprovare\n");
         }
     }
-    printf("Programma terminato Correttamente!");
+    printf("\nProgramma terminato Correttamente!\n");
 
     return 0;
 }
@@ -127,7 +127,7 @@ void selezionaDati(int num_righe, struct_tratte v_tratte[], comando_e comando, i
         case r_partenza:
             printf("Inserire la fermata di partenza:\n");
             scanf("%s",partenza);
-            //ElencaCorsePerPartenza(partenza,num_righe,v_tratte);
+            ElencaCorsePerPartenza(partenza,num_righe,v_tratte);
             break;
         case r_capolinea:
             printf("Inserire la fermata capolinea:\n");
@@ -166,7 +166,19 @@ void ElencaCorsePerDate(char data1[], char data2[], int num_righe, struct_tratte
     }
 }
 
-
+void ElencaCorsePerPartenza(char partenza[], int num_righe, struct_tratte v_tratte[]){
+    int i, no_corse = 1;
+    printf("Corse partite da %s:\n",partenza);
+    for (i = 0; i < num_righe; i++){
+        if (strcasecmp(v_tratte[i].partenza,partenza) == 0){
+            printf("%s da %s a %s del %s",v_tratte[i].codiceTratta,v_tratte[i].partenza,v_tratte[i].destinazione,v_tratte[i].data);
+            no_corse = 0;
+        }
+    }
+    if (no_corse){
+        printf("Non ci sono corse corrispondenti\n");
+    }
+}
 
 
 
