@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "E01::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-E01-Debug-c6703d0e316070e4ca54.json",
+					"jsonFile" : "target-E01-Debug-7431af4da8dc7246546c.json",
 					"name" : "E01",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/ASD/L01/E01/cmake-build-debug",
-		"source" : "C:/ASD/L01/E01"
+		"build" : "C:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L01/E01/cmake-build-debug",
+		"source" : "C:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L01/E01"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 5
 	}
 }
