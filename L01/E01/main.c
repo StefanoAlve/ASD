@@ -7,21 +7,16 @@
 char *cercaRegxp(char *src, char *regexp); //src stringa da cercare ,regexp espressione regolare da cercare
 int lunghezzaRegexp(char *regexp); //CERCA LA LUNGHEZZA DELLA REG
 
-
-
 int main(){
+    char source[MAXL] , *regExpPointer, regexp[MAXL];
+    char *primaoccorrenza;
 
-    char source[] = {"trciao"}, *regExpPointer, regexp[]= {"\a[aeio]ao"};
-    char *primaoccorrenza, y;
-    int lung_regexp = lunghezzaRegexp(regexp),flag = 1, pos = 0;
+    printf("\nInserisci la stringa in cui cercare: ");
+    scanf("%s", source);
+    printf("\nInserisci l'espressione regolare da cercare: ");
+    scanf("%s", regexp);
 
-    //printf("\nInserisci la stringa in cui cercare: ");
-    //scanf("%s", source);
-    //printf("\nInserisci l'espressione regolare da cercare: ");
-    //scanf("%s", regexp);
-    //cercaRegxp(source, regexp);
     primaoccorrenza = cercaRegxp(source, regexp);
-
     return 0;
 
 }
@@ -29,7 +24,7 @@ int main(){
 
 char *cercaRegxp(char *src, char *regexp) {
     int lunghezza_src = strlen(src), lunghezza_regexp = lunghezzaRegexp(regexp);
-    int flag1 = 1, flag2 = 1; //quando viene trovata la prima regexp fa terminare i cicli di confronto
+    int flag1 = 1, flag2 = 1, flag3 = 1; //quando viene trovata la prima regexp fa terminare i cicli di confronto
     int pos = 0;//utilizzo pos per controllare quanti dei caratteri confrontati siano uguali
     //potrei introdurre un ulteriore flag per tenere traccia se ho trovato o no almeno una corrispondenza della regexp in src
     int prima = 1; //utilizzata per mantenere il valore della prima occorrenza della reg exp in src
@@ -40,16 +35,17 @@ char *cercaRegxp(char *src, char *regexp) {
 
     if ((lunghezza_src - lunghezza_regexp >= 0)) {//verifico che la lunghezza della regexp sia compatibile alla lunghezza della stringa in cui cerco
         for (j = 0; j <= (lunghezza_src - lunghezza_regexp) && flag1 && (strlen((src + j)) - lunghezza_regexp) >= 0; j++) { //mi permette di troncare i primi j caratteri da src
-            for (i = 0; i <= lunghezza_regexp && flag1; i++) {
-
+            flag3 = 1;
+            prima = 1;
+            k  = 0;
+            for (i = 0; i <= lunghezza_regexp && flag1 && flag3; i++) {
                 if (prima) {
-                    pPrimaOccorrenza = &((src + j)[i]);
+                    pPrimaOccorrenza = &src[i+j];
                     prima = 0;
                 }
 
                 x = regexp[i+k];//incremento di un fattore k in caso incontrassi il caso [, il confronto viene eseguito correttamente dal carattere successivo a ]
-
-                y = (src + j)[i];
+                y = src[i+j];
 
                 if (x == y && y != '\000' && x != '\000') {// caso di regexp più semplice, regexp e src sono la stessa stringa
                     flag1 = 1;
@@ -84,8 +80,9 @@ char *cercaRegxp(char *src, char *regexp) {
                         }
                         k = k-i;
                     }
+                    else{k = k-i;}
                 }
-                else { pos = 0; }
+                else { pos = 0; flag3 = 0;}
 
                 if (pos == lunghezza_regexp) { //se pos, e' uguale alla lunghezza della regexp la regexp è stata trovata in src
                     printf("la regexp e stata trovata");
@@ -93,9 +90,13 @@ char *cercaRegxp(char *src, char *regexp) {
                 }
             }
         }
-        printf("la regexp non e' stata trovata");
+        printf("\nla regexp non e' stata trovata");
+        pPrimaOccorrenza == NULL;
         return  pPrimaOccorrenza;
     }
+    printf("\nla regexp da ricercare è più lunga della src");
+    pPrimaOccorrenza == NULL;
+    return pPrimaOccorrenza;
 }
 
 int lunghezzaRegexp(char *regexp){
@@ -108,7 +109,6 @@ int lunghezzaRegexp(char *regexp){
                 i++;
             }
         }
-
         if (regexp[i] ==
             ']') {//verifica se il carattere è un metacarattere, se lo è incrementa l'indice della stringa ed effettua controllo sui caratteri successivi
             i++;
