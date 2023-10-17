@@ -3,13 +3,13 @@
 #define MAXL 30
 
 int  **malloc2dR(char nomeFile[], int *nr, int *nc);
+void dealloca2d(int **matrice, int nr);
 void separa(int **matrice, int nr, int nc, int **vBianchi, int **vNeri, int *nb, int *nn);
 
 int main(void) {
     //Inizializzazione variabili
     char nomeFile[MAXL];
     int **matrice, nr, nc, *vBianchi = NULL, *vNeri = NULL, nb=0, nn=0;
-
     //Corpo Programma
     printf("Inserisci il nome del file:");
     scanf("%s", nomeFile);
@@ -32,10 +32,7 @@ int main(void) {
     printf("\n");
 
     //Deallocazione
-    for(int i=0; i<nr; i++){
-        free(matrice[i]);
-    }
-    free(matrice);
+    dealloca2d(matrice, nr);
     free(vNeri);
     free(vBianchi);
     return 0;
@@ -83,36 +80,44 @@ int **malloc2dR(char nomeFile[], int *nr, int *nc){
     return matrice;
 }
 
-void separa(int **matrice, int nr, int nc, int **vBianchi, int **vNeri, int *nb, int *nn){
+void dealloca2d(int **matrice, int nr){
+    for(int i = 0; i < nr; i++){
+        free(matrice[i]);
+    }
+    free(matrice);
+}
+
+void separa(int **matrice, int nr, int nc, int **vBianchi, int **vNeri, int *pnb, int *pnn){
     //Inizializzazione variabili
     int dimensioneTot = nr*nc;
+    int *pBianchi, *pNeri, nn = 0, nb = 0;
 
     //Allocazione dinamica vettori
     if((dimensioneTot)%2 == 0) {
-        *vBianchi = (int *) malloc((dimensioneTot/2)*sizeof(int));
-        *vNeri = (int *) malloc((dimensioneTot/2)*sizeof(int));
-        if(vBianchi == NULL || vNeri == NULL){
-            printf("Errore nell'allocazione dei vettori\n");
-            exit(1);
-        }
+        pBianchi = (int *) malloc((dimensioneTot/2)*sizeof(int));
+        pNeri = (int *) malloc((dimensioneTot/2)*sizeof(int));
     }
     else{
-        *vBianchi = (int *) malloc((dimensioneTot/2-1)*sizeof(int));
-        *vNeri = (int *) malloc((dimensioneTot/2+1)*sizeof(int));
-        if(vBianchi == NULL || vNeri == NULL){
-            printf("Errore nell'allocazione dei vettori\n");
-            exit(1);
-        }
+        pBianchi = (int *) malloc((dimensioneTot/2-1)*sizeof(int));
+        pNeri = (int *) malloc((dimensioneTot/2+1)*sizeof(int));
+    }
+    if(vBianchi == NULL || vNeri == NULL){
+        printf("Errore nell'allocazione dei vettori\n");
+        exit(1);
     }
 
     //Corpo funzione
     for(int i = 0; i<nr; i++){
         for(int j = 0; j<nc; j++){
             if (j % 2 == 0 && i % 2 == 0 || j % 2 != 0 && i % 2 != 0) {
-                (*vNeri)[(*nn)++] = matrice[i][j];
+                (pNeri)[nn++] = matrice[i][j];
             } else {
-                (*vBianchi)[(*nb)++] = matrice[i][j];
+                (pBianchi)[nb++] = matrice[i][j];
             }
         }
     }
+    *pnb = nb;
+    *pnn = nn;
+    *vBianchi = pBianchi;
+    *vNeri = pNeri;
 }
