@@ -7,12 +7,12 @@
 
 ///STRUCT
 typedef struct{
-    char codice_tratta[MAXL];
-    char partenza[MAXL];
-    char destinazione[MAXL];
-    char data[MAXL];
-    char ora_partenza[MAXL];
-    char ora_arrivo[MAXL];
+    char* codice_tratta;
+    char* partenza;
+    char* destinazione;
+    char* data;
+    char* ora_partenza;
+    char* ora_arrivo;
     int ritardo;
 }s_tratte;
 
@@ -36,6 +36,7 @@ typedef enum{
     r_sortForDepart,
     r_sortForDestination,
     r_read,
+    r_print,
     r_fine,
     r_error
 }comando_e;
@@ -53,7 +54,8 @@ void stampa_tratta_pointer(s_tratte* tratte[], int NR); // stampa tutte le tratt
 void sortForDate(s_mix_tratte* mix_tratte,  int NR);
 void sortForCode(s_mix_tratte* mix_tratte,  int NR);
 void sortForStation(s_mix_tratte* mix_tratte, int NR);
-void freeMIX(s_mix_tratte* mix_tratte);
+void freeMix(s_mix_tratte* mix_tratte, int NR);
+
 
 int main(void)
 {
@@ -66,7 +68,7 @@ int main(void)
         selezionaDati(&mix_tratte, &NR, cmd);
         cmd = leggiComando();
     }
-    freeMIX(&mix_tratte);
+    freeMix(&mix_tratte, NR);
     return cmd;
 }
 
@@ -74,31 +76,49 @@ int main(void)
 void leggi_file(char *fileName, int* NR, s_mix_tratte* mix_tratte)
 {
     FILE* fp_in;
-    s_tratte *tratte;
+    char tmpCT[MAXL], tmpPart[MAXL], tmpDest[MAXL], tmpDate[MAXL], tmpOraP[MAXL], tmpOraA[MAXL];
     int i = 0;
     fp_in = fopen(fileName, "r");
     *NR = 0;
     if(fp_in != NULL)
+    {
         fscanf(fp_in, "%d", NR);
-    tratte = (s_tratte *)malloc((*NR) * sizeof(s_tratte));
-    mix_tratte->originale = (s_tratte *)malloc((*NR) * sizeof(s_tratte));
-    mix_tratte->code_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
-    mix_tratte->date_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
-    mix_tratte->arrival_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
-    mix_tratte->departure_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
-    if (*NR > 0){
-        while(fscanf(fp_in, "%s %s %s %s %s %s %d", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione,
-                     tratte[i].data, tratte[i].ora_partenza, tratte[i].ora_arrivo, &tratte[i].ritardo) == 7 && i < *NR)
-        {
-            mix_tratte->originale[i] = tratte[i];
-            mix_tratte->code_sorted[i] = &tratte[i];
-            mix_tratte->date_sorted[i] = &tratte[i];
-            mix_tratte->arrival_sorted[i] = &tratte[i];
-            mix_tratte->departure_sorted[i] = &tratte[i];
-            stampa_tratta(tratte, i);
-            i++;
+        printf("\nEcco il contenuto del file:\n");
+        mix_tratte->originale = (s_tratte *)malloc((*NR) * sizeof(s_tratte));
+        mix_tratte->code_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
+        mix_tratte->date_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
+        mix_tratte->arrival_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
+        mix_tratte->departure_sorted = (s_tratte **)malloc((*NR) * sizeof(s_tratte *));
+        if (*NR != 0){
+            while(!feof(fp_in))
+            {
+                if(!feof(fp_in)) {
+                    fscanf(fp_in, " %s %s %s %s %s %s %d ", tmpCT, tmpPart, tmpDest, tmpDate, tmpOraP, tmpOraA, &(mix_tratte->originale[i].ritardo));
+                    //ALLOCAZIONE DINAMICA STRINGHE
+                    mix_tratte->originale[i].codice_tratta = (char *) malloc(strlen(tmpCT) * sizeof(char)+sizeof(char));
+                    strcpy(mix_tratte->originale[i].codice_tratta, tmpCT);
+                    mix_tratte->originale[i].partenza = (char *) malloc(strlen(tmpPart) * sizeof(char)+sizeof(char));
+                    strcpy(mix_tratte->originale[i].partenza, tmpPart);
+                    mix_tratte->originale[i].destinazione = (char *) malloc(strlen(tmpDest) * sizeof(char)+sizeof(char));
+                    strcpy(mix_tratte->originale[i].destinazione, tmpDest);
+                    mix_tratte->originale[i].data = (char *) malloc(strlen(tmpDate) * sizeof(char)+sizeof(char));
+                    strcpy(mix_tratte->originale[i].data, tmpDate);
+                    mix_tratte->originale[i].ora_partenza = (char *) malloc(strlen(tmpOraP) * sizeof(char)+sizeof(char));
+                    strcpy(mix_tratte->originale[i].ora_partenza, tmpOraP);
+                    mix_tratte->originale[i].ora_arrivo = (char *) malloc(strlen(tmpOraA) * sizeof(char)+sizeof(char));
+                    strcpy(mix_tratte->originale[i].ora_arrivo, tmpOraA);
+                    // ASSEGNAZIONE VETTORI DI PUNTATORI A STRUCT.
+                    mix_tratte->code_sorted[i] = &(mix_tratte->originale[i]);
+                    mix_tratte->date_sorted[i] = &(mix_tratte->originale[i]);
+                    mix_tratte->arrival_sorted[i] = &(mix_tratte->originale[i]);
+                    mix_tratte->departure_sorted[i] = &(mix_tratte->originale[i]);
+                }
+                i++;
+            }
         }
     }
+    else
+        printf("\nImpossibile aprire il file, riprovare.");
     fclose(fp_in);
 }
 
@@ -107,7 +127,7 @@ comando_e leggiComando(void)
 {
     char comando[MAXL];
     comando_e cmd;
-    printf("\nInserire il comando (date, partenza, capolinea, ritardo, ritardo_tot, ordina, leggi_file, fine): ");
+    printf("\nInserire il comando (date, partenza, capolinea, ritardo, ritardo_tot, ordina, leggi_file, stampa, fine): ");
     scanf("%s", comando);
     if(!strcasecmp(comando, "date"))
         cmd = 0;
@@ -136,11 +156,13 @@ comando_e leggiComando(void)
     }
     else if(!strcasecmp(comando, "leggi_file"))
         cmd = 9;
-    else if(!strcasecmp(comando, "fine"))
+    else if(!strcasecmp(comando, "stampa"))
         cmd = 10;
-    else
+    else if(!strcasecmp(comando, "fine"))
         cmd = 11;
-    if (cmd == 11)
+    else
+        cmd = 12;
+    if (cmd == 12)
         printf("\nNon ho compreso il tuo comando");
     return cmd;
 }
@@ -197,13 +219,16 @@ void selezionaDati(s_mix_tratte* mix_tratte, int* NR, comando_e comando)
         case r_read:
             printf("\nInserisci il nome del file:");
             scanf("%s", nome_fermata);
-            printf("\nEcco il contenuto del file:\n");
-            if (*NR != 0) // se ho già letto un file in precedenza:
-                freeMIX(mix_tratte);
+            if (*NR != 0) // se ho già letto un file in precedenza faccio le free per ogni allocazione precedente.
+                freeMix(mix_tratte, *NR);
             leggi_file(nome_fermata, NR, mix_tratte);
             sortForCode(mix_tratte, *NR);
             sortForStation(mix_tratte, *NR);
             sortForDate(mix_tratte, *NR);
+        case r_print:
+            printf("\n");
+            for(int i = 0; i < *NR; i++)
+                stampa_tratta(mix_tratte->originale, i);
             break;
         case r_fine:
             printf("\nProgramma terminato, arrivederci!");
@@ -330,6 +355,7 @@ void sortForStation(s_mix_tratte* mix_tratte, int NR)
 {
     s_tratte *tmp;
     int i, j;
+
     for(i = 1; i < NR; i++)
     {
         tmp = mix_tratte->departure_sorted[i];
@@ -402,11 +428,20 @@ void ricerca_dicotomica(s_tratte* *departure_sorted, int NR, char* nome, int des
     }
 }
 
-void freeMIX(s_mix_tratte* mix_tratte)
+void freeMix(s_mix_tratte* mix_tratte, int NR)
 {
-    free(mix_tratte->originale);
+    int i;
+    for (i = 0; i < NR; i++)
+    {
+        free(mix_tratte->originale[i].codice_tratta);
+        free(mix_tratte->originale[i].partenza);
+        free(mix_tratte->originale[i].destinazione);
+        free(mix_tratte->originale[i].data);
+        free(mix_tratte->originale[i].ora_partenza);
+        free(mix_tratte->originale[i].ora_arrivo);
+    }
+    free(mix_tratte->date_sorted);
+    free(mix_tratte->departure_sorted);
     free(mix_tratte->code_sorted);
     free(mix_tratte->arrival_sorted);
-    free(mix_tratte->departure_sorted);
-    free(mix_tratte->date_sorted);
 }
