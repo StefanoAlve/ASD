@@ -428,11 +428,9 @@ void ricerca_dicotomica(s_tratte* *departure_sorted, int NR, char* nome, int des
     }
 }
 
-void freeMix(s_mix_tratte* mix_tratte, int NR)
-{
+void freeMix(s_mix_tratte* mix_tratte, int NR) {
     int i;
-    for (i = 0; i < NR; i++)
-    {
+    for (i = 0; i < NR; i++) {
         free(mix_tratte->originale[i].codice_tratta);
         free(mix_tratte->originale[i].partenza);
         free(mix_tratte->originale[i].destinazione);
