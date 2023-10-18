@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+
 int gcd(int n1, int n2);
 int main(void) {
     //Inizializzazione variabili
@@ -8,7 +10,11 @@ int main(void) {
     scanf("%d",&n1);
     printf("Inserisci secondo numero (intero):");
     scanf("%d", &n2);
-
+    if(n1 < 0 || n2 < 0){
+        n1 = abs(n1);
+        n2 = abs(n2);
+        printf("Dato che sono presenti numeri negativi ne eseguo il modulo: n1 = %d, n2 = %d\n\n",n1,n2);
+    }
     mcd = gcd(n1,n2);
     printf("Il Massimo Comune Divisore vale: %d\n", mcd);
     if(mcd == 1){
@@ -26,8 +32,8 @@ int gcd(int n1, int n2){
         n1 = n2;
         n2 = scambio;
     }
-    if(n2 == 0){
-        return n1;
+    if(n1%n2==0){
+        return n2;
     }
     else if(n1 % 2 == 0 && n2 % 2 == 0){
         return 2*gcd(n1/2, n2/2);
