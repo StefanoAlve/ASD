@@ -28,7 +28,7 @@ typedef struct{
 comando_e leggiComando(void);
 int leggiFile(sTratta **tratte);
 void inizializzaSPOrdinamenti(spOrdinamenti *pSPOrdinamenti, int nr, sTratta tratte[]);
-void selezionaDati(int nr, comando_e comando, sTratta tratte[], spOrdinamenti *pSOrdinamenti, int *pfine);
+void selezionaDati(int *pnr, comando_e comando, sTratta tratte[], spOrdinamenti *pSOrdinamenti, int *pfine);
 void elencaCorseDate(sTratta tratte[], char datai[], char dataf[], int nr);
 void elencaCorsePartenza(sTratta tratte[], char partenza[], int nr);
 void elencaCorseCapolinea(sTratta tratte[], char capolinea[], int nr);
@@ -57,7 +57,7 @@ int main(void) {
         comando = leggiComando();
         //Corpo programma
         if (comando != r_errore) {
-            selezionaDati(nr, comando, tratte, &ordinamenti, pfine);
+            selezionaDati(&nr, comando, tratte, &ordinamenti, pfine);
         }
     }
     //Deallocazione
@@ -165,8 +165,8 @@ int leggiFile(sTratta **ptratte){
             printf("%s ", tratte[i].ora_partenza);
             printf("%s ", tratte[i].ora_arrivo);
             printf("%d\n", tratte[i].ritardo);
-            *ptratte = tratte;
         }
+        *ptratte = tratte;
     }
     else{
         printf("Errore nell'apertura del file!\n");
@@ -202,9 +202,10 @@ void inizializzaSPOrdinamenti(spOrdinamenti *pSPOrdinamenti, int nr, sTratta tra
 }
 
 
-void selezionaDati(int nr, comando_e comando, sTratta tratte[], spOrdinamenti *pSOrdinamenti, int *pfine){
+void selezionaDati(int *pnr, comando_e comando, sTratta tratte[], spOrdinamenti *pSOrdinamenti, int *pfine){
     //Inizializzazione variabili
     char partenza[MAXL], capolinea[MAXL], codiceTratta[MAXL], datai[MAXL], dataf[MAXL],partenza1[MAXL];
+    int nr = *pnr;
     sTratta *pTratte[nr];
     for(int i = 0; i < nr; i++){
         pTratte[i] = &tratte[i];
@@ -263,7 +264,8 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[], spOrdinamenti *p
         case r_nuovo_file:
             deallocaOrdinamenti(pSOrdinamenti);
             free(tratte);
-            leggiFile(&tratte);
+            nr = leggiFile(&tratte);
+            *pnr = nr;
             inizializzaSPOrdinamenti(pSOrdinamenti, nr, tratte);
             break;
         case r_fine:
