@@ -8,12 +8,12 @@
 typedef enum{r_date, r_partenza, r_capolinea, r_ritardo,
     r_ritardo_tot, r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza_dico, r_nuovo_file, r_fine, r_errore}comando_e;
 typedef struct{
-    char codice_tratta[MAXL];
-    char partenza[MAXL];
-    char destinazione[MAXL];
-    char data[MAXL];
-    char ora_partenza[MAXL];
-    char ora_arrivo[MAXL];
+    char *codice_tratta;
+    char *partenza;
+    char *destinazione;
+    char *data;
+    char *ora_partenza;
+    char *ora_arrivo;
     int ritardo;
 }sTratta;
 
@@ -136,7 +136,7 @@ int leggiFile(sTratta **ptratte){
     //Inizializzazione variabili
     FILE* fp;
     int i, nr = -1;
-    char nomeFile[MAXL];
+    char nomeFile[MAXL], tmp[MAXL];
     sTratta *tratte;
     //Apertura file
     printf("Inserisci il nome del file:");
@@ -154,11 +154,20 @@ int leggiFile(sTratta **ptratte){
         //Corpo programma
         for(i=0; i<nr; i++){
             //Alloco la memoria dinamicamente
-            fscanf(fp, "%s %s %s", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
-            fscanf(fp, "%s", tratte[i].data);
-            fscanf(fp, "%s", tratte[i].ora_partenza);
-            fscanf(fp, "%s", tratte[i].ora_arrivo);
+            fscanf(fp, "%s", tmp);
+            tratte[i].codice_tratta = strdup(tmp);
+            fscanf(fp, "%s", tmp);
+            tratte[i].partenza = strdup(tmp);
+            fscanf(fp, "%s", tmp);
+            tratte[i].destinazione = strdup(tmp);
+            fscanf(fp, "%s", tmp);
+            tratte[i].data = strdup(tmp);
+            fscanf(fp, "%s", tmp);
+            tratte[i].ora_partenza = strdup(tmp);
+            fscanf(fp, "%s", tmp);
+            tratte[i].ora_arrivo = strdup(tmp);
             fscanf(fp,"%d", &tratte[i].ritardo);
+
 
             printf("%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
             printf("%s ", tratte[i].data);
