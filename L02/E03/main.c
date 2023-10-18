@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
 
 #define MAXL 30
 //Variabili globali
@@ -46,7 +45,7 @@ void stampaCont(sTratta *tratte, int nr);
 int main(void) {
     //Inizializzazione variabili
     comando_e comando;
-    int nr, *pfine = NULL, fine = 0;
+    int nr, fine = 0;
     sTratta *tratte;
     spOrdinamenti ordinamenti;
     //Apertura file
