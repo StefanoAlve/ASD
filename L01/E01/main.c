@@ -8,7 +8,7 @@ char *cercaRegxp(char *src, char *regexp); //src stringa da cercare ,regexp espr
 int lunghezzaRegexp(char *regexp); //CERCA LA LUNGHEZZA DELLA REG
 
 int main(){
-    char source[MAXL] , *regExpPointer, regexp[MAXL];
+    char source[MAXL], *regExpPointer, regexp[MAXL];
     char *primaoccorrenza;
 
     printf("\nInserisci la stringa in cui cercare: ");
@@ -52,10 +52,12 @@ char *cercaRegxp(char *src, char *regexp) {
                     pos++;
                 } else if (x == '.') {//qualsiasi carattere è valido ai fini della ricerca nella src
                     pos++;
-                } else if (x == '\a' && islower(y)) {//se in src[i] ho un carattere minuscolo quando in regexp[i] ho \a, tale carattere è valido al conteggio della ricerca
+                } else if (x == '\\' &&  regexp[i+k+1] == 'a' && islower(y)) {//se in src[i] ho un carattere minuscolo quando in regexp[i] ho \a, tale carattere è valido al conteggio della ricerca
                     pos++;
-                } else if (x == 'A' && isupper(y)) {//se in src[i] ho un carattere maiuscolo quando in regexp[i] ho A, tale carattere è valido al conteggio della ricerca
+                    k++;
+                } else if (x == '\\' && regexp[i+k+1] == 'A' && isupper(y)) {//se in src[i] ho un carattere maiuscolo quando in regexp[i] ho A, tale carattere è valido al conteggio della ricerca
                     pos++;
+                    k++;
                 } else if (x == '[') {
                     if (regexp[i + 1] == '^') {
                         for (k = i + 1; regexp[k] != ']' && flag2; k++) { //quando trova la prima corrispondenza termina il ciclo
@@ -109,8 +111,7 @@ int lunghezzaRegexp(char *regexp){
                 i++;
             }
         }
-        if (regexp[i] ==
-            ']') {//verifica se il carattere è un metacarattere, se lo è incrementa l'indice della stringa ed effettua controllo sui caratteri successivi
+        if (regexp[i] ==']'||regexp[i] =='\\') {//verifica se il carattere è un metacarattere, se lo è incrementa l'indice della stringa ed effettua controllo sui caratteri successivi
             i++;
 
             while (regexp[i] != '[' && regexp[i] != '\000') {
