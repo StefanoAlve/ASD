@@ -4,7 +4,6 @@
 #include <ctype.h>
 
 #define MAXL 30
-#define MAXR 1000
 //Variabili globali
 typedef enum{r_date, r_partenza, r_capolinea, r_ritardo,
     r_ritardo_tot, r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza_dico, r_nuovo_file, r_fine, r_errore}comando_e;
@@ -49,22 +48,20 @@ int main(void) {
     int nr, *pfine = NULL, fine = 0;
     sTratta *tratte;
     spOrdinamenti ordinamenti;
-    spOrdinamenti *pOrdinamenti;
-    pOrdinamenti = &ordinamenti;
     pfine = &fine;
     //Apertura file
     nr = leggiFile(&tratte);
-    inizializzaSPOrdinamenti(pOrdinamenti, nr, tratte);
+    inizializzaSPOrdinamenti(&ordinamenti, nr, tratte);
     while(!fine && nr != -1) {
         //Lettura Comando
         comando = leggiComando();
         //Corpo programma
         if (comando != r_errore) {
-            selezionaDati(nr, comando, tratte, pOrdinamenti, pfine);
+            selezionaDati(nr, comando, tratte, &ordinamenti, pfine);
         }
     }
-
-    deallocaOrdinamenti(pOrdinamenti);
+    //Deallocazione
+    deallocaOrdinamenti(&ordinamenti);
     free(tratte);
     return 0;
 }
@@ -87,6 +84,7 @@ comando_e leggiComando(void){
     printf("ordina_partenza -> ordina le corse secondo il nome della partenza\n");
     printf("ordina_arrivo -> ordina le corse secondo il nome della destinazione\n");
     printf("ricerca_partenza_dico -> esegue la ricerca dicotomica della partenza inserita\n");
+    printf("nuovo_file -> permette all'utente di aprire un nuovo file\n");
     printf("fine -> termina il programma\n\n");
     printf("-------------------------------------------------------------------------------------------------------\n\n");
     printf("Inserisci comando:");
@@ -134,11 +132,12 @@ comando_e leggiComando(void){
     return comandoE;
 }
 
-int leggiFile(sTratta **tratte){
+int leggiFile(sTratta **ptratte){
     //Inizializzazione variabili
     FILE* fp;
     int i, nr = -1;
     char nomeFile[MAXL];
+    sTratta *tratte;
     //Apertura file
     printf("Inserisci il nome del file:");
     scanf("%s", nomeFile);
@@ -147,25 +146,26 @@ int leggiFile(sTratta **tratte){
         printf("Il file contiene: \n");
 
         fscanf(fp,"%d", &nr);
+        tratte = (sTratta*)malloc(nr*sizeof(sTratta));
+        if(tratte == NULL){
+            printf("Errore nell'assegnazione della memoria\n");
+            exit(1);
+        }
         //Corpo programma
         for(i=0; i<nr; i++){
             //Alloco la memoria dinamicamente
-            tratte[i] = (sTratta*)malloc(sizeof(sTratta));
-            if(tratte[i] == NULL){
-                printf("Errore nell'assegnazione della memoria\n");
-                exit(1);
-            }
-            fscanf(fp, "%s %s %s", tratte[i]->codice_tratta, tratte[i]->partenza, tratte[i]->destinazione);
-            fscanf(fp, "%s", tratte[i]->data);
-            fscanf(fp, "%s", tratte[i]->ora_partenza);
-            fscanf(fp, "%s", tratte[i]->ora_arrivo);
-            fscanf(fp,"%d", &tratte[i]->ritardo);
+            fscanf(fp, "%s %s %s", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+            fscanf(fp, "%s", tratte[i].data);
+            fscanf(fp, "%s", tratte[i].ora_partenza);
+            fscanf(fp, "%s", tratte[i].ora_arrivo);
+            fscanf(fp,"%d", &tratte[i].ritardo);
 
-            printf("%s %s %s ", tratte[i]->codice_tratta, tratte[i]->partenza, tratte[i]->destinazione);
-            printf("%s ", tratte[i]->data);
-            printf("%s ", tratte[i]->ora_partenza);
-            printf("%s ", tratte[i]->ora_arrivo);
-            printf("%d\n", tratte[i]->ritardo);
+            printf("%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+            printf("%s ", tratte[i].data);
+            printf("%s ", tratte[i].ora_partenza);
+            printf("%s ", tratte[i].ora_arrivo);
+            printf("%d\n", tratte[i].ritardo);
+            *ptratte = tratte;
         }
     }
     else{
@@ -264,6 +264,7 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[], spOrdinamenti *p
             deallocaOrdinamenti(pSOrdinamenti);
             free(tratte);
             leggiFile(&tratte);
+            inizializzaSPOrdinamenti(pSOrdinamenti, nr, tratte);
             break;
         case r_fine:
             *pfine = 1;
@@ -465,10 +466,5 @@ void deallocaOrdinamenti(spOrdinamenti *pSPOrdinamenti){
         free(pSPOrdinamenti->ordinateArrivo);
         free(pSPOrdinamenti->ordinateCodice);
         free(pSPOrdinamenti->ordinatePartenza);
-        // Imposto i puntatori su NULL per evitare doppie deallocazioni
-        pSPOrdinamenti->ordinateData = NULL;
-        pSPOrdinamenti->ordinateArrivo = NULL;
-        pSPOrdinamenti->ordinateCodice = NULL;
-        pSPOrdinamenti->ordinatePartenza = NULL;
     }
 }
