@@ -19,7 +19,7 @@ typedef enum {
     r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_fine, invalid // in caso venga inserito un comando dal menu non valido
 } comando_e;
 
-// Funzioni utilizzate
+// Funzioni utilizzateEseguiComando(
 comando_e LeggiComando();
 int LeggiFile(char *NomeFile, struct_tratte v_tratte[]);
 void selezionaDati(int num_righe, struct_tratte v_tratte[], comando_e comando, int *p_fine);
