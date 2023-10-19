@@ -17,7 +17,7 @@ jobs:
 
     - name: Get the name of the last folder in ASD
       run: |
-        last_folder=$(find ASD -maxdepth 1 -type d | sort | tail -n 1)
+        last_folder=$(find . -maxdepth 1 -type d -name "L*" | sort | tail -n 1)
         export LAST_FOLDER=$last_folder
         export DEST_FOLDER=$(basename $last_folder)
       shell: bash
