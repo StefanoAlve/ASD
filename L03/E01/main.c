@@ -41,7 +41,7 @@ int majority(int *a, int N){
         return a[0];
     }
 
-    //Spezzo il vettore in sottovettori
+    //Spezzo il vettore in due sottovettori
     lMajority = majority(a, m);
     rMajority = majority(a+m, N-m);
 
@@ -51,7 +51,7 @@ int majority(int *a, int N){
     }
     else{
         //Nel caso in cui fossero diversi vado a cercare nel vettore quale dei due compare più volte
-        for(int i = 0; i<N; i++){
+        for(int i = 0; i<N && N > 2; i++){ //Si può notare che se l'array ha dimensione 2 e gli elementi sono diversi non sarà mai presente un maggioritario quindi aggiungo la condizione N>2 per saltare il ciclo
             if(a[i] == lMajority){
                 leftCount++;
             }
@@ -59,7 +59,7 @@ int majority(int *a, int N){
                 rightCount++;
             }
         }
-
+        //Nel caso in cui si satasse il ciclo lefC e rightC saranno 0 quindi restituisco -1
         if(leftCount > m){
             //Se lMajority compare più volte del valore della metà del vettore allora lo restituisco
             return lMajority;
