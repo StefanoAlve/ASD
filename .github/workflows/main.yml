@@ -1,0 +1,36 @@
+name: Copy Last Folder in ASD to All Branches
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  copy-folder:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.ref }}
+
+    - name: Get the name of the last folder in ASD
+      run: |
+        last_folder=$(find ASD -maxdepth 1 -type d | sort | tail -n 1)
+        export LAST_FOLDER=$last_folder
+        export DEST_FOLDER=$(basename $last_folder)
+      shell: bash
+
+    - name: Copy folder to other branches
+      run: |
+        # Esegui il loop su tutti i branch tranne master
+        for branch in $(git branch --list | grep -v "master"); do
+          git checkout $branch
+          cp -r $LAST_FOLDER $DEST_FOLDER
+          git add $DEST_FOLDER
+          git commit -m "Copy folder to $branch"
+          git push origin $branch
+        done
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
