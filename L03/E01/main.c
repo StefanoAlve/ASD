@@ -18,10 +18,10 @@ int main(void) {
     }
     mag = majority(a, N);
     if(mag >= 0){
-        printf("Il maggioritario vale: %d\n", mag);
+        printf("\nL'elemento maggioritario vale: %d\n", mag);
     }
     else{
-        printf("Non esiste un maggioritario\n");
+        printf("\nNon esiste un elemento maggioritario\n");
     }
     //Deallocazione vettore
     free(a);
