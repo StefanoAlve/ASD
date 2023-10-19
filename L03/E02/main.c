@@ -22,6 +22,7 @@ int main(void) {
     //Corpo programma
     //Deallocazione
     deallocaCanzoni(canzoni, dimensioni);
+    free(dimensioni.nCanzoni);
     return 0;
 }
 
@@ -29,7 +30,7 @@ void leggiFile(char ****canzoni, sDimensioni *dimensioni){
     //Inizializzazione variabili
     FILE* fp;
     char *nomeFile, tmp[MAXL], ***canzoniTmp;
-    int nr, nCanzoni, cont=0;
+    int cont=0;
 
     //Richiesta del nome del file
     printf("Inserire il nome del file:");
@@ -47,6 +48,10 @@ void leggiFile(char ****canzoni, sDimensioni *dimensioni){
 
     canzoniTmp = (char***)malloc(dimensioni->nr*sizeof(char**)); //Allocazione dinamica del vettore dei puntatori che indicano i vettori di canzoni
     dimensioni->nCanzoni = (int*)malloc(dimensioni->nr*sizeof(int));
+    if(dimensioni->nCanzoni == NULL || canzoniTmp == NULL){
+        printf("Errore nell'allocazione della memoria\n");
+        exit(1);
+    }
     while(!feof(fp)){
         scanf("%d", &dimensioni->nCanzoni[cont]);
         for(int i=0; i<dimensioni->nCanzoni[cont]; i++){
@@ -63,6 +68,9 @@ void leggiFile(char ****canzoni, sDimensioni *dimensioni){
 
 void deallocaCanzoni(char ***canzoni, sDimensioni dimensioni){
     for(int i = 0; i<dimensioni.nr; i++){
-        free(canzoni[])
+        for(int j = 0; j<dimensioni.nCanzoni[i]; i++){
+            free(canzoni[i][j]);
+        }
     }
+    free(canzoni);
 }
