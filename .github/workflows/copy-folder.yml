@@ -3,7 +3,7 @@ name: Copy Last Folder in ASD to All Branches
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   copy-folder:
