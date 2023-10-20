@@ -76,6 +76,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="C:/ASD/L01/E01/es1.03.c">
+			<Option target="E01"/>
+		</Unit>
 		<Unit filename="C:/ASD/L01/E01/main.c">
 			<Option target="E01"/>
 		</Unit>
