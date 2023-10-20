@@ -15,6 +15,10 @@ typedef struct{
     int ritardo;
 }sTratta;
 
+sTratta *ordinateData[MAXR];
+sTratta *ordinateCodice[MAXR];
+sTratta *ordinatePartenza[MAXR];
+sTratta *ordinateArrivo[MAXR];
 
 typedef enum{r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza_dico,
     r_fine, r_errore} comando_e;
@@ -22,17 +26,17 @@ typedef enum{r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo,
 int leggiFile(char* nomeFile, sTratta tratte[]);
 comando_e leggiComando(void);
 void selezionaDati(int nr, comando_e comando,int* pfine, sTratta *ordinatoTemp[]);
-void ordinaData(int nr, sTratta *ordinatoTemp[]);
-void ordinaCodice(int nr, sTratta *ordinatoTemp[]);
-void ordinaPartenza(int nr, sTratta *ordinatoTemp[]);
-void ordinaArrivo(int nr, sTratta *ordinatoTemp[]);
-void ricercaDico(int nr, sTratta *ordinatoTemp[]);
-void stampa(int nr, sTratta *ordinatoTemp[]);
+void ordinaData(int nr, sTratta *ordinatoTemp[MAXR]);
+void ordinaCodice(int nr, sTratta *ordinatoTemp[MAXR]);
+void ordinaPartenza(int nr, sTratta *ordinatoTemp[MAXR]);
+void ordinaArrivo(int nr, sTratta *ordinatoTemp[MAXR]);
+void ricercaDico(int nr, sTratta *ordinatePartenza[MAXR]);
+void stampa(int nr, sTratta *ordinatoTemp[MAXR]);
 
 int main() {
     char nomefile[MAXL];
     int nr, fine = 0, *pfine = NULL, i;
-    sTratta tratte[MAXR], *ordinatoTemp;
+    sTratta tratte[MAXR], *ordinatoTemp[MAXR];
     comando_e comando;
 
     pfine = &fine;
@@ -42,11 +46,9 @@ int main() {
 
     nr = leggiFile(nomefile, tratte);       ///vado a riempire la struct e la variabile numero righe
 
-    ordinatoTemp = (sTratta *)malloc(nr*sizeof(sTratta));
-    if(ordinatoTemp == NULL) exit(1);
 
     for (i = 0; i < nr; i++){
-        ordinatoTemp[i] = tratte[i];
+        ordinatoTemp[i] = &tratte[i];
     }
 
     while(!fine && nr != -1) {
@@ -59,13 +61,11 @@ int main() {
         }
     }
 
-    free(ordinatoTemp);
-
     return 0;
 }
 
 ///lettura del file e scrittura delle componenti della struct
-int leggiFile(char* nomeFile, sTratta tratte[]) {
+int leggiFile(char* nomeFile, sTratta tratte[MAXR]) {
     FILE *fp;
     int i = 0, nr = 0;
 
@@ -138,25 +138,25 @@ comando_e leggiComando(void){
     return comandoE;
 }
 
-void selezionaDati(int nr, comando_e comando, int* pfine, sTratta *ordinatoTemp[]) {
+void selezionaDati(int nr, comando_e comando, int* pfine, sTratta *ordinatoTemp[MAXR]) {
 
 ///rimando alle funzioni in base alla scelta dell input
 
     switch(comando){
         case r_ordina_data:
-            ordinaData(nr,  ordinatoTemp);
+            ordinaData(nr, ordinatoTemp);
             break;
         case r_ordina_codice:
-            ordinaCodice(nr,  ordinatoTemp);
+            ordinaCodice(nr, ordinatoTemp);
             break;
         case r_ordina_partenza:
-            ordinaPartenza(nr,  ordinatoTemp);
+            ordinaPartenza(nr, ordinatoTemp);
             break;
         case r_ordina_arrivo:
             ordinaArrivo(nr, ordinatoTemp);
             break;
         case r_ricerca_partenza_dico:
-            ricercaDico(nr,  ordinatoTemp);
+            ricercaDico(nr, ordinatoTemp);
             break;
         case r_fine:
             *pfine = 1;
@@ -167,15 +167,17 @@ void selezionaDati(int nr, comando_e comando, int* pfine, sTratta *ordinatoTemp[
 }
 
 ///ordinamento per data
-void ordinaData(int nr, sTratta *ordinatoTemp[]){
+void ordinaData(int nr, sTratta *ordinatoTemp[MAXR]){
     int i, j, l=0, r = nr-1, inverti;
     sTratta *trattaTmp;
 
     /// INSERTION SORT
     for(i=l+1; i<=r; i++){
-        trattaTmp = &ordinatoTemp[i];
+
+        trattaTmp = ordinatoTemp[i];
         j = i - 1;
         inverti = 1;
+
         while (j >= l && inverti ) {
             ///GESTIONE IN BASE A DATA O ORA
             if (strcmp(trattaTmp->data, ordinatoTemp[j]->data) < 0) {
@@ -199,11 +201,15 @@ void ordinaData(int nr, sTratta *ordinatoTemp[]){
         ordinatoTemp[j + 1] = trattaTmp;
     }
 
-    stampa(nr, ordinatoTemp);
+    for (i = 0; i < nr; i++){
+        ordinateData[i] = ordinatoTemp[i];
+    }
+
+    stampa(nr, ordinateData);
 }
 
 ///FUNZIONE DI ORDINAMENTO IN BASE A CODICE TRATTA
-void ordinaCodice(int nr, sTratta *ordinatoTemp[]){
+void ordinaCodice(int nr, sTratta *ordinatoTemp[MAXR]){
     int i, j, l=0, r = nr-1;
     sTratta *trattaTmp;
 
@@ -220,11 +226,15 @@ void ordinaCodice(int nr, sTratta *ordinatoTemp[]){
         ordinatoTemp[j + 1] = trattaTmp;
     }
 
-    stampa(nr, ordinatoTemp);
+    for (i = 0; i < nr; i++){
+        ordinateCodice[i] = ordinatoTemp[i];
+    }
+
+    stampa(nr, ordinateCodice);
 }
 
 ///FUNZIONE DI ORDINAMENTO IN BASE ALLA STAZIONE DI PARTENZA
-void ordinaPartenza(int nr, sTratta *ordinatoTemp[]){
+void ordinaPartenza(int nr, sTratta *ordinatoTemp[MAXR]){
     int i, j, l=0, r = nr-1;
     sTratta *trattaTmp;
 
@@ -241,7 +251,11 @@ void ordinaPartenza(int nr, sTratta *ordinatoTemp[]){
         ordinatoTemp[j + 1] = trattaTmp;
     }
 
-    stampa(nr, ordinatoTemp);
+    for (i = 0; i < nr; i++){
+        ordinatePartenza[i] = ordinatoTemp[i];
+    }
+
+    stampa(nr, ordinatePartenza);
 }
 
 /// FUNZIONE DI ORDINAMENTO IN BASE ALLA STAZIONE DI DESTINAZIONE
@@ -262,17 +276,20 @@ void ordinaArrivo(int nr, sTratta *ordinatoTemp[]){
         ordinatoTemp[j + 1] = trattaTmp;
     }
 
-    stampa(nr, ordinatoTemp);
+    for (i = 0; i < nr; i++){
+        ordinateArrivo[i] = ordinatoTemp[i];
+    }
+    stampa(nr, ordinateArrivo);
 }
 
 ///FUNZIONE DI RICERCA DICOTOMICA IN BASE ALLE PARTENZE
-void ricercaDico(int nr, sTratta *ordinatoTemp[]) {
+void ricercaDico(int nr, sTratta *ordinatoTemp[MAXR]) {
 
     ordinaPartenza(nr, ordinatoTemp);   /// ALGORITMO CHE FUNZIONA APOSTERIORI DELL'ORDINAMENTO DELLA STRUCT, CHIEDE DI STAMPARE LA FUNZIONE ORDINATA
 
-    int l = 0, r = nr - 1, m, flag = 1, i, j;
-    char prtnz[MAXR],str[MAXR];
-    FILE *fps;
+    int l = 0, r = nr - 1, m, flag = 1;
+    char prtnz[MAXR];
+
 
     printf("scegli la stazione da cercare\n");
     scanf("%s", prtnz);
@@ -280,13 +297,13 @@ void ricercaDico(int nr, sTratta *ordinatoTemp[]) {
     while (l <= r && flag && flag != 2) {
 
         m = (r+l)/2;
-        if(strcasecmp(ordinatoTemp[m]->partenza, prtnz) == 0){     ///CASO DI CORRISPONDENZA
+        if(strcasecmp(ordinatePartenza[m]->partenza, prtnz) == 0){     ///CASO DI CORRISPONDENZA
             flag = 0;
         }
-        else if(strcasecmp(ordinatoTemp[m]->partenza, prtnz) < 0){    ///CASO SOTTOVETTORE DESTRO
+        else if(strcasecmp(ordinatePartenza[m]->partenza, prtnz) < 0){    ///CASO SOTTOVETTORE DESTRO
             l = m + 1;
         }
-        else if(strcasecmp(ordinatoTemp[m]->partenza, prtnz) > 0){  /// CASO SOTTOVETTORE SINISTRO
+        else if(strcasecmp(ordinatePartenza[m]->partenza, prtnz) > 0){  /// CASO SOTTOVETTORE SINISTRO
             r = m - 1;
         }
         else{
@@ -296,47 +313,29 @@ void ricercaDico(int nr, sTratta *ordinatoTemp[]) {
     }
     /// CONTROLLO SE DIETRO L'INDICE DI CORRISPONDEZA VI SIANO PRESENTI ALTRE CORRISPONDENZE
     if (!flag && m != 0) {
-        while (strcasecmp(ordinatoTemp[m-1]->partenza, prtnz) == 0) {
+        while (strcasecmp(ordinatePartenza[m - 1]->partenza, prtnz) == 0) {
             m--;
         }
     }
 
     ///PRINTAGGIO DELLE CORRISPONDENZE
-    while (strcasecmp(ordinatoTemp[m]->partenza, prtnz) == 0) {
-        printf("vuoi stampare a video o in un file? ");
-        scanf("%s", str);
 
-        ///CASO DI STAMPO IN FILE
-        if(strcasecmp(str, "file") == 0){
-            fps = fopen("corseScritte.txt", "w");
-            while (strcasecmp(ordinatoTemp[m]->partenza, prtnz) == 0) {
-                fprintf(fps, "%s %s %s ", ordinatoTemp[m]->codice_tratta, ordinatoTemp[m]->partenza, ordinatoTemp[m]->destinazione);
-                fprintf(fps, "%s ", ordinatoTemp[m]->data);
-                fprintf(fps, "%s ", ordinatoTemp[m]->ora_partenza);
-                fprintf(fps, "%s ", ordinatoTemp[m]->ora_arrivo);
-                fprintf(fps, "%d\n", ordinatoTemp[m]->ritardo);
-                m++;
-            }
-            fclose(fps);
+    while (m < nr) {
+        if(strcasecmp(ordinatePartenza[m]->partenza, prtnz) == 0) {
+            printf("%s %s %s ", ordinatePartenza[m]->codice_tratta, ordinatePartenza[m]->partenza,
+                   ordinatePartenza[m]->destinazione);
+            printf("%s ", ordinatePartenza[m]->data);
+            printf("%s ", ordinatePartenza[m]->ora_partenza);
+            printf("%s ", ordinatePartenza[m]->ora_arrivo);
+            printf("%d\n", ordinatePartenza[m]->ritardo);
         }
-            ///CASO DI STAMPA A VIDEO
-        else if(strcasecmp(str, "video") == 0) {
-            printf("%s %s %s ", ordinatoTemp[m]->codice_tratta, ordinatoTemp[m]->partenza, ordinatoTemp[m]->destinazione);
-            printf("%s ", ordinatoTemp[m]->data);
-            printf("%s ", ordinatoTemp[m]->ora_partenza);
-            printf("%s ", ordinatoTemp[m]->ora_arrivo);
-            printf("%d\n", ordinatoTemp[m]->ritardo);
-        }
-        else
-            printf("errore di comando\n");
-
         m++;
     }
 
 }
 
 /// FUNZIONE DI STAMPA DELLA STRUCT ORDINATA
-void stampa(int nr, sTratta *ordinatoTemp[]) {
+void stampa(int nr, sTratta *ordinatoTemp[MAXR]) {
     int i;
     char str[MAXR];
     FILE *fps;
@@ -361,7 +360,7 @@ void stampa(int nr, sTratta *ordinatoTemp[]) {
         ///STAMA A VIDEO
     else if(strcasecmp(str, "video") == 0) {
         for (i = 0; i < nr; i++) {
-            printf("\n\n%s %s %s ", ordinatoTemp[i]->codice_tratta, ordinatoTemp[i]->partenza, ordinatoTemp[i]->destinazione);
+            printf("%s %s %s ", ordinatoTemp[i]->codice_tratta, ordinatoTemp[i]->partenza, ordinatoTemp[i]->destinazione);
             printf("%s ", ordinatoTemp[i]->data);
             printf("%s ", ordinatoTemp[i]->ora_partenza);
             printf("%s ", ordinatoTemp[i]->ora_arrivo);

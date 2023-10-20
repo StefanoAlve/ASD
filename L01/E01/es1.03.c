@@ -259,7 +259,7 @@ void ricercaDico(int nr, sTratta tratte[MAXL]) {
 
     ordinaPartenza(nr, tratte);   /// ALGORITMO CHE FUNZIONA APOSTERIORI DELL'ORDINAMENTO DELLA STRUCT, CHIEDE DI STAMPARE LA FUNZIONE ORDINATA
 
-    int l = 0, r = nr - 1, m, flag = 1, i, j;
+    int l = 0, r = nr - 1, m, flag = 1;
     char prtnz[MAXR],str[MAXR];
     FILE *fps;
 
@@ -291,9 +291,9 @@ void ricercaDico(int nr, sTratta tratte[MAXL]) {
     }
 
     ///PRINTAGGIO DELLE CORRISPONDENZE
+    printf("vuoi stampare a video o in un file? ");
+    scanf("%s", str);
     while (strcasecmp(tratte[m].partenza, prtnz) == 0) {
-        printf("vuoi stampare a video o in un file? ");
-        scanf("%s", str);
 
         ///CASO DI STAMPO IN FILE
         if(strcasecmp(str, "file") == 0){
