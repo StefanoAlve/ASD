@@ -1,134 +1,227 @@
 #include <stdio.h>
 #include <string.h>
-#include <ctype.h>
 
-#define MAXS 100
+#define MAXL 100
+#define MAXR 30
 
-char *cercaRegexp(char *regexp, char *source);
-int cercaLenghtRg(char *regexp);
+typedef struct{
+    char codice_tratta[MAXL];
+    char partenza[MAXL];
+    char destinazione[MAXL];
+    char data[MAXL];
+    char ora_partenza[MAXL];
+    char ora_arrivo[MAXL];
+    int ritardo;
+}sTratta;
+
+typedef enum{r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza_dico,
+             r_fine, r_errore} comando_e;
+
+int leggiFile(char* nomeFile, sTratta tratte[]);
+comando_e leggiComando(void);
+void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXL],int* pfine);
+void ordinaData(int nr, sTratta tratte[MAXL]);
+void ordinaCodice(int nr, sTratta tratte[MAXL]);
+void ordinaPatenza(int nr, sTratta tratte[MAXL]);
+void ordinaArrivo(int nr, sTratta tratte[MAXL]);
+void ricercaDico(int nr, sTratta tratte[MAXL]);
 
 int main() {
-    char regexp[MAXS], sorgente[MAXS], *pRegext;
-    int lenght;
+    char nomefile[MAXL];
+    int nr;
+    sTratta tratte[MAXR];
+    comando_e comando;
+    int fine = 0, *pfine = NULL;
 
-    printf("inserire la stringa da controllare: ");
-    scanf("%s", sorgente);
-    printf("inserire la stringa da cercare: ");
-    scanf("%s", regexp);
-    lenght = cercaLenghtRg(regexp);
-    printf("La regular expression e' lunga: %d", lenght);
-    pRegext = cercaRegexp(regexp, sorgente);
-    printf("\nIl puntatore indica la prima occorrenza regolare:%s", pRegext);
+    pfine = &fine;
+
+    printf("inserire il nome del file ");
+    scanf("%s", nomefile);
+
+    nr = leggiFile(nomefile, tratte);
+
+    while(!fine && nr != -1) {
+        //Lettura Comando
+        comando = leggiComando();
+        //Corpo programma
+        if (comando != r_errore) {
+            selezionaDati(nr, comando, tratte, pfine);
+        }
+    }
+
     return 0;
 }
 
-char *cercaRegexp(char *regexp, char *source) {
-    char *puntatore = NULL;
-    int i, j,inreg=0,inisrc=0, k,uguale=0, contaparentesi=0, inizio=0, flag=1, avanzaSrc=1, regexpLenght = cercaLenghtRg(regexp);
 
-    if (regexpLenght >= strlen(regexp)) {
-        for (i = inisrc; i < regexpLenght && flag != 2; i++) {             //itero sorgente
-            for (j = inreg; j<= strlen(source) && flag!=0; j++) {           //itero source
+int leggiFile(char* nomeFile, sTratta tratte[]) {
+    FILE *fp;
+    int i = 0, nr = 0;
 
-                // caso del punto (.)
-                if (source[j] == '.') {
-                    flag = 0;
-                    inreg = j;
-                }
+    fp = fopen(nomeFile, "r");
 
+    if(fp != NULL){
+        fscanf(fp,"%d", &nr);
+        while(!feof(fp)){
+            fscanf(fp, "%s %s %s", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+            fscanf(fp, "%s", tratte[i].data);
+            fscanf(fp, "%s", tratte[i].ora_partenza);
+            fscanf(fp, "%s", tratte[i].ora_arrivo);
+            fscanf(fp,"%d", &tratte[i].ritardo);
 
-                // caso \a \A
-                else if (source[j] == '\\') {
-
-                    if(source[j + 1] == 'A' && isupper(regexp[i]) || source[j + 1] == 'a' && islower(regexp[i])) {
-                        flag = 0;
-                        j++;            //aumento per saltare la a
-                    }
-                    inreg = j;
-                }
-
-                // caso []
-                else if (source[j] == '[' && source[j + 1] != '^') {
-
-                    for (k=1; source[j + k] != ']' ; k++){          //itero dentro la parentesi
-                        if (source[j + k] == regexp[i] && flag != 0)
-                            flag=0;
-                        else{
-                            if(flag != 0) {
-                                flag = 1;
-                            }
-                        }
-                        contaparentesi++;
-                    }
-                    j=j+contaparentesi+1;  //salto tutti i caratteri dentro le parentesi + la parentesi finale
-                    inreg = j;
-                }
-
-                /// caso [^]
-                else if (source[j] == '[' && source[j + 1] == '^') {
-                    flag = 0;
-                    for (k=2; source[j + k] != ']'; k++){          ///itero dentro la parentesi
-                        if (source[j + k] == regexp[i])
-                            flag=1;
-                        contaparentesi++;
-                    }
-                    j=j+k;  ///salto tutti i caratteri dentro le parentesi + la parentesi finale
-                    inreg = j;
-                }
-                    /// UGUAGLIANZA SEMPLICE
-                else if (source[j] == regexp[i]) {
-                    flag = 0;
-                    inreg = j;
-                }
-
-                if (flag == 1)          // condizione per ripartire con la conta caratteri uguali
-                    uguale = 0;
-
-            }
-
-
-
-            if (flag==0&& inizio==0) {   //condizione per trovare indice inizio e contare i caratteri giusti
-                inizio = inreg;
-                uguale++;
-                flag=1;
-                inreg++;
-            }
-            if(flag==0){                   //condizione per contare caratteri uguali
-                uguale++;
-                inreg++;
-            }
-
-            flag=1;
-            if(uguale == (int) strlen(regexp)){                       // condizione di trovata uguaglianza
-                flag = 2;
-                puntatore = &source[inizio];
-            }
-
-
+            i++;
         }
     }
+    else{
+        printf("errore nell apertura del file");
+        return 1;
+    }
 
-    return puntatore;
+    fclose(fp);
+
+    return nr;
 }
 
-int cercaLenghtRg(char *regexp) {
-    int lenght = 0, j;
-    for (j = 0; j < strlen(regexp); j++)
-    {
-        if (regexp[j] == '[')
-        {
-            while (regexp[j] != ']')
-                j++;
-            lenght++;
-        }
-        else if (regexp[j] == '.' || isalpha(regexp[j]))
-            lenght++;
-        else if (regexp[j] == '\\' && (regexp[j + 1] == 'a' || regexp[j + 1] == 'A'))
-        {
-            lenght++;
-            j = j+1;
-        }
+comando_e leggiComando(void){
+    //Inizializzazione variabili
+    char comando[MAXL];
+    comando_e comandoE;
+    //Corpo funzione
+    printf("\n-------------------------------------------------------------------------------------------------------\n");
+    printf("\t\t\t\t\tLISTA COMANDI\n");
+    printf("-------------------------------------------------------------------------------------------------------\n\n");
+    printf("ordina_data -> ordina le corse per data, in caso di data uguale verranno ordinate per ora\n");
+    printf("ordina_codice -> ordina le corse per codice\n");
+    printf("ordina_partenza -> ordina le corse secondo il nome della partenza\n");
+    printf("ordina_arrivo -> ordina le corse secondo il nome della destinazione\n");
+    printf("ricerca_partenza_dico -> esegue la ricerca dicotomica della partenza inserita\n");
+    printf("fine -> termina il programma\n\n");
+    printf("-------------------------------------------------------------------------------------------------------\n\n");
+    printf("Inserisci comando:");
+    scanf(" %s", comando);
+
+    if(strcmp("ordina_data", comando) == 0){
+        comandoE = 1;
     }
-    return lenght;
+    else if(strcmp("ordina_codice", comando) == 0){
+        comandoE = 2;
+    }
+    else if(strcmp("ordina_partenza",comando) == 0){
+        comandoE = 3;
+    }
+    else if(strcmp("ordina_arrivo",comando) == 0){
+        comandoE = 4;
+    }
+    else if(strcmp("ricerca_partenza_dico",comando) == 0){
+        comandoE = 5;
+    }
+    else if(strcmp("fine", comando) == 0){
+        comandoE = 6;
+    }
+    else{
+        printf("\nComando non riconosciuto! Riprova\n");
+        comandoE = 7;
+    }
+    return comandoE;
+}
+
+void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXL],int* pfine) {
+//r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza_dico,
+//             r_fine, r_errore
+    switch(comando){
+        case r_ordina_data:
+            ordinaData(nr, tratte);
+            break;
+        case r_ordina_codice:
+            ordinaCodice(nr, tratte);
+            break;
+        case r_ordina_partenza:
+            ordinaPatenza(nr, tratte);
+            break;
+        case r_ordina_arrivo:
+            ordinaArrivo(nr, tratte);
+            break;
+        case r_ricerca_partenza_dico:
+            ricercaDico(nr, tratte);
+            break;
+        case r_fine:
+            *pfine = 1;
+            printf("Programma terminato correttamente!\n");
+            break;
+    }
+
+}
+/*
+ void InsertionSort(int A[], int N) {
+    int i, j, l=0, r=N-1, x;
+    for (i = l+1; i <= r; i++) {
+        x = A[i];
+        j = i - 1;
+        while (j >= l && x < A[j]){
+            A[j+1] = A[j];
+            j--;
+        }
+        A[j+1] = x;
+    }
+ }*/
+void ordinaData(int nr, sTratta tratte[MAXL]){
+    int i, j, l=0, r = nr-1, inverti;
+    sTratta trattaTmp;
+
+    for(i=l+1; i<=r; i++){
+        trattaTmp = tratte[i];
+        j = i - 1;
+        inverti = 1;
+        while (j >= l && inverti ) {
+            if (strcmp(trattaTmp.data, tratte[j].data) < 0) {
+                tratte[j + 1] = tratte[j];
+            }
+            else if(strcmp(trattaTmp.data, tratte[j].data) == 0 && strcmp(trattaTmp.ora_partenza, tratte[j].ora_partenza) < 0) {
+                tratte[j + 1] = tratte[j];
+            }
+            else if(strcmp(trattaTmp.data, tratte[j].data) == 0 && strcmp(trattaTmp.ora_partenza, tratte[j].ora_partenza) == 0 && strcmp(trattaTmp.ora_arrivo, tratte[j].ora_arrivo) < 0) {
+                tratte[j + 1] = tratte[j];
+            }
+            else
+                inverti = 0;
+
+
+            if (inverti){
+                j--;
+            }
+        }
+
+        tratte[j + 1] = trattaTmp;
+    }
+
+    for (i = 0; i < nr; i++){
+        printf("%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+        printf("%s ", tratte[i].data);
+        printf("%s ", tratte[i].ora_partenza);
+        printf("%s ", tratte[i].ora_arrivo);
+        printf("%d\n", tratte[i].ritardo);
+    }
+}
+
+void ordinaCodice(int nr, sTratta tratte[MAXL]){
+    int i, j, l=0, r = nr-1;
+    sTratta trattaTmp;
+
+    for(i=l+1; i<=r; i++){
+        trattaTmp = tratte[i];
+        j = i - 1;
+
+        while (j >= l && strcmp(trattaTmp.codice_tratta, tratte[j].codice_tratta) < 0) {
+                tratte[j + 1] = tratte[j];
+        }
+
+        tratte[j + 1] = trattaTmp;
+    }
+
+    for (i = 0; i < nr; i++){
+        printf("%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+        printf("%s ", tratte[i].data);
+        printf("%s ", tratte[i].ora_partenza);
+        printf("%s ", tratte[i].ora_arrivo);
+        printf("%d\n", tratte[i].ritardo);
+    }
 }
