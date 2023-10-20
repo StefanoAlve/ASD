@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "E03::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-E03-Debug-95f13bcd0e5b75c472c1.json",
+					"jsonFile" : "target-E03-Debug-e2a9b42383685d253054.json",
 					"name" : "E03",
 					"projectIndex" : 0
 				}
@@ -49,12 +49,12 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/ASD/L01/E03/cmake-build-debug",
-		"source" : "C:/ASD/L01/E03"
+		"build" : "C:/Users/bonio/Desktop/POLITO 2023-2024/ASD/L01/E03/cmake-build-debug",
+		"source" : "C:/Users/bonio/Desktop/POLITO 2023-2024/ASD/L01/E03"
 	},
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 4
+		"minor" : 5
 	}
 }
