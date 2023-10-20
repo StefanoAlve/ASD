@@ -22,9 +22,10 @@ comando_e leggiComando(void);
 void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXL],int* pfine);
 void ordinaData(int nr, sTratta tratte[MAXL]);
 void ordinaCodice(int nr, sTratta tratte[MAXL]);
-void ordinaPatenza(int nr, sTratta tratte[MAXL]);
+void ordinaPartenza(int nr, sTratta tratte[MAXL]);
 void ordinaArrivo(int nr, sTratta tratte[MAXL]);
 void ricercaDico(int nr, sTratta tratte[MAXL]);
+void stampa(int nr, sTratta tratte[MAXL]);
 
 int main() {
     char nomefile[MAXL];
@@ -135,7 +136,7 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXL],int* pfine) {
             ordinaCodice(nr, tratte);
             break;
         case r_ordina_partenza:
-            ordinaPatenza(nr, tratte);
+            ordinaPartenza(nr, tratte);
             break;
         case r_ordina_arrivo:
             ordinaArrivo(nr, tratte);
@@ -193,13 +194,7 @@ void ordinaData(int nr, sTratta tratte[MAXL]){
         tratte[j + 1] = trattaTmp;
     }
 
-    for (i = 0; i < nr; i++){
-        printf("%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
-        printf("%s ", tratte[i].data);
-        printf("%s ", tratte[i].ora_partenza);
-        printf("%s ", tratte[i].ora_arrivo);
-        printf("%d\n", tratte[i].ritardo);
-    }
+    stampa(nr, tratte);
 }
 
 void ordinaCodice(int nr, sTratta tratte[MAXL]){
@@ -212,16 +207,121 @@ void ordinaCodice(int nr, sTratta tratte[MAXL]){
 
         while (j >= l && strcmp(trattaTmp.codice_tratta, tratte[j].codice_tratta) < 0) {
                 tratte[j + 1] = tratte[j];
+                j--;
         }
 
         tratte[j + 1] = trattaTmp;
     }
 
-    for (i = 0; i < nr; i++){
-        printf("%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
-        printf("%s ", tratte[i].data);
-        printf("%s ", tratte[i].ora_partenza);
-        printf("%s ", tratte[i].ora_arrivo);
-        printf("%d\n", tratte[i].ritardo);
+    stampa(nr, tratte);
+}
+
+void ordinaPartenza(int nr, sTratta tratte[MAXL]){
+    int i, j, l=0, r = nr-1;
+    sTratta trattaTmp;
+
+    for(i=l+1; i<=r; i++){
+        trattaTmp = tratte[i];
+        j = i - 1;
+
+        while (j >= l && strcmp(trattaTmp.partenza, tratte[j].partenza) < 0) {
+            tratte[j + 1] = tratte[j];
+            j--;
+        }
+
+        tratte[j + 1] = trattaTmp;
     }
+
+    stampa(nr, tratte);
+}
+
+void ordinaArrivo(int nr, sTratta tratte[MAXL]){
+    int i, j, l=0, r = nr-1;
+    sTratta trattaTmp;
+
+    for(i=l+1; i<=r; i++){
+        trattaTmp = tratte[i];
+        j = i - 1;
+
+        while (j >= l && strcmp(trattaTmp.destinazione, tratte[j].destinazione) < 0) {
+            tratte[j + 1] = tratte[j];
+            j--;
+        }
+
+        tratte[j + 1] = trattaTmp;
+    }
+
+    stampa(nr, tratte);
+}
+
+void ricercaDico(int nr, sTratta tratte[MAXL]) {
+    ordinaPartenza(nr, tratte);
+    int l = 0, r = nr - 1, m, flag = 1, i;
+    char prtnz[MAXR];
+
+    printf("scegli la stazione da cercare");
+    scanf("%s", prtnz);
+
+    while (l <= r && flag && flag != 2) {
+
+        m = (l-r)/2;
+        if(strcmp(tratte[m].partenza, prtnz) == 0){
+            flag = 0;
+        }
+        else if(strcmp(tratte[m].partenza, prtnz) < 0){
+            l = m + 1;
+        }
+        else if(strcmp(tratte[m].partenza, prtnz) > 0){
+            r = m - 1;
+        }
+        else{
+            printf("errore nella ricerca");
+            flag = 2;
+        }
+    }
+    if (!flag) {
+        while (strcmp(tratte[m].partenza, prtnz) == 0) {
+            m--;
+        }
+    }
+    while (strcmp(tratte[m].partenza, prtnz) == 0) {
+        stampa(nr, tratte);
+        m++;
+    }
+
+}
+
+
+void stampa(int nr, sTratta tratte[MAXL]) {
+    int decisione, i;
+    char str[MAXR];
+    FILE *fps;
+
+    printf("vuoi stampare a video o in un file?");
+    scanf("%s", str);
+
+    if(strcasecmp(str, "file") == 0){
+        fps = fopen("corseScritte.txt", "w");
+
+        for (i = 0; i < nr; i++){
+            fprintf(fps,"\n\n%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+            fprintf(fps,"%s ", tratte[i].data);
+            fprintf(fps, "%s ", tratte[i].ora_partenza);
+            fprintf(fps,"%s ", tratte[i].ora_arrivo);
+            fprintf(fps, "%d\n", tratte[i].ritardo);
+
+        }
+        fclose(fps);
+    }
+    else if(strcasecmp(str, "video") == 0) {
+        for (i = 0; i < nr; i++) {
+            printf("\n\n%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
+            printf("%s ", tratte[i].data);
+            printf("%s ", tratte[i].ora_partenza);
+            printf("%s ", tratte[i].ora_arrivo);
+            printf("%d\n", tratte[i].ritardo);
+        }
+    }
+    else
+        printf("errore di comando");
 }
