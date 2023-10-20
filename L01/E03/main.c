@@ -155,7 +155,7 @@ void EseguiComando(int num_righe, struct_tratte v_tratte[], comando_e comando, i
             break;
         case search_tratta_partenza:
             printf("Nome stazione partenza (anche parziale): ");
-            scanf("%s",stazione_partenza);
+            scanf(" %s",stazione_partenza);
             len_partenza = strlen(stazione_partenza);
             CercaTrattaPartenza(num_righe,v_tratte,stazione_partenza,len_partenza);
             break;
