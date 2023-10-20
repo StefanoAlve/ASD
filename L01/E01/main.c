@@ -39,21 +39,21 @@ int main() {
     printf("inserire il nome del file ");
     scanf("%s", nomefile);
 
-    nr = leggiFile(nomefile, tratte);
+    nr = leggiFile(nomefile, tratte);       ///vado a riempire la struct e la variabile numero righe
 
     while(!fine && nr != -1) {
         //Lettura Comando
-        comando = leggiComando();
+        comando = leggiComando();       /// funzione per leggere il comando scelto in input
         //Corpo programma
         if (comando != r_errore) {
-            selezionaDati(nr, comando, tratte, pfine);
+            selezionaDati(nr, comando, tratte, pfine);  /// gestione del comando
         }
     }
 
     return 0;
 }
 
-
+///lettura del file e scrittura delle componenti della struct
 int leggiFile(char* nomeFile, sTratta tratte[]) {
     FILE *fp;
     int i = 0, nr = 0;
@@ -100,6 +100,8 @@ comando_e leggiComando(void){
     printf("Inserisci comando:");
     scanf(" %s", comando);
 
+    ///gestione del comando in base all'input
+
     if(strcmp("ordina_data", comando) == 0){
         comandoE = 0;
     }
@@ -126,8 +128,9 @@ comando_e leggiComando(void){
 }
 
 void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXL],int* pfine) {
-//r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza_dico,
-//             r_fine, r_errore
+
+///rimando alle funzioni in base alla scelta dell input
+
     switch(comando){
         case r_ordina_data:
             ordinaData(nr, tratte);
@@ -151,28 +154,19 @@ void selezionaDati(int nr, comando_e comando, sTratta tratte[MAXL],int* pfine) {
     }
 
 }
-/*
- void InsertionSort(int A[], int N) {
-    int i, j, l=0, r=N-1, x;
-    for (i = l+1; i <= r; i++) {
-        x = A[i];
-        j = i - 1;
-        while (j >= l && x < A[j]){
-            A[j+1] = A[j];
-            j--;
-        }
-        A[j+1] = x;
-    }
- }*/
+
+///ordinamento per data
 void ordinaData(int nr, sTratta tratte[MAXL]){
     int i, j, l=0, r = nr-1, inverti;
     sTratta trattaTmp;
 
+    /// INSERTION SORT
     for(i=l+1; i<=r; i++){
         trattaTmp = tratte[i];
         j = i - 1;
         inverti = 1;
         while (j >= l && inverti ) {
+            ///GESTIONE IN BASE A DATA O ORA
             if (strcmp(trattaTmp.data, tratte[j].data) < 0) {
                 tratte[j + 1] = tratte[j];
             }
@@ -183,7 +177,7 @@ void ordinaData(int nr, sTratta tratte[MAXL]){
                 tratte[j + 1] = tratte[j];
             }
             else
-                inverti = 0;
+                inverti = 0; /// BOOLEANO PER CAPIRE FINO A QUANDO SCAMBIARE
 
 
             if (inverti){
@@ -197,10 +191,12 @@ void ordinaData(int nr, sTratta tratte[MAXL]){
     stampa(nr, tratte);
 }
 
+///FUNZIONE DI ORDINAMENTO IN BASE A CODICE TRATTA
 void ordinaCodice(int nr, sTratta tratte[MAXL]){
     int i, j, l=0, r = nr-1;
     sTratta trattaTmp;
 
+///INSERTION SORT
     for(i=l+1; i<=r; i++){
         trattaTmp = tratte[i];
         j = i - 1;
@@ -216,10 +212,12 @@ void ordinaCodice(int nr, sTratta tratte[MAXL]){
     stampa(nr, tratte);
 }
 
+///FUNZIONE DI ORDINAMENTO IN BASE ALLA STAZIONE DI PARTENZA
 void ordinaPartenza(int nr, sTratta tratte[MAXL]){
     int i, j, l=0, r = nr-1;
     sTratta trattaTmp;
 
+    ///INSERTION SORT
     for(i=l+1; i<=r; i++){
         trattaTmp = tratte[i];
         j = i - 1;
@@ -235,10 +233,12 @@ void ordinaPartenza(int nr, sTratta tratte[MAXL]){
     stampa(nr, tratte);
 }
 
+/// FUNZIONE DI ORDINAMENTO IN BASE ALLA STAZIONE DI DESTINAZIONE
 void ordinaArrivo(int nr, sTratta tratte[MAXL]){
     int i, j, l=0, r = nr-1;
     sTratta trattaTmp;
 
+    ///INSERTION SORT
     for(i=l+1; i<=r; i++){
         trattaTmp = tratte[i];
         j = i - 1;
@@ -254,8 +254,11 @@ void ordinaArrivo(int nr, sTratta tratte[MAXL]){
     stampa(nr, tratte);
 }
 
+///FUNZIONE DI RICERCA DICOTOMICA IN BASE ALLE PARTENZE
 void ricercaDico(int nr, sTratta tratte[MAXL]) {
-    ordinaPartenza(nr, tratte);
+
+    ordinaPartenza(nr, tratte);   /// ALGORITMO CHE FUNZIONA APOSTERIORI DELL'ORDINAMENTO DELLA STRUCT, CHIEDE DI STAMPARE LA FUNZIONE ORDINATA
+
     int l = 0, r = nr - 1, m, flag = 1, i, j;
     char prtnz[MAXR],str[MAXR];
     FILE *fps;
@@ -266,30 +269,33 @@ void ricercaDico(int nr, sTratta tratte[MAXL]) {
     while (l <= r && flag && flag != 2) {
 
         m = (r+l)/2;
-        if(strcasecmp(tratte[m].partenza, prtnz) == 0){
+        if(strcasecmp(tratte[m].partenza, prtnz) == 0){     ///CASO DI CORRISPONDENZA
             flag = 0;
         }
-        else if(strcasecmp(tratte[m].partenza, prtnz) < 0){
+        else if(strcasecmp(tratte[m].partenza, prtnz) < 0){    ///CASO SOTTOVETTORE DESTRO
             l = m + 1;
         }
-        else if(strcasecmp(tratte[m].partenza, prtnz) > 0){
+        else if(strcasecmp(tratte[m].partenza, prtnz) > 0){  /// CASO SOTTOVETTORE SINISTRO
             r = m - 1;
         }
         else{
-            printf("errore nella ricerca\n");
+            printf("errore nella ricerca\n");       /// GESTIONE ERRORE IN INPUT O GENERICO
             flag = 2;
         }
     }
+    /// CONTROLLO SE DIETRO L'INDICE DI CORRISPONDEZA VI SIANO PRESENTI ALTRE CORRISPONDENZE
     if (!flag && m != 0) {
         while (strcasecmp(tratte[m-1].partenza, prtnz) == 0) {
             m--;
         }
     }
 
+    ///PRINTAGGIO DELLE CORRISPONDENZE
     while (strcasecmp(tratte[m].partenza, prtnz) == 0) {
         printf("vuoi stampare a video o in un file? ");
         scanf("%s", str);
 
+        ///CASO DI STAMPO IN FILE
         if(strcasecmp(str, "file") == 0){
             fps = fopen("corseScritte.txt", "w");
             while (strcasecmp(tratte[m].partenza, prtnz) == 0) {
@@ -302,6 +308,7 @@ void ricercaDico(int nr, sTratta tratte[MAXL]) {
             }
             fclose(fps);
         }
+        ///CASO DI STAMPA A VIDEO
         else if(strcasecmp(str, "video") == 0) {
             printf("%s %s %s ", tratte[m].codice_tratta, tratte[m].partenza, tratte[m].destinazione);
             printf("%s ", tratte[m].data);
@@ -317,7 +324,7 @@ void ricercaDico(int nr, sTratta tratte[MAXL]) {
 
 }
 
-
+/// FUNZIONE DI STAMPA DELLA STRUCT ORDINATA
 void stampa(int nr, sTratta tratte[MAXL]) {
     int i;
     char str[MAXR];
@@ -326,6 +333,7 @@ void stampa(int nr, sTratta tratte[MAXL]) {
     printf("vuoi stampare a video o in un file? ");
     scanf("%s", str);
 
+    ///STAMPA A FILE
     if(strcasecmp(str, "file") == 0){
         fps = fopen("corseScritte.txt", "w");
 
@@ -339,6 +347,7 @@ void stampa(int nr, sTratta tratte[MAXL]) {
         }
         fclose(fps);
     }
+    ///STAMA A VIDEO
     else if(strcasecmp(str, "video") == 0) {
         for (i = 0; i < nr; i++) {
             printf("\n\n%s %s %s ", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione);
