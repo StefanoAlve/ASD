@@ -21,10 +21,10 @@ typedef enum {
 
 // Funzioni
 comando_e LeggiComando();
+int LeggiFile(char *NomeFile, struct_tratte v_tratte[]);
 void StampaStruct(int i, struct_tratte v_tratte[]);
 void StampaVideo(int num_righe, struct_tratte v_tratte[]);
 void StampaFile(int num_righe, struct_tratte v_tratte[], char NomeFout[]);
-int LeggiFile(char *NomeFile, struct_tratte v_tratte[]);
 void EseguiComando(int num_righe, struct_tratte v_tratte[], comando_e comando, int *p_fine);
 void DataOraSort(int num_righe, struct_tratte v_tratte[]);
 void CodTrattaSort(int num_righe, struct_tratte v_tratte[]);
