@@ -36,9 +36,9 @@ void StampaFile(int num_righe, struct_tratte v_tratte[], char NomeFout[]);
 void Ordinamenti(struct_Ordinamenti Sorting, int num_righe, struct_tratte v_tratte[]);
 void EseguiComando(int num_righe, struct_tratte v_tratte[], struct_Ordinamenti Sorting, comando_e comando, int *p_fine);
 void DataOraSort(int num_righe, struct_tratte *v_DataOraSort[]);
-void CodTrattaSort(int num_righe, struct_tratte *v_CodTrattaSort[]);
-void PartenzaSort(int num_righe, struct_tratte *v_PartenzaSort[]);
-void DestinazioneSort(int num_righe, struct_tratte *v_DestinazioneSort[]);
+//void CodTrattaSort(int num_righe, struct_tratte *v_CodTrattaSort[]);
+//void PartenzaSort(int num_righe, struct_tratte *v_PartenzaSort[]);
+//void DestinazioneSort(int num_righe, struct_tratte *v_DestinazioneSort[]);
 
 int main() {
     char NomeFile[MAXN];
@@ -194,9 +194,9 @@ void Ordinamenti(struct_Ordinamenti Sorting, int num_righe, struct_tratte v_trat
         Sorting.v_DestinazioneSort[i] = &v_tratte[i];
     }
     DataOraSort(num_righe,Sorting.v_DataOraSort);
-    CodTrattaSort(num_righe,Sorting.v_CodTrattaSort);
-    PartenzaSort(num_righe,Sorting.v_PartenzaSort);
-    DestinazioneSort(num_righe,Sorting.v_DestinazioneSort);
+    //CodTrattaSort(num_righe,Sorting.v_CodTrattaSort);
+    //PartenzaSort(num_righe,Sorting.v_PartenzaSort);
+    //DestinazioneSort(num_righe,Sorting.v_DestinazioneSort);
 }
 
 void EseguiComando(int num_righe, struct_tratte v_tratte[], struct_Ordinamenti Sorting, comando_e comando, int *p_fine){
@@ -241,7 +241,27 @@ void EseguiComando(int num_righe, struct_tratte v_tratte[], struct_Ordinamenti S
 }
 
 void DataOraSort(int num_righe, struct_tratte *v_DataOraSort[]){
+    int i,j;
+    struct_tratte *p_tratta;
 
+    for (i = 1; i < num_righe; i++){
+        p_tratta = v_DataOraSort[i];
+        j = i - 1;
+
+        printf("%s",v_DataOraSort[j]->data);
+
+        while (j >= 0 && strcmp(p_tratta->data, v_DataOraSort[j]->data) < 0) {
+            v_DataOraSort[j + 1] = v_DataOraSort[j];
+            j--;
+        }
+        if (strcmp(p_tratta->data, v_DataOraSort[j+1]->data) == 0){
+            while (j >= 0 && strcmp(p_tratta->o_partenza, v_DataOraSort[j]->o_partenza) < 0) {
+                v_DataOraSort[j + 1] = v_DataOraSort[j];
+                j--;
+            }
+        }
+        v_DataOraSort[j + 1] = p_tratta;
+    }
 }
 
 
