@@ -156,6 +156,7 @@ void EseguiComando(int num_righe, struct_tratte v_tratte[], comando_e comando, i
         case search_tratta_partenza:
             printf("Nome stazione partenza (anche parziale): ");
             scanf(" %s",stazione_partenza);
+            printf("\n");
             len_partenza = strlen(stazione_partenza);
             CercaTrattaPartenza(num_righe,v_tratte,stazione_partenza,len_partenza);
             break;
@@ -237,7 +238,7 @@ void CodTrattaSort(int num_righe, struct_tratte v_tratte[]){
         tratta = v_tratte[i];
         j = i - 1;
 
-        while (j >= 0 && strcmp(tratta.codiceTratta, v_tratte[j].codiceTratta) < 0) {
+        while (j >= 0 && strcasecmp(tratta.codiceTratta, v_tratte[j].codiceTratta) < 0) {
             v_tratte[j + 1] = v_tratte[j];
             j--;
         }
@@ -254,7 +255,7 @@ void PartenzaSort(int num_righe, struct_tratte v_tratte[]){
         tratta = v_tratte[i];
         j = i - 1;
 
-        while (j >= 0 && strcmp(tratta.partenza, v_tratte[j].partenza) < 0) {
+        while (j >= 0 && strcasecmp(tratta.partenza, v_tratte[j].partenza) < 0) {
             v_tratte[j + 1] = v_tratte[j];
             j--;
         }
@@ -271,7 +272,7 @@ void DestinazioneSort(int num_righe, struct_tratte v_tratte[]){
         tratta = v_tratte[i];
         j = i - 1;
 
-        while (j >= 0 && strcmp(tratta.destinazione, v_tratte[j].destinazione) < 0) {
+        while (j >= 0 && strcasecmp(tratta.destinazione, v_tratte[j].destinazione) < 0) {
             v_tratte[j + 1] = v_tratte[j];
             j--;
         }
@@ -300,14 +301,14 @@ void CercaTrattaPartenza(int num_righe, struct_tratte v_tratte[], char stazione_
         StampaStruct(m,v_tratte);
     }
     //Ricerca lineare nei due sottovettori per ulteriori corrispondenze
-
-    while (l >= 0 && (strncasecmp(v_tratte[l].partenza,stazione_partenza,len_partenza) == 0)){
-        StampaStruct(l,v_tratte);
-        l--;
+    int i = m-1;
+    while (i >= 0 && (strncasecmp(v_tratte[i].partenza,stazione_partenza,len_partenza) == 0)){
+        StampaStruct(i,v_tratte);
+        i--;
     }
-
-    while (r < num_righe && (strncasecmp(v_tratte[r].partenza,stazione_partenza,len_partenza) == 0)){
-        StampaStruct(r,v_tratte);
-        r++;
+    i = m+1;
+    while (i < num_righe && (strncasecmp(v_tratte[i].partenza,stazione_partenza,len_partenza) == 0)){
+        StampaStruct(i,v_tratte);
+        i++;
     }
 }
