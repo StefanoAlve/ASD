@@ -19,7 +19,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3c0a16bf-3ecc-4629-867c-34c22bed7d02" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../L03/E02/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../../L03/E02/main.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../E03/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../E03/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +56,7 @@
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Stefano",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -62,13 +64,6 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
-      <method v="2">
-        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -78,7 +73,8 @@
       <option name="presentableId" value="Default" />
       <updated>1697752141011</updated>
       <workItem from="1697752142598" duration="34000" />
-      <workItem from="1697996218122" duration="595000" />
+      <workItem from="1697996218122" duration="596000" />
+      <workItem from="1698087704228" duration="16000" />
     </task>
     <servers />
   </component>
