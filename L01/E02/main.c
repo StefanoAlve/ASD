@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <string.h>
-#include <ctype.h>
+
 
 #define MAXL 30
 struct corse {
@@ -41,8 +41,9 @@ int main() {
     while (richiedi_scelta) {
         option = leggiComando();
         richiedi_scelta = selezionaDati(tratte, dim, option);
+        printf("\n%d", richiedi_scelta);
     }
-
+    printf("\nTermine Codice");
     free(tratte);
     return 0;
 }
@@ -136,7 +137,7 @@ int leggiComando(){ //funzione che legge il comando da eseguire
 int selezionaDati(struct corse *v, int dim, int opzione ){ //funzione che mi permette di effettuare una selezione sulla funzione da richiamare in base alla selezione ricevuta
     char data1[MAXL], data2[MAXL], input_fermata_codice[MAXL];//la variabile input_fermata_codice, viene utilizzata sia per il nome delle fermate che per il codice di tratta
     int stampa = 1;
-    switch (opzione) {
+    switch (opzione) { //il return 1 mi permette di continuare a chiamare la funzione per la scelta dell'operazione da eseguire
         case r_date://se seguito da due date dopo il comando "date" leggerle e stampare tutte le date inserite nell'intervallo di quelle date
             printf("\ninserisci la prima data nel formato aaaa/gg/mm: ");
             scanf("%s", data1);
@@ -144,21 +145,21 @@ int selezionaDati(struct corse *v, int dim, int opzione ){ //funzione che mi per
             scanf("%s", data2);
             stampa = selezione_stampa();
             leggi_per_date(v,data1, data2, dim, 0, stampa);
-
+            return 1;
             break;
         case r_partenza://se il comando "partenze" è seguito da una stazione di partenza, elencare tutte le corse corrispondenti
             printf("\nInserisci una stazione di partenza: ");
             scanf("%s", input_fermata_codice);
             stampa = selezione_stampa();
             leggi_tratte_nome_fermata(v,input_fermata_codice, dim, stampa, 0);
-
+            return 1;
             break;
         case r_capolinea://se il comando "capolinea" è seguito da una stazione capolinea, elencare tutte le corse corrispondenti
             printf("\nInserisci un capolinea: ");
             scanf("%s", input_fermata_codice);
             stampa = selezione_stampa();
             leggi_tratte_nome_fermata(v,input_fermata_codice, dim, stampa, 1);
-
+            return 1;
             break;
         case r_ritardo:// quando seguito da delle date, elencare tutte le corse che hanno avuto un ritardo in quell'intervallo
             printf("\ninserisci la prima data nel formato aaaa/gg/mm: ");
@@ -167,20 +168,21 @@ int selezionaDati(struct corse *v, int dim, int opzione ){ //funzione che mi per
             scanf("%s", data2);
             stampa = selezione_stampa();
             leggi_per_date(v,data1, data2, dim, 1, stampa);
-
+            return 1;
             break;
         case r_ritardo_tot:// quando seguito da un codice di tratta, sommare tutti i ritardi per quella tratta e stampare la somma
             printf("Inserisci il codice della tratta di cui vuoi conoscere il ritardo complessivo: ");
             scanf("%s",input_fermata_codice );
             stampa = selezione_stampa();
             calcola_ritardo_tratta(v, input_fermata_codice, dim, stampa);
-
+            return 1;
             break;
         case r_fine://l'esecuzione del codice termina solamente in caso di selezione "fine"
             return 0;
 
         default:
             printf("\nOpzione non disponibile\n");
+            return 1;
             break;
 
     }
@@ -341,8 +343,6 @@ int selezione_stampa(){
 
         if(strcmp(stampa, "video") == 0){ printf("\nHai scelto stampa su video "); flag = 0; return option; }
 
-        else if(strcmp(stampa, "file") == 0){  printf("\nHai scelto stampa su video su file"); flag = 0; option = 1; return option; }
+        else if(strcmp(stampa, "file") == 0){  printf("\nHai scelto stampa su file"); flag = 0; option = 1; return option; }
     }
-
-
 }
