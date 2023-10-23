@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <string.h>
+#include <ctype.h>
 
 #define MAXL 30
 struct corse {
@@ -18,8 +19,8 @@ FILE *apri_file_scrittura(const char *nome_file);
 struct corse *leggi_tabella();
 int leggiComando();
 int selezionaDati(struct corse *v, int dim, int opzione);
-void leggi_per_date(struct corse *v,char *data1, char *data2, int dim, int flag_ritardo, int stampa); //funzione che mi permette di elencare le corse in un certo intervallo di date
-void leggi_tratte_nome_fermata(struct corse *v, char *nome_fermata, int dim, int stampa);
+int leggi_per_date(struct corse *v,char *data1, char *data2, int dim, int flag_ritardo, int stampa); //funzione che mi permette di elencare le corse in un certo intervallo di date
+int leggi_tratte_nome_fermata(struct corse *v, char *nome_fermata, int dim, int stampa, int flag_capolinea );
 int calcola_ritardo_tratta(struct corse *v, char *codice_tratta, int dim, int stampa);
 int selezione_stampa();
 
@@ -129,12 +130,12 @@ int leggiComando(){ //funzione che legge il comando da eseguire
 
     else if(strcmp(option,"fine") == 0)           { scelta = 5; }
 
-    return scelta;
+    return scelta; //se viene inserito un termine non valido vado nel caso di default dello switch case, ritorno a richiedere il comando
 }
 
 int selezionaDati(struct corse *v, int dim, int opzione ){ //funzione che mi permette di effettuare una selezione sulla funzione da richiamare in base alla selezione ricevuta
     char data1[MAXL], data2[MAXL], input_fermata_codice[MAXL];//la variabile input_fermata_codice, viene utilizzata sia per il nome delle fermate che per il codice di tratta
-    int stampa = 0;
+    int stampa = 1;
     switch (opzione) {
         case r_date://se seguito da due date dopo il comando "date" leggerle e stampare tutte le date inserite nell'intervallo di quelle date
             printf("\ninserisci la prima data nel formato aaaa/gg/mm: ");
@@ -149,14 +150,14 @@ int selezionaDati(struct corse *v, int dim, int opzione ){ //funzione che mi per
             printf("\nInserisci una stazione di partenza: ");
             scanf("%s", input_fermata_codice);
             stampa = selezione_stampa();
-            leggi_tratte_nome_fermata(v,input_fermata_codice, dim, stampa);
+            leggi_tratte_nome_fermata(v,input_fermata_codice, dim, stampa, 0);
 
             break;
         case r_capolinea://se il comando "capolinea" è seguito da una stazione capolinea, elencare tutte le corse corrispondenti
             printf("\nInserisci un capolinea: ");
             scanf("%s", input_fermata_codice);
             stampa = selezione_stampa();
-            leggi_tratte_nome_fermata(v,input_fermata_codice, dim, stampa);
+            leggi_tratte_nome_fermata(v,input_fermata_codice, dim, stampa, 1);
 
             break;
         case r_ritardo:// quando seguito da delle date, elencare tutte le corse che hanno avuto un ritardo in quell'intervallo
@@ -165,7 +166,7 @@ int selezionaDati(struct corse *v, int dim, int opzione ){ //funzione che mi per
             printf("\ninserisci la seconda data nel formato aaaa/gg/mm: ");
             scanf("%s", data2);
             stampa = selezione_stampa();
-            leggi_per_date(v,data1, data2, dim, 0, stampa);
+            leggi_per_date(v,data1, data2, dim, 1, stampa);
 
             break;
         case r_ritardo_tot:// quando seguito da un codice di tratta, sommare tutti i ritardi per quella tratta e stampare la somma
@@ -185,39 +186,17 @@ int selezionaDati(struct corse *v, int dim, int opzione ){ //funzione che mi per
     }
 }
 
-
-void leggi_per_date(struct corse *v,char *data1, char *data2, int dim, int flag_ritardo, int stampa){//v è puntatore al vettore di struct FUNZIONA
+//2018/09/10
+//2018/11/10
+int leggi_per_date(struct corse *v,char *data1, char *data2, int dim, int flag_ritardo, int stampa){//v è puntatore al vettore di struct FUNZIONA
     int flag = 1;
 
-    if (strcmp(data1, data2) <= 0 ) { //nel caso in cui venga data come prima data una data successiva alla seconda,
-        // l'intervallo di date non è valido
-        for (int i = 0; i < dim; i++ && !stampa) {
-            if(strcmp(v[i].data,data1) >= 0 && strcmp(v[i].data, data2) <= 0 && !flag_ritardo) {
-                printf("\n%s", v[i].codice_tratta);
-                printf(" %s", v[i].partenza);
-                printf(" %s", v[i].destinazione);
-                printf(" %s", v[i].data);
-                printf(" %s", v[i].ora_partenza);
-                printf(" %s", v[i].ora_arrivo);
-                printf(" %d", v[i].ritardo);
-                flag = 0;
-            }
-
-            if(strcmp(v[i].data,data1) >= 0 && strcmp(v[i].data, data2) <= 0 && v[i].ritardo > 0 && flag_ritardo) {
-                printf("\n%s", v[i].codice_tratta);
-                printf(" %s", v[i].partenza);
-                printf(" %s", v[i].destinazione);
-                printf(" %s", v[i].data);
-                printf(" %s", v[i].ora_partenza);
-                printf(" %s", v[i].ora_arrivo);
-                printf(" %d", v[i].ritardo);
-                flag = 0;
-            }
-        }
+    if (strcmp(data1, data2) <= 0 ) { //nel caso in cui venga data come prima data una data successiva alla seconda, l'intervallo di date non è valido
         if(stampa){
-            FILE* fout = apri_file_scrittura("lettura_date");
+            FILE* fout = apri_file_scrittura("C:\\Users\\calve\\OneDrive\\Desktop\\primo semestre\\Algoritmi\\laboratorio\\lab01\\ES02_lab01\\lettura_date.txt");
             for (int i = 0; i < dim; i++) {
                 if(strcmp(v[i].data,data1) >= 0 && strcmp(v[i].data, data2) <= 0 && !flag_ritardo) {
+                    flag = 0;
                     fprintf(fout,"\n%s", v[i].codice_tratta);
                     fprintf(fout," %s", v[i].partenza);
                     fprintf(fout," %s", v[i].destinazione);
@@ -226,8 +205,10 @@ void leggi_per_date(struct corse *v,char *data1, char *data2, int dim, int flag_
                     fprintf(fout," %s", v[i].ora_arrivo);
                     fprintf(fout," %d", v[i].ritardo);
                     flag = 0;
+
                 }
                 if(strcmp(v[i].data,data1) >= 0 && strcmp(v[i].data, data2) <= 0 && v[i].ritardo > 0 && flag_ritardo) {
+
                     fprintf(fout,"\n%s", v[i].codice_tratta);
                     fprintf(fout," %s", v[i].partenza);
                     fprintf(fout," %s", v[i].destinazione);
@@ -240,17 +221,55 @@ void leggi_per_date(struct corse *v,char *data1, char *data2, int dim, int flag_
             }
             fclose(fout);
         }
+        else {
+            for (int i = 0; i < dim; i++ && !stampa) {
+                if (strcmp(v[i].data, data1) >= 0 && strcmp(v[i].data, data2) <= 0 && !flag_ritardo) {
+                    printf("\n%s", v[i].codice_tratta);
+                    printf(" %s", v[i].partenza);
+                    printf(" %s", v[i].destinazione);
+                    printf(" %s", v[i].data);
+                    printf(" %s", v[i].ora_partenza);
+                    printf(" %s", v[i].ora_arrivo);
+                    printf(" %d", v[i].ritardo);
+                    flag = 0;
+                }
+                if (strcmp(v[i].data, data1) >= 0 && strcmp(v[i].data, data2) <= 0 && v[i].ritardo > 0 && flag_ritardo) {
+                    printf("\n%s", v[i].codice_tratta);
+                    printf(" %s", v[i].partenza);
+                    printf(" %s", v[i].destinazione);
+                    printf(" %s", v[i].data);
+                    printf(" %s", v[i].ora_partenza);
+                    printf(" %s", v[i].ora_arrivo);
+                    printf(" %d", v[i].ritardo);
+                    flag = 0;
+                }
+            }
+        }
     }
-    else if(flag){ printf("\nintervallo di date non valido o non disponibile\n"); }
+    if(flag){ printf("\nintervallo di date non valido o non disponibile\n"); }
 }
 
 
-void leggi_tratte_nome_fermata(struct corse *v, char *nome_fermata, int dim, int stampa ){
+int leggi_tratte_nome_fermata(struct corse *v, char *nome_fermata, int dim, int stampa, int flag_capolinea ){
     int flag = 1;
     if(stampa){
-        FILE* fout = apri_file_scrittura("lettura_per_partenza");
-        for (int i = 0; i < dim; i++) {
+        FILE* fout = apri_file_scrittura("C:\\Users\\calve\\OneDrive\\Desktop\\primo semestre\\Algoritmi\\laboratorio\\lab01\\ES02_lab01\\lettura_per_stazione.txt");
+        for (int i = 0; i < dim && !flag_capolinea; i++ ) { //il flag_capolinea viene utilizzato in base all'utilizzo della funzione,
+            //se per la ricerca a partire da una stazione di partenza, flag_capolinea = 0, o per la ricerca
+            // a partire da un capolinea flag_capolinea = 1
             if(strcmp(v[i].partenza,nome_fermata) == 0 ) {
+                fprintf(fout,"\n%s", v[i].codice_tratta);
+                fprintf(fout," %s", v[i].partenza);
+                fprintf(fout," %s", v[i].destinazione);
+                fprintf(fout," %s", v[i].data);
+                fprintf(fout," %s", v[i].ora_partenza);
+                fprintf(fout," %s", v[i].ora_arrivo);
+                fprintf(fout," %d", v[i].ritardo);
+                flag = 0;
+            }
+        }
+        for (int i = 0; i < dim && flag_capolinea; i++ ) {
+            if(strcmp(v[i].destinazione,nome_fermata) == 0 ) {
                 fprintf(fout,"\n%s", v[i].codice_tratta);
                 fprintf(fout," %s", v[i].partenza);
                 fprintf(fout," %s", v[i].destinazione);
@@ -264,7 +283,7 @@ void leggi_tratte_nome_fermata(struct corse *v, char *nome_fermata, int dim, int
         fclose(fout);
     }
     else {
-        for (int i = 0; i < dim; i++) {
+        for (int i = 0; i < dim && !flag_capolinea; i++) {
             if (strcmp(v[i].partenza, nome_fermata) == 0) {
                 printf("\n%s", v[i].codice_tratta);
                 printf(" %s", v[i].partenza);
@@ -276,8 +295,20 @@ void leggi_tratte_nome_fermata(struct corse *v, char *nome_fermata, int dim, int
                 flag = 0;
             }
         }
+        for (int i = 0; i < dim && flag_capolinea; i++) {
+            if (strcmp(v[i].destinazione, nome_fermata) == 0) {
+                printf("\n%s", v[i].codice_tratta);
+                printf(" %s", v[i].partenza);
+                printf(" %s", v[i].destinazione);
+                printf(" %s", v[i].data);
+                printf(" %s", v[i].ora_partenza);
+                printf(" %s", v[i].ora_arrivo);
+                printf(" %d", v[i].ritardo);
+                flag = 0;
+            }
+        }
     }
-    if(flag){ printf("\nnon ci sono tratte disponibili per questa stazione di partenza\n");}
+    if(flag){ printf("\nnon ci sono tratte disponibili per questa stazione\n");}
 }
 
 int calcola_ritardo_tratta(struct corse *v, char *codice_tratta, int dim, int stampa) {
@@ -289,7 +320,7 @@ int calcola_ritardo_tratta(struct corse *v, char *codice_tratta, int dim, int st
         }
     }
     if(stampa){
-        FILE* fout = apri_file_scrittura("ritardo_totale_linea");
+        FILE* fout = apri_file_scrittura("C:\\Users\\calve\\OneDrive\\Desktop\\primo semestre\\Algoritmi\\laboratorio\\lab01\\ES02_lab01\\ritardo_totale_linea.txt");
         fprintf(fout,"%d", ritardo_tot);
         fclose(fout);
     }
@@ -300,13 +331,17 @@ int calcola_ritardo_tratta(struct corse *v, char *codice_tratta, int dim, int st
     return ritardo_tot;
 }
 
-int stampa(){
-    int flag = 1;
+int selezione_stampa(){
+    int flag = 1, option = 0;
+    char stampa[7];
+
     while(flag) {
         printf("\nscegli se stampare a video o su file: ");
         scanf("%s", stampa);
-        if(strcmp(stampa, "video") == 0){  flag = 0;  return 0; }
-        else if(strcmp(stampa, "video") == 0){ flag = 0;  return 1; }
+
+        if(strcmp(stampa, "video") == 0){ printf("\nHai scelto stampa su video "); flag = 0; return option; }
+
+        else if(strcmp(stampa, "file") == 0){  printf("\nHai scelto stampa su video su file"); flag = 0; option = 1; return option; }
     }
 
 
