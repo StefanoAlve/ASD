@@ -6,43 +6,38 @@
 
 //Strutture
 typedef struct{
-    int nr;
-    char ***Mcanzoni; //matrice di stringhe
-}sCanzoni;
-typedef struct{
   int *scelte;
   int nScelte;
 }sAmico;
 //FUNZIONI
-void leggiFile(sCanzoni *canzoni, sAmico **pamici);
-void deallocaCanzoni(sCanzoni canzoni, sAmico *amici);
+int leggiFile(char ****Mcanzoni, sAmico **pamici);
+void deallocaCanzoni(char ***Mcanzoni, sAmico *amici, int nr);
 int* allocaVetSol(int nr);
 void deallocaAmico(sAmico *amici, int nr);
-int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, sCanzoni canzoni);
+int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, char ***Mcanzoni, int nr);
 int main(void) {
     //Inizializzazione variabili
-    sCanzoni canzoni;
+    char ***Mcanzoni;
     sAmico *amici;
-    int pos=0, *sol, count=0, n;
+    int pos=0, *sol, count=0, nr;
     //Apertura file
-    leggiFile(&canzoni, &amici);
-    sol=allocaVetSol(canzoni.nr);
+    nr=leggiFile(&Mcanzoni, &amici);
+    sol=allocaVetSol(nr);
     //Corpo programma
-    count = trovaCombinazioni(pos, amici, sol, count, canzoni);
+    count = trovaCombinazioni(pos, amici, sol, count, Mcanzoni, nr);
     printf("\nTrovate %d playlist\n",count);
     //Deallocazione
     free(sol);
-    n=canzoni.nr;
-    deallocaCanzoni(canzoni, amici);
-    deallocaAmico(amici, n);
+    deallocaCanzoni(Mcanzoni, amici, nr);
+    deallocaAmico(amici, nr);
     return 0;
 }
 
-void leggiFile(sCanzoni *canzoni, sAmico **pamici){
+int leggiFile(char ****Mcanzoni, sAmico **pamici){
     //Inizializzazione variabili
     FILE* fp;
     char *nomeFile, tmp[MAXL], ***canzoniTmp;
-    int cont=0;
+    int cont=0, nr;
     sAmico *amici = *pamici;
     //Richiesta del nome del file
     printf("Inserire il nome del file:");
@@ -56,11 +51,11 @@ void leggiFile(sCanzoni *canzoni, sAmico **pamici){
         exit(1);
     }
     //Lettura del file e salvataggio dati
-    fscanf(fp," %d", &canzoni->nr);
+    fscanf(fp," %d", &nr);
 
-    amici = (sAmico*)malloc((canzoni->nr)*sizeof(sAmico)); //Allocazione del vettore di struct amico
+    amici = (sAmico*)malloc((nr)*sizeof(sAmico)); //Allocazione del vettore di struct amico
 
-    canzoniTmp = (char***)malloc(canzoni->nr*sizeof(char**)); //Allocazione dinamica del vettore dei puntatori che indicano i vettori di canzoni
+    canzoniTmp = (char***)malloc(nr*sizeof(char**)); //Allocazione dinamica del vettore dei puntatori che indicano i vettori di canzoni
     if(amici == NULL || canzoniTmp == NULL){
         exit(1);
     }
@@ -80,21 +75,22 @@ void leggiFile(sCanzoni *canzoni, sAmico **pamici){
         }
         cont++;
     }
-    canzoni->Mcanzoni = canzoniTmp;
+    *Mcanzoni = canzoniTmp;
     *pamici = amici;
     //Chiusura file
     fclose(fp);
     free(nomeFile);
+    return nr;
 }
 
-void deallocaCanzoni(sCanzoni canzoni, sAmico *amici){
-    for(int i = 0; i<canzoni.nr; i++){
+void deallocaCanzoni(char ***Mcanzoni, sAmico *amici, int nr){
+    for(int i = 0; i<nr; i++){
         for(int j = 0; j<amici[i].nScelte; j++){
-            free(canzoni.Mcanzoni[i][j]);
+            free(Mcanzoni[i][j]);
         }
-        free(canzoni.Mcanzoni[i]);
+        free(Mcanzoni[i]);
     }
-    free(canzoni.Mcanzoni);
+    free(Mcanzoni);
 }
 
 void deallocaAmico(sAmico *amici, int nr){
@@ -111,19 +107,19 @@ int* allocaVetSol(int nr){
     }
     return sol;
 }
-int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, sCanzoni canzoni){
+int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, char ***Mcanzoni, int nr){
     int i;
-    if(pos >= canzoni.nr){//quando pos è uguale a nr vuol dire che sono all'ultima canzone della playlist quindi ho la condizione di terminazione
+    if(pos >= nr){//quando pos è uguale a nr vuol dire che sono all'ultima canzone della playlist quindi ho la condizione di terminazione
         printf("Playlist n.%d:\n", count+1);
-        for(i=0; i<canzoni.nr; i++){
-            printf("%s ", canzoni.Mcanzoni[i][sol[i]]); //semplifico la funzione lavorando su interi e tramite la matrice di stringhe converto il risultato nelle stringhe corrispondenti
+        for(i=0; i<nr; i++){
+            printf("%s ", Mcanzoni[i][sol[i]]); //semplifico la funzione lavorando su interi e tramite la matrice di stringhe converto il risultato nelle stringhe corrispondenti
         }
         printf("\n\n");
         return count+1;
     }
     for(i=0; i<amici[pos].nScelte; i++){ //tengo fisso un campo e scandisco quelli sotto, quando la chiamata ricorsiva restituirà allora passerò all'elemento successivo
         sol[pos] = amici[pos].scelte[i];
-        count = trovaCombinazioni(pos+1, amici, sol, count, canzoni);
+        count = trovaCombinazioni(pos+1, amici, sol, count, Mcanzoni, nr);
     }
     return count;
 }
