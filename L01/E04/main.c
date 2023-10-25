@@ -1,403 +1,184 @@
 #include <stdio.h>
 #include <string.h>
-#define inFile "../corse.txt"
+#include <stdlib.h>
+#define inFile "corse.txt"
 #define maxRighe 1001
 #define maxL 31
 
 // Opzioni menù
 typedef enum{
     rStampaFile = 0, rStampaVideo, rOrdinaData, rOrdinaCodice, rOrdinaPartenza, rOrdinaArrivo, rRicercaLineare,
-    rRicercaDicotomica, rDate, rPartenza, rCapolinea, rRitardo, rRitardo_tot, rFine
+    rRicercaDicotomica, rDate, rPartenza, rCapolinea, rRitardo, rRitardo_tot, rLeggiNuovoFile, rFine
 }comando_e;
 
 // Struct per leggere il file
 typedef struct{
-    char codiceTratta[maxL], partenza[maxL], destinazione[maxL], data[11], oraPartenza[maxL], oraArrivo[maxL];
+    char *codiceTratta, *partenza, *destinazione, *data, *oraPartenza, *oraArrivo;
     int ritardo;
 }infoFile;
 
 comando_e scegliComando();
-int comparaCampi(infoFile *info, infoFile *key, char *campo);
-void date(infoFile info[], int numRighe);
-void partenza(infoFile info[], int numRighe);
-void capolinea(infoFile info[], int numRighe);
-void ritardo(infoFile info[], int numRighe);
-void ritardo_tot(infoFile info[], int numRighe);
-void leggiFile(FILE *fin, infoFile info[], int numRighe);
-void selezionaDati(infoFile info[], int numRighe, comando_e comando, infoFile *pData[], infoFile *pArr[], infoFile *pPart[], infoFile *pCodice[]);
-void stampaFile(infoFile info[], int numRighe);
-void stampaVideo(infoFile info[], int numRighe);
-void ricercaLineare(infoFile info[], int numRighe);
-void ricercaDicotomica(infoFile v[], int N, char k[]);
-void stampaArray(infoFile *array);
-void assegnaArray(infoFile *pData[], infoFile *pArr[], infoFile *pPart[], infoFile *pCodice[], int numRighe, infoFile array[]);
-void sortData(infoFile *pData[], int numRighe);
-void sortCodice(infoFile *pCodice[], int numRighe);
-void sortPart(infoFile *pPar[], int numRighe);
-void sortArr(infoFile *pArr[], int numRighe);
+infoFile *allocaMemoria(const int *numRighe);
+infoFile *leggiFileEAssegna(int *numRighe, FILE *fin, const char *nomeFile);
+void deallocaMemoria(infoFile *dati, int numRighe);
+void selezionaDati();
+void stampaFile(infoFile *info, int numRighe);
+void stampaVideo(infoFile *info, int numRighe);
+void date(infoFile *info, int numRighe);
+void partenza(infoFile *dati, int numRighe);
+void destinazione(infoFile *dati, int numRighe);
+void ricercaDicotomica(infoFile *dati, int numRighe, char *k);
+void ricercaLineare(infoFile *info, int numRighe);
+void ritardo(infoFile *info, int numRighe);
+void ritardo_tot(infoFile *info, int numRighe);
+infoFile *copiaStruttura(infoFile *dati, int numRighe);
+infoFile *sortPart(infoFile *pPartenza, int numRighe);
+infoFile *sortData(infoFile *pData, int numRighe);
+infoFile *sortCodice(infoFile *pCodice, int numRighe);
+infoFile *sortArrivo(infoFile *pArrivo, int numRighe);
 
 int main(){
-    FILE *fin;
-    int numRighe;
-    infoFile info[maxRighe], *pData[maxRighe], *pArr[maxRighe], *pPar[maxRighe], *pCodice[maxRighe];
-    comando_e comando;
 
-    // Apertura file di input
-    if((fin = fopen(inFile, "r")) == NULL){
-        printf("Errore nell'apertura di corse.txt\n");
-        return 1;
-    }
-
-    // Numero di righe totale scritto nella prima riga del file
-    fscanf(fin, "%d", &numRighe);
-
-    //Scrittura del file in tabella info[]
-    leggiFile(fin, info, numRighe);
-
-
-    //Assegnazione valori ai puntatori
-    assegnaArray(pData, pArr, pPar, pCodice, numRighe, info);
-
-    //Gestione comando da tastiera
-    comando = scegliComando();
-    selezionaDati(info, numRighe, comando, pData, pArr, pPar, pCodice);
-
-    // chiusura file
-    fclose(fin);
+    selezionaDati();
 
     return 0;
 }
 
-// Riceve da tastiera il comando e ritorna il numero corrispondente al comando
-comando_e scegliComando(){
-    comando_e comando;
-    char scelta[maxL];
+//Gestione menu
+void selezionaDati(){
+    int flag = 1, numRighe = 0;
+    char k[maxL] = "\0";
+    char nomeFile[maxL] = "corse.txt";
+    comando_e cmd = scegliComando();
+    FILE *fin = NULL;
+    infoFile *dati;
+    //Struttura da ordinare
+    infoFile *pCodice, *pPartenza, *pArrivo, *pData;
 
-    // Tabella per il confronto con l'input da tastiera
-    char comandi[14][maxL] = {"stampa_file", "stampa_video", "ordina_data", "ordina_codice",
-                              "ordina_partenza","ordina_arrivo","ricerca_lineare","ricerca_dicotomica",
-                              "date", "partenza","capolinea", "ritardo", "ritardo_tot", "fine"};
+    //Chiamo manualmente la prima lettura del file
+    dati = leggiFileEAssegna(&numRighe, fin, nomeFile);
+    //Allocazione e copia delle strutture create per essere ordinate
+    pCodice = copiaStruttura(dati, numRighe);
+    pPartenza = copiaStruttura(dati ,numRighe);
+    pArrivo = copiaStruttura(dati ,numRighe);
+    pData = copiaStruttura(dati ,numRighe);
 
-    //input da tastiera
-    printf("------------------------------------------------------------------\n");
-    printf("\t\t\tINSERISCI COMANDO\n");
-    printf("------------------------------------------------------------------\n");
-    printf("-stampa_file \n-stampa_video \n-ordina_data \n-ordina_codice"
-           "\n-ordina_partenza \n-ordina_arrivo \n-ricerca_lineare \n-ricerca_dicotomica \n-date \n-partenza"
-           "\n-capolinea \n-ritardo \n-ritardo_tot \n-fine:\n");
-    scanf("%s", scelta);
-    strlwr(scelta);
+    //Assegnazione della struttura infoFile
 
-    // Confronto tra scelta e i comandi preimpostati, ritorno del comando selezionato (un numero)
-    comando = 0;
-    while(comando < 14 && strcmp(scelta, comandi[comando]) != 0){
-        comando++;
-    }
+    while(flag){
+        switch(cmd){
+            case rLeggiNuovoFile:
+                //Deallocazione
+                deallocaMemoria(pCodice, numRighe);
+                deallocaMemoria(pPartenza, numRighe);
+                deallocaMemoria(pArrivo, numRighe);
+                deallocaMemoria(pData, numRighe);
+                deallocaMemoria(dati, numRighe);
 
-    return comando;
-}
+                //Nome nuovo file
+                printf("NOME FILE INPUT:\n");
+                scanf("%s", nomeFile);
 
-// Funzione che prende le informazioni
-void leggiFile(FILE *fin, infoFile info[], int numRighe){
-    int i;
+                //Assegnazione a strutture
+                dati = leggiFileEAssegna(&numRighe, fin, nomeFile);
+                pCodice = copiaStruttura(dati, numRighe);
+                pPartenza = copiaStruttura(dati ,numRighe);
+                pArrivo = copiaStruttura(dati ,numRighe);
+                pData = copiaStruttura(dati ,numRighe);
+                printf("Nuovo file letto!!\n");
+                break;
 
-    //Assegnazione delle informazioni a info[]
-    for(i = 0; i < numRighe; i++){
-        fscanf(fin, "%s%s%s", info[i].codiceTratta, info[i].partenza, info[i].destinazione);
-        fscanf(fin, "%s%s%s%d", info[i].data, info[i].oraPartenza, info[i].oraArrivo, &info[i].ritardo);
-    }
-}
-
-// Menu che chiama la funzione corrispondente al comando scritto da tastiera
-void selezionaDati(infoFile info[], int numRighe, comando_e comando, infoFile *pData[], infoFile *pArr[], infoFile *pPart[], infoFile *pCodice[]){
-    int controllo = 1;
-    char k[maxL] = "\0" ;
-
-    while(controllo){
-        switch(comando){
-            //Stampa su file
+                //STAMPA IN FILE
             case rStampaFile:
-                stampaFile(info, numRighe);
+                stampaFile(dati, numRighe);
                 break;
 
-                //Stampa a video
+                //STAMPA A VIDEO
             case rStampaVideo:
-                stampaVideo(info, numRighe);
+                stampaVideo(dati, numRighe);
                 break;
 
-                //Ordina secondo la data
+                //ORDINAMENTO PER CAMPO DATA
             case rOrdinaData:
-                sortData(pData, numRighe);
-                printf("Vettore ordinato:\n");
-                stampaVideo(*pData, numRighe);
+                pData = sortData(pData, numRighe);
+                printf("STRUTTURA ORDINATA PER DATA:\n");
+                stampaVideo(pData, numRighe);
                 break;
 
-                //Ordina secondo il codice
+                //ORDINAMENTO PER CAMPO CODICE
             case rOrdinaCodice:
-                sortCodice(pCodice, numRighe);
-                printf("Vettore ordinato:\n");
-                stampaVideo(*pCodice, numRighe);
+                pCodice = sortCodice(pCodice, numRighe);
+                printf("STRUTTURA ORDINATA PER CODICE:\n");
+                stampaVideo(pCodice, numRighe);
                 break;
 
-                //Ordina secondo la partenza
+                //ORDINAMENTO PER CAMPO PARTENZA
             case rOrdinaPartenza:
-                sortPart(pPart, numRighe);
-                printf("Vettore ordinato:\n");
-                stampaVideo(*pPart, numRighe);
+                pPartenza = sortPart(pPartenza, numRighe);
+                printf("STRUTTURA ORDINATA PER PARTENZA:\n");
+                stampaVideo(pPartenza, numRighe);
                 break;
 
-                //Ordina secondo la stazione di arrivo
+                //ORDINAMENTO PER CAMPO ARRIVO
             case rOrdinaArrivo:
-                sortArr(pArr, numRighe);
-                printf("Vettore ordinato:\n");
-                stampaVideo(*pArr, numRighe);
+                pArrivo = sortArrivo(pArrivo, numRighe);
+                printf("STRUTTURA ORDINATA PER ARRIVO:\n");
+                stampaVideo(pArrivo, numRighe);
                 break;
 
-                //Ricerca lineare
+                //RICERCA LINEARE
             case rRicercaLineare:
-                ricercaLineare(info,numRighe);
+                ricercaLineare(dati, numRighe);
                 break;
 
-                //Ricerca Dicotomica
+                //RICERCA DICOTOMICA
             case rRicercaDicotomica:
-                //input
-                printf("Inserisci la sottostringa da cercare:\n");
+                printf("Inserisci sotto stringa:\n");
                 scanf("%s", k);
-
-                sortPart(pPart, numRighe);
-                ricercaDicotomica(info, numRighe, k);
+                pPartenza = sortPart(pPartenza, numRighe);
+                ricercaDicotomica(pPartenza, numRighe, k);
                 break;
 
-                //Ricerca per data
             case rDate:
-                date(info, numRighe);
+                date(dati, numRighe);
                 break;
 
-                //Ricerca per partenza
             case rPartenza:
-                partenza(info, numRighe);
+                partenza(dati, numRighe);
                 break;
-                //Ricerca per capolinea
+
             case rCapolinea:
-                capolinea(info, numRighe);
+                destinazione(dati, numRighe);
                 break;
-                //Ricerca ritardo
+
             case rRitardo:
-                ritardo(info, numRighe);
+                ritardo(dati, numRighe);
                 break;
-                //Ritardo totale
+
             case rRitardo_tot:
-                ritardo_tot(info, numRighe);
+                ritardo_tot(dati, numRighe);
                 break;
 
             case rFine:
-                controllo = 0;
+                flag = 0;
                 break;
-
             default:
-                printf("Comando non valido !\n");
+                printf("COMANDO INESISTENTE, RIPROVA\n");
         }
-        //chiedo il comando di nuovo, se non era 'Fine'
-        if(comando != rFine)
-            comando = scegliComando();
-    }
-}
+        if(cmd != rFine) cmd = scegliComando();
 
-//Compara i campi
-int comparaCampi(infoFile *info, infoFile *key, char *campo){
-
-    if(strcmp(campo, "data") == 0){
-        int data = strcmp(info->data, key->data);
-
-        //Se è zero quindi info e key sono uguali, confronto l'orario
-        if(data == 0)
-            return strcmp(info->oraArrivo, key->oraArrivo);
-        return data;
-    }
-
-    if(strcmp(campo, "codiceTratta") == 0) return(strcmp(info->codiceTratta, key->codiceTratta));
-
-    if(strcmp(campo, "partenza") == 0) return(strcmp(info->partenza, key->partenza));
-
-    if(strcmp(campo, "destinazione") == 0) return(strcmp(info->destinazione, key->destinazione));
-
-    return 0; //errore
-}
-
-//Stampa della struct infoFile
-void stampaArray(infoFile *array){
-    printf("%s %s %s", array->codiceTratta, array->partenza, array->destinazione);
-    printf(" %s %s %s %d\n", array->data, array->oraPartenza, array->oraArrivo, array->ritardo);
-}
-
-// Stampa log in file di scrittura
-void stampaFile(infoFile info[], int numRighe){
-    char nomeFile[maxL];
-    FILE *fout;
-
-    //nome file
-    printf("Inserisci nome del file dove viene scritto il log:\n");
-    scanf("%s", nomeFile);
-
-    //apertura file di scrittura
-    fout = fopen(nomeFile, "w");
-
-    //stampa nel file
-    for(int i = 0; i < numRighe; i++){
-        fprintf(fout,"%s %s %s", info[i].codiceTratta, info[i].partenza, info[i].destinazione);
-        fprintf(fout," %s %s %s %d\n", info[i].data, info[i].oraPartenza, info[i].oraArrivo, info[i].ritardo);
-    }
-    fclose(fout);
-    printf("Log scritto con successo!\n");
-}
-
-// Stampa a video
-void stampaVideo(infoFile info[], int numRighe){
-    for(int i = 0; i < numRighe; i++) stampaArray(&info[i]);
-}
-
-//Ricerca lineare
-void ricercaLineare(infoFile info[], int numRighe){
-    int trovato = 0;
-    char prefisso[maxL];
-
-    //input
-    printf("Inserisci il prefisso:\n");
-    scanf("%s",prefisso);
-
-    //ricerca lineare
-    printf("Ecco le corrispondenza della ricerca:\n");
-
-    for(int i = 0; i < numRighe; i++){
-        if (strstr(info[i].partenza, prefisso) != NULL) {
-
-            // La stazione di partenza contiene il prefisso
-            stampaArray(&info[i]);
-            trovato = 1;
+        else{
+            deallocaMemoria(pCodice, numRighe);
+            deallocaMemoria(pPartenza, numRighe);
+            deallocaMemoria(pArrivo, numRighe);
+            deallocaMemoria(pData, numRighe);
+            deallocaMemoria(dati, numRighe);
         }
     }
-    if(!trovato)
-        printf("Nessuna corrispondenza!\n");
-}
-
-//Ricerca dicotomica
-void ricercaDicotomica(infoFile v[], int N, char k[]){
-    int m, l = 0, r = N-1, found = 0;
-
-    while(l <= r) {
-        m = (l + r) / 2;
-
-        //Se contiene la sotto stringa stampa
-        if(strstr(v[m].partenza, k) != NULL) {
-            stampaArray(&v[m]);
-            found = 1;
-        }
-
-        //Se la sotto stringa è maggiore si sposta nel sotto vettore di destra
-        if(strcasecmp(v[m].partenza, k) < 0 || found == 1){
-            l = m+1; found = 0;
-        }
-            //si sposta nel sotto vettore di sinistra
-        else
-            r = m-1;
-    }
-}
-
-// Stampa a seconda delle date messe
-void date(infoFile info[], int numRighe){
-    char start[maxL], end[maxL];
-    int i, controllo = 1;
-
-    // Prendo le informazioni scritte in input
-    printf("Inserisci la data di inizio e di fine da controllare:\n");
-    scanf("%s %s", start, end);
-
-    printf("Le corse tra il %s e il %s sono:\n", start, end);
-    for (i = 0; i < numRighe; i++){
-
-        // Se start è piu piccolo ed end è piu grande della data si stampa la data
-        if (strcasecmp(start, info[i].data) != 1 && strcasecmp(info[i].data, end) != 1){
-            stampaArray(&info[i]);
-            controllo = 0;
-        }
-    }
-    if(controllo){
-        printf("Nessuna corrispondenza trovata.");
-    }
-    printf("\n");
-}
-
-// Stampa in base alla partenza scritta da tastiera
-void partenza(infoFile info[], int numRighe){
-    char partenza[maxL];
-    int i, controllo = 1;
-
-    // Prendo la destinazione di partenza in input
-    printf("Inserire la destinazione di partenza:\n");
-    scanf("%s", partenza);
-    printf("Le fermate con partenza %s sono:\n", partenza);
-
-    for(i = 0; i < numRighe; i++){
-        if(strcasecmp(partenza, info[i].partenza) == 0){
-            stampaArray(&info[i]);
-            controllo = 0;
-        }
-    }
-    if(controllo){
-        printf("Nessuna corrispondenza trovata.\n");
-    }
-    printf("\n");
-}
-
-// Stampa a seconda del capolinea scritto da tastiera
-void capolinea(infoFile info[], int numRighe){
-    char arrivo[maxL];
-    int i, controllo = 1;
-
-    // Prendo la destinazione di arrivo in input
-    printf("Inserire la destinazione di arrivo:\n");
-    scanf("%s", arrivo);
-    printf("Le fermate con destinazione %s sono:\n", arrivo);
-
-    for(i = 0; i < numRighe; i++){
-        if(strcasecmp(arrivo, info[i].destinazione) == 0){
-            stampaArray(&info[i]);
-            controllo = 0;
-        }
-    }
-    if(controllo) {
-        printf("Nessuna corrispondenza trovata.\n");
-    }
-    printf("\n");
-}
-
-// Stampa in base alle date inserite da tastiera
-void ritardo(infoFile info[], int numRighe){
-    char start[maxL], end[maxL];
-    int i, controllo = 1;
-
-    // Prendo le informazioni in input
-    printf("Inserire le date di inizio e fine da controllare:\n");
-    scanf("%s", start);
-    scanf("%s", end);
-
-    printf("Le corse tra il %s e il %s con ritardo sono:\n", start, end);
-    for (i = 0; i < numRighe; i++){
-
-        // Se start è piu piccolo ed end è piu grande della data e ritardo è diverso da 0 si stampa la data
-        if (strcasecmp(start, info[i].data) != 1 && strcasecmp(info[i].data, end) != 1 && info[i].ritardo != 0){
-            stampaArray(&info[i]);
-            controllo = 0;
-        }
-    }
-    if(controllo){
-        printf("Nessuna corrispondenza trovata.\n");
-    }
-    printf("\n");
 }
 
 // Stampa in base al codice scritto da tastiera
-void ritardo_tot(infoFile info[], int numRighe){
+void ritardo_tot(infoFile *info, int numRighe){
     char codice[maxL];
     int i, ritardo = 0, controllo = 1;
 
@@ -418,80 +199,372 @@ void ritardo_tot(infoFile info[], int numRighe){
     printf(" %d\n", ritardo);
 }
 
-//Assegnazione puntatori
-void assegnaArray(infoFile *pData[], infoFile *pArr[], infoFile *pPart[], infoFile *pCodice[], int numRighe, infoFile array[]){
+// Stampa in base alle date inserite da tastiera
+void ritardo(infoFile *info, int numRighe){
+    char start[maxL], end[maxL];
+    int i, controllo = 1;
+
+    // Prendo le informazioni in input
+    printf("Inserire le date di inizio e fine da controllare:\n");
+    scanf("%s", start);
+    scanf("%s", end);
+
+    printf("Le corse tra il %s e il %s con ritardo sono:\n", start, end);
+    for (i = 0; i < numRighe; i++){
+
+        // Se start è piu piccolo ed end è piu grande della data e ritardo è diverso da 0 si stampa la data
+        if (strcasecmp(start, info[i].data) != 1 && strcasecmp(info[i].data, end) != 1 && info[i].ritardo != 0){
+
+            printf("%s %s %s ", info[i].codiceTratta, info[i].partenza, info[i].destinazione);
+            printf("%s %s %s %d\n", info[i].data, info[i].oraPartenza, info[i].oraArrivo, info[i].ritardo);
+            controllo = 0;
+        }
+    }
+    if(controllo){
+        printf("Nessuna corrispondenza trovata.\n");
+    }
+    printf("\n");
+}
+
+//Ricerca lineare
+void ricercaLineare(infoFile *info, int numRighe){
+    int trovato = 0;
+    char prefisso[maxL];
+
+    //input
+    printf("Inserisci il prefisso:\n");
+    scanf("%s",prefisso);
+
+    //ricerca lineare
+    printf("Ecco le corrispondenza della ricerca:\n");
+
     for(int i = 0; i < numRighe; i++){
-        pData[i] = &array[i];
-        pCodice[i] = &array[i];
-        pArr[i] = &array[i];
-        pPart[i] = &array[i];
+        if (strstr(info[i].partenza, prefisso) != NULL) {
+
+            // La stazione di partenza contiene il prefisso
+            printf("%s %s %s ", info[i].codiceTratta, info[i].partenza, info[i].destinazione);
+            printf("%s %s %s %d\n", info[i].data, info[i].oraPartenza, info[i].oraArrivo, info[i].ritardo);
+            trovato = 1;
+        }
     }
+    if(!trovato)
+        printf("Nessuna corrispondenza!\n");
 }
 
-// Insertion Sort per data
-void sortData(infoFile *pData[], int numRighe) {
+//Ordinamento per campo destinazione
+infoFile *sortArrivo(infoFile *pArrivo, int numRighe){
     int i, j;
     infoFile key;
 
     for (i = 1; i < numRighe; i++) {
-        key = *pData[i];
+        key = pArrivo[i];
         j = i - 1;
 
-        while (j >= 0 && strcmp(pData[j]->data, key.data) > 0) {
-            *pData[j + 1] = *pData[j];
+        while (j >= 0 && strcmp(pArrivo[j].destinazione, key.destinazione) > 0) {
+            pArrivo[j + 1] = pArrivo[j];
             j--;
         }
-        *pData[j + 1] = key;
+        pArrivo[j + 1] = key;
     }
+    return pArrivo;
 }
 
-//Insertion sort per codice tratta
-void sortCodice(infoFile *pCodice[], int numRighe) {
+//Ordinamento per campo Codice
+infoFile *sortCodice(infoFile *pCodice, int numRighe){
     int i, j;
     infoFile key;
 
     for (i = 1; i < numRighe; i++) {
-        key = *pCodice[i];
+        key = pCodice[i];
         j = i - 1;
 
-        while (j >= 0 && strcmp(pCodice[j]->codiceTratta, key.codiceTratta) > 0) {
-            *pCodice[j + 1] = *pCodice[j];
+        while (j >= 0 && strcmp(pCodice[j].codiceTratta, key.codiceTratta) > 0) {
+            pCodice[j + 1] = pCodice[j];
             j--;
         }
-        *pCodice[j + 1] = key;
+        pCodice[j + 1] = key;
     }
+    return pCodice;
 }
 
-//Insertion sort per stazione di partenza
-void sortPart(infoFile *pPar[], int numRighe) {
+//Ordinamento per campo data
+infoFile *sortData(infoFile *pData, int numRighe){
     int i, j;
     infoFile key;
 
     for (i = 1; i < numRighe; i++) {
-        key = *pPar[i];
+        key = pData[i];
         j = i - 1;
 
-        while (j >= 0 && strcmp(pPar[j]->partenza, key.partenza) > 0) {
-            *pPar[j + 1] = *pPar[j];
+        while (j >= 0 && strcmp(pData[j].data, key.data) > 0) {
+            pData[j + 1] = pData[j];
             j--;
         }
-        *pPar[j + 1] = key;
+        pData[j + 1] = key;
     }
+    return pData;
 }
 
-//Insertion sort per stazione di arrivo
-void sortArr(infoFile *pArr[], int numRighe) {
+//Ordinamento per campo partenza
+infoFile *sortPart(infoFile *pPartenza, int numRighe){
     int i, j;
     infoFile key;
 
     for (i = 1; i < numRighe; i++) {
-        key = *pArr[i];
+        key = pPartenza[i];
         j = i - 1;
 
-        while (j >= 0 && strcmp(pArr[j]->destinazione, key.destinazione) > 0) {
-            *pArr[j + 1] = *pArr[j];
+        while (j >= 0 && strcmp(pPartenza[j].partenza, key.partenza) > 0) {
+            pPartenza[j + 1] = pPartenza[j];
             j--;
         }
-        *pArr[j + 1] = key;
+        pPartenza[j + 1] = key;
     }
+    return pPartenza;
+}
+
+//Copia di dati in un'altra struttura che verrà ordinata
+infoFile *copiaStruttura(infoFile *dati, int numRighe){
+    infoFile *doveCopiare;
+
+    doveCopiare = allocaMemoria(&numRighe);
+
+    for(int i = 0; i < numRighe; i++){
+
+        //Uso strdup per non avere problemi con la deallocazione
+        doveCopiare[i].partenza = strdup(dati[i].partenza);
+        doveCopiare[i].codiceTratta = strdup(dati[i].codiceTratta);
+        doveCopiare[i].data = strdup(dati[i].data);
+        doveCopiare[i].destinazione = strdup(dati[i].destinazione);
+        doveCopiare[i].oraArrivo = strdup(dati[i].oraArrivo);
+        doveCopiare[i].oraPartenza = strdup(dati[i].oraPartenza);
+        doveCopiare[i].ritardo = dati[i].ritardo;
+    }
+    return doveCopiare;
+}
+
+//Ricerca dicotomica
+void ricercaDicotomica(infoFile *dati, int numRighe, char *k){
+    int m, l = 0, r = numRighe - 1, found = 0;
+
+    while(l <= r) {
+        m = (l + r) / 2;
+
+        //Se contiene la sotto stringa stampa
+        if(strstr(dati[m].partenza, k) != NULL) {
+            printf("%s %s %s ", dati[m].codiceTratta, dati[m].partenza, dati[m].destinazione);
+            printf("%s %s %s %d\n", dati[m].data, dati[m].oraPartenza, dati[m].oraArrivo, dati[m].ritardo);
+            found = 1;
+        }
+
+        //Se la sotto stringa è maggiore si sposta nel sotto vettore di destra
+        if(strcasecmp(dati[m].partenza, k) < 0 || found == 1){
+            l = m+1; found = 0;
+        }
+            //si sposta nel sotto vettore di sinistra
+        else
+            r = m-1;
+    }
+}
+
+// Stampa a seconda del capolinea scritto da tastiera
+void destinazione(infoFile *dati, int numRighe){
+    char arrivo[maxL];
+    int i, controllo = 1;
+
+    // Prendo la destinazione di arrivo in input
+    printf("Inserire la destinazione di arrivo:\n");
+    scanf("%s", arrivo);
+    printf("Le fermate con destinazione %s sono:\n", arrivo);
+
+    for(i = 0; i < numRighe; i++){
+        if(strcasecmp(arrivo, dati[i].destinazione) == 0){
+            printf("%s %s %s ", dati[i].codiceTratta, dati[i].partenza, dati[i].destinazione);
+            printf("%s %s %s %d\n", dati[i].data, dati[i].oraPartenza, dati[i].oraArrivo, dati[i].ritardo);
+            controllo = 0;
+        }
+    }
+    if(controllo) {
+        printf("Nessuna corrispondenza trovata.\n");
+    }
+    printf("\n");
+}
+
+// Stampa in base alla partenza scritta da tastiera
+void partenza(infoFile *dati, int numRighe){
+    char partenza[maxL];
+    int i, controllo = 1;
+
+    // Prendo la destinazione di partenza in input
+    printf("Inserire la destinazione di partenza:\n");
+    scanf("%s", partenza);
+    printf("Le fermate con partenza %s sono:\n", partenza);
+
+    for(i = 0; i < numRighe; i++){
+        if(strcasecmp(partenza, dati[i].partenza) == 0){
+            printf("%s %s %s ", dati[i].codiceTratta, dati[i].partenza, dati[i].destinazione);
+            printf("%s %s %s %d\n", dati[i].data, dati[i].oraPartenza, dati[i].oraArrivo, dati[i].ritardo);
+            controllo = 0;
+        }
+    }
+    if(controllo){
+        printf("Nessuna corrispondenza trovata.\n");
+    }
+    printf("\n");
+}
+
+//Visualizzazione tra due date
+void date(infoFile *info, int numRighe){
+    char start[maxL], end[maxL];
+    int i, controllo = 1;
+
+    // Prendo le informazioni scritte in input
+    printf("Inserisci la data di inizio e di fine da controllare:\n");
+    scanf("%s %s", start, end);
+
+    printf("Le corse tra il %s e il %s sono:\n", start, end);
+    for (i = 0; i < numRighe; i++){
+
+        // Se start è piu piccolo ed end è piu grande della data si stampa la data
+        if (strcasecmp(start, info[i].data) != 1 && strcasecmp(info[i].data, end) != 1){
+            printf("%s %s %s ", info[i].codiceTratta, info[i].partenza, info[i].destinazione);
+            printf("%s %s %s %d\n", info[i].data, info[i].oraPartenza, info[i].oraArrivo, info[i].ritardo);
+            controllo = 0;
+        }
+    }
+    if(controllo){
+        printf("Nessuna corrispondenza trovata.");
+    }
+    printf("\n");
+}
+
+//Stampa a video del file
+void stampaVideo(infoFile *info, int numRighe){
+
+    for(int i = 0; i < numRighe; i++){
+        printf("%s %s %s ", info[i].codiceTratta, info[i].partenza, info[i].destinazione);
+        printf("%s %s %s %d\n", info[i].data, info[i].oraPartenza, info[i].oraArrivo, info[i].ritardo);
+    }
+}
+
+//Stampa dati salvati in file
+void stampaFile(infoFile *info, int numRighe){
+    char nomeFile[maxL];
+    FILE *fout;
+
+    //nome file
+    printf("Inserisci nome del file dove viene scritto il log:\n");
+    scanf("%s", nomeFile);
+
+    //apertura file di scrittura
+    fout = fopen(nomeFile, "w");
+
+    //stampa nel file
+    for(int i = 0; i < numRighe; i++){
+        fprintf(fout,"%s %s %s", info[i].codiceTratta, info[i].partenza, info[i].destinazione);
+        fprintf(fout," %s %s %s %d\n", info[i].data, info[i].oraPartenza, info[i].oraArrivo, info[i].ritardo);
+    }
+
+    fclose(fout);
+    printf("Log scritto con successo!\n");
+}
+
+//Deallocazione memoria
+void deallocaMemoria(infoFile *dati, int numRighe){
+    for(int i = 0; i < numRighe; i++){
+        free(dati[i].oraPartenza);
+        free(dati[i].data);
+        free(dati[i].oraArrivo);
+        free(dati[i].codiceTratta);
+        free(dati[i].partenza);
+        free(dati[i].destinazione);
+    }
+    free(dati);
+}
+
+//Allocazione dinamica
+infoFile *allocaMemoria(const int *numRighe){
+
+    infoFile *dati;
+
+    //Alloco *dati
+    dati = (infoFile *)malloc(*numRighe * sizeof(infoFile));
+    //Gestione errori
+    if(dati == NULL){
+        printf("ERRORE ALLOCAZIONE MEMORIA\n");
+        exit(1);
+    }
+    //Allocazione campi di *dati per ogni riga
+    for(int i = 0; i < *numRighe; i++){
+        dati[i].destinazione = (char *)malloc(maxL * sizeof (char));
+        dati[i].partenza = (char *)malloc(maxL * sizeof (char));
+        dati[i].codiceTratta = (char *)malloc(maxL * sizeof (char));
+        dati[i].data = (char *)malloc(maxL * sizeof (char));
+        dati[i].oraArrivo = (char *)malloc(maxL * sizeof (char));
+        dati[i].oraPartenza = (char *)malloc(maxL * sizeof (char));
+
+        //Gestione errori
+        if(dati[i].destinazione == NULL || dati[i].partenza == NULL ||
+           dati[i].codiceTratta == NULL || dati[i].data == NULL ||
+           dati[i].oraArrivo == NULL || dati[i].oraPartenza == NULL){
+
+            printf("ERRORE ALLOCAZIONE MEMORIA\n");
+            exit(2);
+        }
+    }
+    return dati;
+}
+
+//Lettura file e lettura prima riga del file
+infoFile *leggiFileEAssegna(int *numRighe, FILE *fin, const char *nomeFile){
+
+    infoFile *dati;
+
+    if((fin = fopen(nomeFile, "r")) == NULL){
+        printf("ERRORE APERTURA FILE %s", nomeFile);
+        exit(3);
+    }
+    fscanf(fin, "%d", numRighe);
+
+    //Allocazione Memoria
+    dati = allocaMemoria(numRighe);
+
+    //Assegnazione informazioni
+    for(int i = 0; i < *numRighe; i++) {
+        fscanf(fin, "%s%s%s", dati[i].codiceTratta, dati[i].partenza, dati[i].destinazione);
+        fscanf(fin, "%s%s%s%d", dati[i].data, dati[i].oraArrivo, dati[i].oraPartenza, &dati[i].ritardo);
+    }
+
+    fclose(fin);
+    return dati;
+}
+
+// Riceve da tastiera il comando e ritorna il numero corrispondente al comando
+comando_e scegliComando(){
+    comando_e comando;
+    char scelta[maxL];
+
+    // Tabella per il confronto con l'input da tastiera
+    char comandi[15][maxL] = {"stampa_file", "stampa_video", "ordina_data", "ordina_codice",
+                              "ordina_partenza","ordina_arrivo","ricerca_lineare","ricerca_dicotomica",
+                              "date", "partenza","capolinea", "ritardo",
+                              "ritardo_tot", "leggi_nuovo_file", "fine"};
+
+    //input da tastiera
+    printf("------------------------------------------------------------------\n");
+    printf("\t\t\tINSERISCI COMANDO\n");
+    printf("------------------------------------------------------------------\n");
+    printf("-stampa_file \n-stampa_video \n-ordina_data \n-ordina_codice"
+           "\n-ordina_partenza \n-ordina_arrivo \n-ricerca_lineare \n-ricerca_dicotomica \n-date \n-partenza"
+           "\n-capolinea \n-ritardo \n-ritardo_tot \n-leggi_nuovo_file \n-fine:\n");
+    scanf("%s", scelta);
+    strlwr(scelta);
+
+    // Confronto tra scelta e i comandi preimpostati, ritorno del comando selezionato (un numero)
+    comando = 0;
+    while(comando < 15 && strcmp(scelta, comandi[comando]) != 0){
+        comando++;
+    }
+
+    return comando;
 }
