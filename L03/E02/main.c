@@ -12,14 +12,14 @@ typedef struct{
   int nScelte;
 }sAmico;
 //FUNZIONI
-int leggiFile(sCanzoni **canzoni, sAmico **pamici); //Passo puntatore a matrice di stringhe per effettuare allocazione dinamica
+int leggiFile(sCanzoni **canzoni, sAmico **pamici);
 void deallocaCanzoni(sCanzoni *canzoni, sAmico *amici, int nAmici);
 int* allocaVetSol(int nAmici);
 void deallocaAmico(sAmico *amici, int nAmici);
 int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, sCanzoni *canzoni, int nAmici);
 int main(void) {
     //Inizializzazione variabili
-    sCanzoni *canzoni; //Matrice di stringhe
+    sCanzoni *canzoni; //Vettore di struct contenente vettori di canzoni
     sAmico *amici;
     int pos=0, *sol, count=0, nAmici;
     //Apertura file
@@ -56,7 +56,6 @@ int leggiFile(sCanzoni **pCanzoni, sAmico **pamici){
     //Lettura del file e salvataggio dati
     fscanf(fp," %d", &nr);
     amici = (sAmico*)malloc((nr)*sizeof(sAmico)); //Allocazione del vettore di struct amico
-
     canzoniTmp = (sCanzoni*)malloc(nr*sizeof(sCanzoni)); //Allocazione dinamica del vettore di struct canzoni
     if(amici == NULL || canzoniTmp == NULL){
         exit(1);
