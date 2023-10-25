@@ -15,9 +15,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a1db213c-4f0c-4212-bb37-546f138d1a28" name="Changes" comment="Esercizio 4 lab 01 finito con file di output e multi-ordinamento">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="a1db213c-4f0c-4212-bb37-546f138d1a28" name="Changes" comment="Esercizio 4 lab 01 finito con file di output e multi-ordinamento" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -101,7 +99,7 @@
       <workItem from="1698135798753" duration="15000" />
       <workItem from="1698135902418" duration="241000" />
       <workItem from="1698222354983" duration="6300000" />
-      <workItem from="1698230290796" duration="3000" />
+      <workItem from="1698230290796" duration="84000" />
     </task>
     <task id="LOCAL-00001" summary="Esercizio 4 lab 01 finito con file di output e multi-ordinamento">
       <option name="closed" value="true" />
@@ -119,7 +117,15 @@
       <option name="project" value="LOCAL" />
       <updated>1698230175355</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Esercizio 4 lab 01 finito con file di output e multi-ordinamento">
+      <option name="closed" value="true" />
+      <created>1698230323679</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1698230323679</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
