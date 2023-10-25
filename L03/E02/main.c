@@ -8,8 +8,8 @@ typedef struct{
     char **canzoniAmico;
 }sCanzoni;
 typedef struct{
-  int *scelte;
-  int nScelte;
+    int *scelte;
+    int nScelte;
 }sAmico;
 //FUNZIONI
 int leggiFile(sCanzoni **canzoni, sAmico **pamici);
@@ -17,6 +17,7 @@ void deallocaCanzoni(sCanzoni *canzoni, sAmico *amici, int nAmici);
 int* allocaVetSol(int nAmici);
 void deallocaAmico(sAmico *amici, int nAmici);
 int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, sCanzoni *canzoni, int nAmici);
+
 int main(void) {
     //Inizializzazione variabili
     sCanzoni *canzoni; //Vettore di struct contenente vettori di canzoni
