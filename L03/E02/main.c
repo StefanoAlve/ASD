@@ -10,26 +10,26 @@ typedef struct{
   int nScelte;
 }sAmico;
 //FUNZIONI
-int leggiFile(char ****Mcanzoni, sAmico **pamici);
+int leggiFile(char ****Mcanzoni, sAmico **pamici); //Passo puntatore a matrice di stringhe per effettuare allocazione dinamica
 void deallocaCanzoni(char ***Mcanzoni, sAmico *amici, int nr);
-int* allocaVetSol(int nr);
-void deallocaAmico(sAmico *amici, int nr);
-int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, char ***Mcanzoni, int nr);
+int* allocaVetSol(int nAmici);
+void deallocaAmico(sAmico *amici, int nAmici);
+int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, char ***Mcanzoni, int nAmici);
 int main(void) {
     //Inizializzazione variabili
-    char ***Mcanzoni;
+    char ***Mcanzoni; //Matrice di stringhe
     sAmico *amici;
-    int pos=0, *sol, count=0, nr;
+    int pos=0, *sol, count=0, nAmici;
     //Apertura file
-    nr=leggiFile(&Mcanzoni, &amici);
-    sol=allocaVetSol(nr);
+    nAmici=leggiFile(&Mcanzoni, &amici);
+    sol=allocaVetSol(nAmici);
     //Corpo programma
-    count = trovaCombinazioni(pos, amici, sol, count, Mcanzoni, nr);
+    count = trovaCombinazioni(pos, amici, sol, count, Mcanzoni, nAmici);
     printf("\nTrovate %d playlist\n",count);
     //Deallocazione
     free(sol);
-    deallocaCanzoni(Mcanzoni, amici, nr);
-    deallocaAmico(amici, nr);
+    deallocaCanzoni(Mcanzoni, amici, nAmici);
+    deallocaAmico(amici, nAmici);
     return 0;
 }
 
@@ -52,7 +52,6 @@ int leggiFile(char ****Mcanzoni, sAmico **pamici){
     }
     //Lettura del file e salvataggio dati
     fscanf(fp," %d", &nr);
-
     amici = (sAmico*)malloc((nr)*sizeof(sAmico)); //Allocazione del vettore di struct amico
 
     canzoniTmp = (char***)malloc(nr*sizeof(char**)); //Allocazione dinamica del vettore dei puntatori che indicano i vettori di canzoni
@@ -83,8 +82,8 @@ int leggiFile(char ****Mcanzoni, sAmico **pamici){
     return nr;
 }
 
-void deallocaCanzoni(char ***Mcanzoni, sAmico *amici, int nr){
-    for(int i = 0; i<nr; i++){
+void deallocaCanzoni(char ***Mcanzoni, sAmico *amici, int nAmici){
+    for(int i = 0; i<nAmici; i++){
         for(int j = 0; j<amici[i].nScelte; j++){
             free(Mcanzoni[i][j]);
         }
@@ -93,25 +92,25 @@ void deallocaCanzoni(char ***Mcanzoni, sAmico *amici, int nr){
     free(Mcanzoni);
 }
 
-void deallocaAmico(sAmico *amici, int nr){
-    for(int i=0; i<nr; i++){
+void deallocaAmico(sAmico *amici, int nAmici){
+    for(int i=0; i<nAmici; i++){
         free(amici[i].scelte);
     }
     free(amici);
 }
-int* allocaVetSol(int nr){
+int* allocaVetSol(int nAmici){
     int *sol;
-    sol = (int*)malloc(nr*sizeof(int));
-    for(int i=0;i<nr;i++){
+    sol = (int*)malloc(nAmici*sizeof(int));
+    for(int i=0;i<nAmici;i++){
         sol[i] = i;
     }
     return sol;
 }
-int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, char ***Mcanzoni, int nr){
+int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, char ***Mcanzoni, int nAmici){
     int i;
-    if(pos >= nr){//quando pos è uguale a nr vuol dire che sono all'ultima canzone della playlist quindi ho la condizione di terminazione
+    if(pos >= nAmici){//quando pos è uguale a nr vuol dire che sono all'ultima canzone della playlist quindi ho la condizione di terminazione
         printf("Playlist n.%d:\n", count+1);
-        for(i=0; i<nr; i++){
+        for(i=0; i<nAmici; i++){
             printf("%s ", Mcanzoni[i][sol[i]]); //semplifico la funzione lavorando su interi e tramite la matrice di stringhe converto il risultato nelle stringhe corrispondenti
         }
         printf("\n\n");
@@ -119,7 +118,7 @@ int trovaCombinazioni(int pos, sAmico *amici, int *sol, int count, char ***Mcanz
     }
     for(i=0; i<amici[pos].nScelte; i++){ //tengo fisso un campo e scandisco quelli sotto, quando la chiamata ricorsiva restituirà allora passerò all'elemento successivo
         sol[pos] = amici[pos].scelte[i];
-        count = trovaCombinazioni(pos+1, amici, sol, count, Mcanzoni, nr);
+        count = trovaCombinazioni(pos+1, amici, sol, count, Mcanzoni, nAmici);
     }
     return count;
 }
