@@ -24,27 +24,29 @@ int main(void) {
 }
 
 int gcd(int n1, int n2){
+    //Funzione ricorsiva che trova massimo comune divisore
+
     //Inizializzazione variabili
     int scambio;
     //Corpo funzione
-    if(n1 < n2){
+    if(n1 < n2){ //Se il secondo numero fosse più grande del primo li scambio
         scambio = n1;
         n1 = n2;
         n2 = scambio;
     }
-    if(n1%n2==0){
+    if(n1%n2==0){ //Condizione di terminazione (il primo numero è divisibile per il secondo)
         return n2;
     }
-    else if(n1 % 2 == 0 && n2 % 2 == 0){
+    else if(n1 % 2 == 0 && n2 % 2 == 0){ //primo e secondo numero entrambi pari
         return 2*gcd(n1/2, n2/2);
     }
-    else if(n1 % 2 != 0 && n2 % 2 == 0){
+    else if(n1 % 2 != 0 && n2 % 2 == 0){ //primo numero dispari e secondo pari
         return gcd(n1, n2/2);
     }
-    else if(n1 % 2 == 0 && n2 % 2 != 0){
+    else if(n1 % 2 == 0 && n2 % 2 != 0){ //primo numero pari e secondo dispari
         return gcd(n1/2, n2);
     }
-    else{
+    else{ //entrambi i numeri dispari
         return gcd((n1-n2)/2, n2);
     }
 }
