@@ -4,7 +4,7 @@
 
 #define MAXL 255
 //Strutture
-typedef struct{
+typedef struct{ //struct contenente una matrice di caratteri (vettore di canzoni) per rendere più leggibile il codice
     char **canzoniAmico;
 }sCanzoni;
 typedef struct{
@@ -25,7 +25,7 @@ int main(void) {
     int pos=0, *sol, count=0, nAmici;
     //Apertura file
     nAmici=leggiFile(&canzoni, &amici);
-    sol=allocaVetSol(nAmici);
+    sol=allocaVetSol(nAmici); //Vettore di interi contenente gli indici delle soluzioni
     //Corpo programma
     count = trovaCombinazioni(pos, amici, sol, count, canzoni, nAmici);
     printf("\nTrovate %d playlist\n",count);
@@ -37,6 +37,10 @@ int main(void) {
 }
 
 int leggiFile(sCanzoni **pCanzoni, sAmico **pamici){
+    /* La seguente funzione legge il file e alloca dinamicamente il vettore di struct amico e il vettore di struct canzoni.
+     * Il primo contiene n (dove n è il numero di amici) struct contenenti il numero di canzoni scelte dall'amico in questione e un vettore di interi che vanno da 0 a nScelte.
+     * Il secondo invece contiene n struct contenenti ognuna il vettore di canzoni relative all'amico (utilizzato poi per la conversione nella stampa dei risultati).
+     */
     //Inizializzazione variabili
     FILE* fp;
     char *nomeFile, tmp[MAXL];
