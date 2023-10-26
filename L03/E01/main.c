@@ -29,6 +29,11 @@ int main(void) {
 }
 
 int majority(int *a, int N){
+    /* Funzione ricorsiva che trova l'elemento maggioritario in un vettore, in caso negativo restituirà -1.
+     * La funzione procede con la logica divide et impera. A ogni chiamata la funzione divide in due il vettore passato fino ad arrivare a vettori unitari.
+     * Il controllo avviene in risalita. La funzione controlla il vettore sinistro e destro e confronta i due maggioritari, restituirà quello presente più volte alla chiamante.
+     */
+
     int m = N/2, lMajority, rMajority, leftCount = 0, rightCount = 0;
 
     if(N==0){
@@ -37,16 +42,16 @@ int majority(int *a, int N){
     }
 
     if(N==1){
-        //Caso limite, sottovettori di dimensione 1 il maggioritario è per forza il numero
+        //Caso limite, sotto vettori di dimensione 1 il maggioritario è per forza il numero
         return a[0];
     }
 
-    //Spezzo il vettore in due sottovettori
+    //Spezzo il vettore in due sotto vettori
     lMajority = majority(a, m);
     rMajority = majority(a+m, N-m);
 
     if(lMajority == rMajority){
-        //se il maggioritario di entrambi i sottovettori è lo stesso allora sarà il maggioritario del vettore intero
+        //se il maggioritario di entrambi i sotto vettori è lo stesso allora sarà il maggioritario del vettore intero
         return lMajority;
     }
     else{
@@ -59,7 +64,6 @@ int majority(int *a, int N){
                 rightCount++;
             }
         }
-        //Nel caso in cui si satasse il ciclo lefC e rightC saranno 0 quindi restituisco -1
         if(leftCount > m){
             //Se lMajority compare più volte del valore della metà del vettore allora lo restituisco
             return lMajority;
