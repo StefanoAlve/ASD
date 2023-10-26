@@ -3,29 +3,33 @@
 #include <stdlib.h>
 
 #define MAXL 256
-/* N.B. prima
-
+/* N.B.
+    Piuttosto che utilizzare una matrice di caratteri per memorizzare la soluzione, ho voluto memorizzare le canzoni con un certo indice
+    Da 0 al numero di canzoni totali - 1 provando a sfruttare, come accennato dal Prof. Camurati a lezione, quella che può vagamente
+    somigliare a una tabella di simboli. Usando la struct canzoni_proposte, la quale contiene un vettore di interi (il codice delle canzoni)
+    posso convertire il codice dell'iesima canzone accedendo alla riga i-esima del vettore di puntatori a char mat_canzoni, presente nella struct match
+    (ovvero la soluzione effettiva).
 */
 typedef struct{
     int *codice_canzone;
     int num_canzoni_proposte;
-}amico;
+}canzoni_proposte;
 
 typedef struct{
     char **mat_canzoni;
     int n_canzoni;
 }match;
 
-amico *leggi_file(char *file_name, match *s_match, int* num_amici);
+canzoni_proposte *leggi_file(char *file_name, match *s_match, int* num_amici);
 void stampa_canzone(match s_match, int pos, int flag);
-void freeDataStructures(match s_match, amico *vett_amici, amico soluzione);
-int principio_molt(amico *vett_amici, amico soluzione, match s_match, int num_amici, int pos, int cont);
+void freeDataStructures(match s_match, canzoni_proposte *vett_amici, canzoni_proposte soluzione);
+int principio_molt(canzoni_proposte *vett_amici, canzoni_proposte soluzione, match s_match, int num_amici, int pos, int cont);
 
 int main(void)
 {
     int num_amici;
     char file_name[MAXL];
-    amico *vett_amici, soluzione;
+    canzoni_proposte *vett_amici, soluzione;
     match s_match;
 
     printf("Inserisci il nome del file:");
@@ -44,10 +48,10 @@ int main(void)
 }
 
 
-amico *leggi_file(char *file_name, match* s_match, int* num_amici)
+canzoni_proposte *leggi_file(char *file_name, match* s_match, int* num_amici)
 {
     int i, j, canzoni_proposte_each= 0, codice_canzone = 0;
-    amico *vett_amici = NULL;
+    canzoni_proposte *vett_amici = NULL;
     FILE *fp_in = NULL;
     char song[MAXL];
     fp_in = fopen(file_name, "r");
@@ -55,7 +59,7 @@ amico *leggi_file(char *file_name, match* s_match, int* num_amici)
     if(fp_in != NULL)
     {
         fscanf(fp_in, "%d", num_amici);
-        vett_amici = (amico *) malloc(*num_amici * sizeof(amico)); // Alloco tante struct quante sono il numero di amici
+        vett_amici = (canzoni_proposte *) malloc(*num_amici * sizeof(canzoni_proposte)); // Alloco tante struct quante sono il numero di amici
         s_match->mat_canzoni = (char**)malloc(5*(*num_amici)*sizeof(char*)); // alloco per un numero di stringhe > del necessario e poi libero una parte della memoria non usata
         for(i = 0; i < *num_amici; i++)
         {
@@ -88,7 +92,7 @@ void stampa_canzone(match s_match, int pos, int flag){
         printf("- %s\n", s_match.mat_canzoni[pos]);
 }
 
-void freeDataStructures(match s_match, amico *vett_amici, amico soluzione)
+void freeDataStructures(match s_match, canzoni_proposte *vett_amici, canzoni_proposte soluzione)
 {
     int num_canzoni_totale = s_match.n_canzoni, i;
     for (i = 0; i < num_canzoni_totale; i++)
@@ -103,7 +107,7 @@ void freeDataStructures(match s_match, amico *vett_amici, amico soluzione)
 }
 
 
-int principio_molt(amico *vett_amici, amico soluzione, match s_match, int num_amici, int pos, int cont)
+int principio_molt(canzoni_proposte *vett_amici, canzoni_proposte soluzione, match s_match, int num_amici, int pos, int cont)
 {
     int i;
     if(pos == num_amici)
