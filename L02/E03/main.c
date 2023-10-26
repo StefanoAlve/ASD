@@ -59,17 +59,14 @@ void freeMix(s_mix_tratte* mix_tratte, int NR);
 
 int main(void)
 {
-    int NR = 0, flag = 0;
+    int NR = 0;
     s_mix_tratte mix_tratte;
     comando_e cmd = 9; // comando di lettura
-    while (!flag)
+    while (cmd != r_fine && cmd != r_error)
     {
         // LETTURA FILE
         selezionaDati(&mix_tratte, &NR, cmd);
-        if (cmd == 11)
-            flag = 1;
-        else
-            cmd = leggiComando();
+        cmd = leggiComando();
     }
     freeMix(&mix_tratte, NR);
     return cmd;
@@ -166,7 +163,7 @@ comando_e leggiComando(void)
     else
         cmd = 12;
     if (cmd == 12)
-        printf("\nNon ho compreso il tuo comando, riprova.");
+        printf("\nNon ho compreso il tuo comando");
     return cmd;
 }
 
@@ -234,8 +231,7 @@ void selezionaDati(s_mix_tratte* mix_tratte, int* NR, comando_e comando)
                 stampa_tratta(mix_tratte->originale, i);
             break;
         case r_fine:
-            printf("\nProgramma terminato, arrivederci!\n");
-            break;
+            printf("\nProgramma terminato, arrivederci!");
         case r_error:
             break;
     }
@@ -432,9 +428,11 @@ void ricerca_dicotomica(s_tratte* *departure_sorted, int NR, char* nome, int des
     }
 }
 
-void freeMix(s_mix_tratte* mix_tratte, int NR) {
+void freeMix(s_mix_tratte* mix_tratte, int NR)
+{
     int i;
-    for (i = 0; i < NR; i++) {
+    for (i = 0; i < NR; i++)
+    {
         free(mix_tratte->originale[i].codice_tratta);
         free(mix_tratte->originale[i].partenza);
         free(mix_tratte->originale[i].destinazione);
