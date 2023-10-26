@@ -56,6 +56,7 @@ int **malloc2dR(char nomeFile[], int *nr, int *nc){
     }
 
     //Allocazione dinamica matrice
+    //Grazie a questo tipo di allocazione posso utilizzare la notazione matriciale quando devo prendere un elemento della "matrice" (matrice[i][j])
     matrice = (int **)malloc((*nr)*sizeof(int *));
     if(matrice == NULL){
         printf("Errore nell'allocazione delle righe\n");
@@ -109,13 +110,15 @@ void separa(int **matrice, int nr, int nc, int **vBianchi, int **vNeri, int *pnb
     //Corpo funzione
     for(int i = 0; i<nr; i++){
         for(int j = 0; j<nc; j++){
-            if (j % 2 == 0 && i % 2 == 0 || j % 2 != 0 && i % 2 != 0) {
+            if (j % 2 == 0 && i % 2 == 0 || j % 2 != 0 && i % 2 != 0) { //se entrambi gli indici pari o entrambi dispari
                 (pNeri)[nn++] = matrice[i][j];
             } else {
                 (pBianchi)[nb++] = matrice[i][j];
             }
         }
     }
+
+    //Ho utilizzato delle variabili temporanee per rendere più leggibile il programma, passo ai puntatori i nuovi indirizzi di memoria per il passaggio by pointer
     *pnb = nb;
     *pnn = nn;
     *vBianchi = pBianchi;
