@@ -10,6 +10,7 @@
     posso convertire il codice dell'iesima canzone accedendo alla riga i-esima del vettore di puntatori a char mat_canzoni, presente nella struct match
     (ovvero la soluzione effettiva).
 */
+
 typedef struct{
     int *codice_canzone;
     int num_canzoni_proposte;
