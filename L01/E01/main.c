@@ -8,11 +8,11 @@ char *cercaRegexp(char *src, char *regexp, int regexp_lenght);
 int cercaLenghtRegexp(char *regexp);
 
 
-int main(void)
-{
+int main(void){
+    //Inizializzazione variabili
     char source[MAXL], *regexpPointer, regexp[MAXL];
-    int lenght = 0;
-
+    int lenght;
+    //Corpo programma
     printf("Inserisci la stringa sorgente da cercare:");
     gets(source);
     printf("Inserisci l'espressione regolare da cercare:");
@@ -27,13 +27,13 @@ int main(void)
 
 
 char *cercaRegexp(char *src, char *regexp, int regexp_lenght){
-    int i,j = 0, pos, equals = 0, flag = 0, uscita = 0;
+    int i,j = 0, pos, equals = 0, flag, uscita;
     char* regexpPointer = NULL;
     if (strlen(src)-regexp_lenght >= 0){
-        for (i = 0; i <= strlen(src) - regexp_lenght; i++){
+        for (i = 0; i <= strlen(src) - regexp_lenght; i++){ //Fisso la lettera della stringa da cui iniziare la ricerca
             pos = 0;
             uscita = 0;
-            while(regexp[j] != '\0' && !uscita){
+            while(regexp[j] != '\0' && !uscita){ //Eseguo l'analisi della stringa
                 flag = 0;
                 /// CASO UGUAGLIANZA SEMPLICE
                 if(regexp[j] == src[i+pos])
@@ -41,7 +41,7 @@ char *cercaRegexp(char *src, char *regexp, int regexp_lenght){
                 /// CASO '.'
                 if(regexp[j] == '.' && (isalpha(src[i+pos]) || isalnum(src[i+pos])))
                     flag = 1;
-                    /// CASO '\A' o '\a'
+                /// CASO '\A' o '\a'
                 else if(regexp[j] == '\\'){
                     j++; // considero il carattere A o a
                     if(regexp[j] == 'A' && isupper(src[i+pos]))
@@ -49,7 +49,7 @@ char *cercaRegexp(char *src, char *regexp, int regexp_lenght){
                     else if(regexp[j] == 'a' && islower(src[i+pos]))
                         flag = 1;
                 }
-                    /// CASI []
+                /// CASI []
                 else if(regexp[j] == '['){
                     j++; // considero il carattere successivo
                     /// CASO CON APICE [^]
@@ -82,7 +82,7 @@ char *cercaRegexp(char *src, char *regexp, int regexp_lenght){
                     j = 0;
                 }
             }
-            if (equals == regexp_lenght){
+            if (equals == regexp_lenght){ //Se ho trovato tanti caratteri corrispondenti quanto la lunghezza dell'espressione regolare allora faccio puntare al primo carattere della parola trovata
                 regexpPointer=&src[i];
                 return regexpPointer;
             }
@@ -93,9 +93,8 @@ char *cercaRegexp(char *src, char *regexp, int regexp_lenght){
     return regexpPointer;
 }
 
-
-// DETERMINO LA LUNGHEZZA DELLA STRINGA "REGOLARE" DA CERCARE
 int cercaLenghtRegexp(char *regexp) {
+    // DETERMINO LA LUNGHEZZA DELL'ESPRESSIONE "REGOLARE" DA CERCARE
     int lenght = 0, j;
     for (j = 0; j < strlen(regexp); j++){
         if (regexp[j] == '['){
