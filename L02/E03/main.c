@@ -6,7 +6,7 @@
 //Variabili globali
 typedef enum{r_date, r_partenza, r_capolinea, r_ritardo,
     r_ritardo_tot, r_ordina_data, r_ordina_codice, r_ordina_partenza, r_ordina_arrivo, r_ricerca_partenza_dico, r_nuovo_file, r_stampa, r_fine, r_errore}comando_e;
-typedef struct{
+typedef struct{ //Struct contenente i dati relativi a ogni tratta
     char *codice_tratta;
     char *partenza;
     char *destinazione;
@@ -16,7 +16,7 @@ typedef struct{
     int ritardo;
 }sTratta;
 
-typedef struct{
+typedef struct{ //Struct contenente puntatori ai vettori di tratte ordinate per effettuare gli ordinamenti una singola volta e mantenerli in memoria
     sTratta **ordinateData;
     sTratta **ordinateCodice;
     sTratta **ordinatePartenza;
@@ -42,6 +42,7 @@ void ricercaPerPartenzaDico(sTratta *pTratte[], int nr, char partenza[]);
 void deallocaOrdinamenti(spOrdinamenti *pSPOrdinamenti);
 void deallocaTratte(sTratta *tratte);
 void stampaCont(sTratta *tratte, int nr);
+
 int main(void) {
     //Inizializzazione variabili
     comando_e comando;
@@ -138,7 +139,7 @@ int leggiFile(sTratta **ptratte){
     FILE* fp;
     int i, nr = -1;
     char nomeFile[MAXL], tmp[MAXL];
-    sTratta *tratte;
+    sTratta *tratte; //Utilizzo variabile ausiliaria per rendere più leggibili le allocazioni dinamiche
     //Apertura file
     printf("Inserisci il nome del file:");
     scanf("%s", nomeFile);
@@ -153,7 +154,7 @@ int leggiFile(sTratta **ptratte){
         }
         //Corpo programma
         for(i=0; i<nr; i++){
-            //Alloco la memoria dinamicamente
+            //Alloco le stringhe dinamicamente utilizzando strdup, la funzione riconosce il \0 nel vettore di char statico tmp, alloca il giusto spazio di memoria per contenere la stringa, copia la stringa in quello spazio e ne restituisce il puntatore
             fscanf(fp, "%s", tmp);
             tratte[i].codice_tratta = strdup(tmp);
             fscanf(fp, "%s", tmp);
@@ -186,7 +187,7 @@ void inizializzaSPOrdinamenti(spOrdinamenti *pSPOrdinamenti, int nr, sTratta tra
     pSPOrdinamenti->ordinateArrivo = (sTratta**)malloc(nr * sizeof(sTratta*));
     pSPOrdinamenti->ordinateCodice = (sTratta**)malloc(nr * sizeof(sTratta*));
     pSPOrdinamenti->ordinatePartenza = (sTratta**)malloc(nr * sizeof(sTratta*));
-
+    //Se tutte le malloc sono diverse da null
     if (pSPOrdinamenti->ordinateData && pSPOrdinamenti->ordinateArrivo && pSPOrdinamenti->ordinateCodice && pSPOrdinamenti->ordinatePartenza) {
         for (int i = 0; i < nr; i++) {
             pSPOrdinamenti->ordinateData[i] = &tratte[i];
@@ -194,6 +195,7 @@ void inizializzaSPOrdinamenti(spOrdinamenti *pSPOrdinamenti, int nr, sTratta tra
             pSPOrdinamenti->ordinateCodice[i] = &tratte[i];
             pSPOrdinamenti->ordinatePartenza[i] = &tratte[i];
         }
+        //Inizializzo tutti gli ordinamenti
         ordinaPerData(pSPOrdinamenti->ordinateData, nr);
         ordinaPerPartenza(pSPOrdinamenti->ordinatePartenza, nr);
         ordinaPerArrivo(pSPOrdinamenti->ordinateArrivo, nr);
@@ -266,8 +268,10 @@ void selezionaDati(int *pnr, comando_e comando, sTratta tratte[], spOrdinamenti 
             ricercaPerPartenzaDico(pTratte, nr, partenza1);
             break;
         case r_nuovo_file:
+            //Dealloco ordinamenti precedenti e il vettore di struct tratte
             deallocaOrdinamenti(pSOrdinamenti);
             deallocaTratte(tratte);
+            //Realloco entrambi con i nuovi dati contenuti nel nuovo file
             nr = leggiFile(&tratte);
             *pnr = nr;
             inizializzaSPOrdinamenti(pSOrdinamenti, nr, tratte);
@@ -306,7 +310,7 @@ void elencaCorseCapolinea(sTratta tratte[], char capolinea[], int nr){
     int flag = 0;
     printf("\nLe tratte che hanno come capolinea %s sono:\n", capolinea);
     for(int i = 0; i < nr; i++){
-        if(strncasecmp(tratte[i].destinazione, capolinea, 3) == 0){
+        if(strncasecmp(tratte[i].destinazione, capolinea, strlen(capolinea)) == 0){
             printf("%s - %s del %s partito alle ore %s\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data, tratte[i].ora_partenza);
             flag = 1;
         }
@@ -321,7 +325,7 @@ void elencaCorsePartenza(sTratta tratte[], char partenza[], int nr){
     int flag = 0;
     printf("\nLe tratte che sono partite da %s sono:\n", partenza);
     for(int i = 0; i < nr; i++){
-        if(strncasecmp(tratte[i].partenza, partenza, 3) == 0){
+        if(strncasecmp(tratte[i].partenza, partenza, strlen(partenza)) == 0){
             printf("%s - %s del %s partito alle ore %s\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data, tratte[i].ora_partenza);
             flag =1;
         }
@@ -439,28 +443,33 @@ void ordinaPerCodice(sTratta *pTratte[], int nr){
 }
 
 void ricercaPerPartenzaDico(sTratta *pTratte[], int nr, char partenza[]){
+    //Ricerca dicotomica basata sul confronto delle partenze
     ordinaPerPartenza(pTratte,nr);
-    int l, r, cont = 0, pm;
+    int l, r, cont = 0, pm, flag = 0;
     l=0;
     r=nr-1;
     printf("Le corse trovate sono:\n");
     while(l<=r && !cont){
         pm = (l+r)/2;
-        if(strncasecmp(partenza, pTratte[pm]->partenza, 3) < 0){
+        if(strncasecmp(partenza, pTratte[pm]->partenza, strlen(partenza)) < 0){ //Se la partenza inserita viene prima della partenza della struct a metà vettore allora analizzo il sotto vettore sinistro
             r = pm -1;
         }
-        else if(strncasecmp(partenza, pTratte[pm]->partenza, 3) > 0){
+        else if(strncasecmp(partenza, pTratte[pm]->partenza, strlen(partenza)) > 0){ //Se la partenza inserita viene dopo la partenza della struct a metà vettore allora analizzo il sotto vettore destro
             l = pm + 1;
         }
-        else if(strncasecmp(partenza, pTratte[pm]->partenza, 3) == 0){
+        else if(strncasecmp(partenza, pTratte[pm]->partenza, strlen(partenza)) == 0){ //Se le partenze corrispondono
             printf("%s %s %s %s %s %s %d\n", pTratte[pm] -> codice_tratta, pTratte[pm] -> partenza, pTratte[pm] -> destinazione, pTratte[pm] -> data, pTratte[pm] -> ora_partenza, pTratte[pm] -> ora_arrivo, pTratte[pm] -> ritardo);
-            //Controllo i vicini
-            if (pm+1 < nr && strncasecmp(partenza, pTratte[pm+1]->partenza, 3) == 0)
+            flag = 1;
+            //Controllo i vicini dato che mi trovo in un vettore ordinato
+            if (pm+1 < nr && strncasecmp(partenza, pTratte[pm+1]->partenza, strlen(partenza)) == 0)
                 printf("%s %s %s %s %s %s %d\n", pTratte[pm+1]->codice_tratta, pTratte[pm+1]->partenza, pTratte[pm+1]->destinazione, pTratte[pm+1]->data, pTratte[pm+1]->ora_partenza, pTratte[pm+1]->ora_arrivo, pTratte[pm+1]->ritardo);
-            if (pm -1 > 0 && strncasecmp(partenza, pTratte[pm-1]->partenza, 3) == 0)
+            if (pm -1 >= 0 && strncasecmp(partenza, pTratte[pm-1]->partenza, strlen(partenza)) == 0)
                 printf("%s %s %s %s %s %s %d\n", pTratte[pm-1]->codice_tratta, pTratte[pm-1]->partenza, pTratte[pm-1]->destinazione, pTratte[pm-1]->data, pTratte[pm-1]->ora_partenza, pTratte[pm-1]->ora_arrivo, pTratte[pm-1]->ritardo);
             cont = 1;
         }
+    }
+    if(!flag){
+        printf("\nNon sono presenti tratte aventi tale fermata di partenza.\n");
     }
 }
 
