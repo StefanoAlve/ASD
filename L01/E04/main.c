@@ -145,7 +145,7 @@ void selezionaDati(comando_e cmd){
             default:
                 printf("COMANDO INESISTENTE, RIPROVA\n");
         }
-        if(cmd != rFine) scegliComando();
+        if(cmd != rFine) cmd = scegliComando();
     }
     //DEALLOCAZIONE MEMORIA
     deallocaMemoria(pCodice, numRighe);
@@ -278,7 +278,13 @@ infoFile *sortData(infoFile *pData, int numRighe){
             pData[j + 1] = pData[j];
             j--;
         }
+        //Se sono uguali le date, ordino per ora
+        while(j >= 0 && strcmp(pData[j].data, key.data) == 0 && strcmp(pData[j].oraArrivo, key.oraArrivo) > 0){
+            pData[j + 1] = pData[j];
+            j--;
+        }
         pData[j + 1] = key;
+
     }
     return pData;
 }
