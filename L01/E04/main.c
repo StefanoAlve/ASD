@@ -1,14 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define inFile "corse.txt"
-#define maxRighe 1001
 #define maxL 31
 
 // Opzioni menù
 typedef enum{
     rStampaFile = 0, rStampaVideo, rOrdinaData, rOrdinaCodice, rOrdinaPartenza, rOrdinaArrivo, rRicercaLineare,
-    rRicercaDicotomica, rDate, rPartenza, rCapolinea, rRitardo, rRitardo_tot, rLeggiNuovoFile, rFine
+    rRicercaDicotomica, rDate, rPartenza, rCapolinea, rRitardo, rRitardo_tot, rFine
 }comando_e;
 
 // Struct per leggere il file
@@ -20,8 +18,13 @@ typedef struct{
 comando_e scegliComando();
 infoFile *allocaMemoria(const int *numRighe);
 infoFile *leggiFileEAssegna(int *numRighe, FILE *fin, const char *nomeFile);
+infoFile *copiaStruttura(infoFile *dati, int numRighe);
+infoFile *sortPart(infoFile *pPartenza, int numRighe);
+infoFile *sortData(infoFile *pData, int numRighe);
+infoFile *sortCodice(infoFile *pCodice, int numRighe);
+infoFile *sortArrivo(infoFile *pArrivo, int numRighe);
 void deallocaMemoria(infoFile *dati, int numRighe);
-void selezionaDati();
+void selezionaDati(comando_e cmd);
 void stampaFile(infoFile *info, int numRighe);
 void stampaVideo(infoFile *info, int numRighe);
 void date(infoFile *info, int numRighe);
@@ -31,32 +34,30 @@ void ricercaDicotomica(infoFile *dati, int numRighe, char *k);
 void ricercaLineare(infoFile *info, int numRighe);
 void ritardo(infoFile *info, int numRighe);
 void ritardo_tot(infoFile *info, int numRighe);
-infoFile *copiaStruttura(infoFile *dati, int numRighe);
-infoFile *sortPart(infoFile *pPartenza, int numRighe);
-infoFile *sortData(infoFile *pData, int numRighe);
-infoFile *sortCodice(infoFile *pCodice, int numRighe);
-infoFile *sortArrivo(infoFile *pArrivo, int numRighe);
 
 int main(){
 
-    selezionaDati();
+    //chiamo la funzione per la gestione del menu
+    comando_e comando = scegliComando();
+    selezionaDati(comando);
 
     return 0;
 }
 
 //Gestione menu
-void selezionaDati(){
+void selezionaDati(comando_e cmd){
     int flag = 1, numRighe = 0;
     char k[maxL] = "\0";
     char nomeFile[maxL] = "corse.txt";
-    comando_e cmd = scegliComando();
     FILE *fin = NULL;
     infoFile *dati;
+
     //Struttura da ordinare
     infoFile *pCodice, *pPartenza, *pArrivo, *pData;
 
-    //Chiamo manualmente la prima lettura del file
+    //Chiamo manualmente la lettura del file
     dati = leggiFileEAssegna(&numRighe, fin, nomeFile);
+
     //Allocazione e copia delle strutture create per essere ordinate
     pCodice = copiaStruttura(dati, numRighe);
     pPartenza = copiaStruttura(dati ,numRighe);
@@ -67,27 +68,6 @@ void selezionaDati(){
 
     while(flag){
         switch(cmd){
-            case rLeggiNuovoFile:
-                //Deallocazione
-                deallocaMemoria(pCodice, numRighe);
-                deallocaMemoria(pPartenza, numRighe);
-                deallocaMemoria(pArrivo, numRighe);
-                deallocaMemoria(pData, numRighe);
-                deallocaMemoria(dati, numRighe);
-
-                //Nome nuovo file
-                printf("NOME FILE INPUT:\n");
-                scanf("%s", nomeFile);
-
-                //Assegnazione a strutture
-                dati = leggiFileEAssegna(&numRighe, fin, nomeFile);
-                pCodice = copiaStruttura(dati, numRighe);
-                pPartenza = copiaStruttura(dati ,numRighe);
-                pArrivo = copiaStruttura(dati ,numRighe);
-                pData = copiaStruttura(dati ,numRighe);
-                printf("Nuovo file letto!!\n");
-                break;
-
                 //STAMPA IN FILE
             case rStampaFile:
                 stampaFile(dati, numRighe);
@@ -165,16 +145,14 @@ void selezionaDati(){
             default:
                 printf("COMANDO INESISTENTE, RIPROVA\n");
         }
-        if(cmd != rFine) cmd = scegliComando();
-
-        else{
-            deallocaMemoria(pCodice, numRighe);
-            deallocaMemoria(pPartenza, numRighe);
-            deallocaMemoria(pArrivo, numRighe);
-            deallocaMemoria(pData, numRighe);
-            deallocaMemoria(dati, numRighe);
-        }
+        if(cmd != rFine) scegliComando();
     }
+    //DEALLOCAZIONE MEMORIA
+    deallocaMemoria(pCodice, numRighe);
+    deallocaMemoria(pPartenza, numRighe);
+    deallocaMemoria(pArrivo, numRighe);
+    deallocaMemoria(pData, numRighe);
+    deallocaMemoria(dati, numRighe);
 }
 
 // Stampa in base al codice scritto da tastiera
@@ -545,10 +523,10 @@ comando_e scegliComando(){
     char scelta[maxL];
 
     // Tabella per il confronto con l'input da tastiera
-    char comandi[15][maxL] = {"stampa_file", "stampa_video", "ordina_data", "ordina_codice",
+    char comandi[14][maxL] = {"stampa_file", "stampa_video", "ordina_data", "ordina_codice",
                               "ordina_partenza","ordina_arrivo","ricerca_lineare","ricerca_dicotomica",
                               "date", "partenza","capolinea", "ritardo",
-                              "ritardo_tot", "leggi_nuovo_file", "fine"};
+                              "ritardo_tot", "fine"};
 
     //input da tastiera
     printf("------------------------------------------------------------------\n");
@@ -556,13 +534,13 @@ comando_e scegliComando(){
     printf("------------------------------------------------------------------\n");
     printf("-stampa_file \n-stampa_video \n-ordina_data \n-ordina_codice"
            "\n-ordina_partenza \n-ordina_arrivo \n-ricerca_lineare \n-ricerca_dicotomica \n-date \n-partenza"
-           "\n-capolinea \n-ritardo \n-ritardo_tot \n-leggi_nuovo_file \n-fine:\n");
+           "\n-capolinea \n-ritardo \n-ritardo_tot \n-fine:\n");
     scanf("%s", scelta);
     strlwr(scelta);
 
     // Confronto tra scelta e i comandi preimpostati, ritorno del comando selezionato (un numero)
     comando = 0;
-    while(comando < 15 && strcmp(scelta, comandi[comando]) != 0){
+    while(comando < 14 && strcmp(scelta, comandi[comando]) != 0){
         comando++;
     }
 
