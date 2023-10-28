@@ -7,21 +7,24 @@ int main(){
     int a, b, result;
 
     //input
-    printf("Inserisci due numeri tra cui trovare gdc:\n");
+    printf("Inserisci due numeri tra cui trovare il massimo comune divisore:\n");
     scanf("%d %d", &a, &b);
 
     //Funzione per trovare il gdc
     result = gdc(a, b);
 
     //Output
-    if(result != 0) printf("GDC = %d", result);
-    else printf("Errore nel calcolo di gdc.");
+    if(result != 0)
+        printf("GDC = %d", result);
+    else
+        printf("Errore nel calcolo di gdc.");
 
     return 0;
 }
 
+//Funzione ricorsiva per trovare il massimo comune divisore
 int gdc(int a, int b){
-    int tmp, result = 1;
+    int tmp;
 
     //Se b è maggiore di a, vengono scambiati
     if(a<b){
@@ -31,7 +34,8 @@ int gdc(int a, int b){
     }
 
     //Condizione di terminazione
-    if( a % b == 0) return b;
+    if( a % b == 0)
+        return b;
 
     //Ricorsione per trovare gdc
 
@@ -49,9 +53,11 @@ int gdc(int a, int b){
     }
 }
 
+//Funzione per controllare se il numero è pari
 int pari(int a){
 
-    if(a % 2 == 0) return 1;
+    if(a % 2 == 0)
+        return 1;
 
     return 0;
 }
