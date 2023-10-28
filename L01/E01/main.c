@@ -48,7 +48,8 @@ int match(char *src, char *regexp) {
     while(*regexp && found){
 
         //il punto corrisponde a qualsiasi carattere, quindi continua la ricerca
-        if(*regexp == '.') src++, regexp++;
+        if(*regexp == '.')
+            src++, regexp++;
 
             //Caso parentesi
         else if(*regexp == '['){
@@ -67,15 +68,14 @@ int match(char *src, char *regexp) {
         }
 
             //Controllo se si hanno gli stessi caratteri
-        else if (*src != *regexp) {
+        else if (*src != *regexp){
             found = 0; //carattere diverso, nessuna corrispondenza
         }
 
             //Se si ha corrispondenza si va avanti
-        else {
+        else
             //continua la ricerca
             src++, regexp++;
-        }
     }
     return found;
 }
@@ -126,7 +126,8 @@ void maiuscMinusc(char **src, char**regexp, int *found){
         if(!islower(**src))
             *found = 0;
     }
-    else *found = 0; //errore
+    else
+        *found = 0; //errore
 
     //dopo il controllo vado avanti
     (*src)++, (*regexp)++;
