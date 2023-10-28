@@ -10,7 +10,7 @@ int main(){
     printf("Inserisci il numero di dati del vettore:\n");
     scanf("%d", &N);
 
-    //Allocazione memoria e costruisco il vettore di uno spazio in piu
+    //Allocazione memoria e costruisco il vettore di uno spazio in piu'
     a = (int *) malloc((N+1)*sizeof(int));
 
     //Eventuali errori
