@@ -4,10 +4,12 @@
 #define MAXCANZONI 5
 #define MAXTITOLI 255
 
+//Struct per singola canzone
 typedef struct{
     char titolo[MAXTITOLI];
 }canzone;
 
+//Struct per ogni persona
 typedef struct{
     int numCanzoni;
     canzone canzoni[MAXCANZONI];
@@ -71,7 +73,8 @@ void leggiFile(amico **amici, int *nAmici){
 
 //Funzione ricorsiva che cerca una playlist, e la stampa per ogni combinazione
 void generaPlaylist(amico *amici, int nAmici, canzone *playlist, int amicoCorrente, int playlistCorrente){
-    // Hanno scelto una canzone per ciascun amico, stampiamo la playlist
+
+    //Hanno scelto una canzone per ciascun amico, stampiamo la playlist
     if(amicoCorrente == nAmici){
         printf("Playlist: ");
         for (int j = 0; j < nAmici; j++) {
