@@ -53,14 +53,15 @@ int **malloc2dR(int nr, int nc, FILE *inFIle){
     matrix = (int **)malloc(nr * sizeof(int *));
     if(matrix == NULL){
         printf("Errore nell'allocazione delle colonne\n");
-        exit(1);
+        exit(2);
     }
+
     //Allocazione righe
     for (int i = 0; i < nr; i++) {
         matrix[i] = (int *)malloc(nc * sizeof(int));
         if(matrix[i] == NULL){
             printf("Errore nell'allocazione delle righe\n");
-            exit(1);
+            exit(3);
         }
     }
 
