@@ -4,17 +4,29 @@
 #define MAXR 50
 
 char ***leggiFile(char nomeFile[], int *persone, int **braniPP);
-void dealloc(char ***matr, int *braniPP);
 
 
 int main() {
-    int persone, *braniPerPersona = NULL;
+    int persone, *braniPerPersona = NULL, i, j;
     char nomeFile[MAXR], ***matr = NULL;
 
     printf("come si chiama il file?\n");
     scanf("%s", nomeFile);
 
     matr = leggiFile(nomeFile, &persone, &braniPerPersona);
+
+
+
+
+    ///DEALLOCAZIONE DI MEMORIA
+    for (i = 0; i< persone; i++){
+        for (j=0; j<braniPerPersona[i]; j++) {
+            free(matr[i][j]);
+        }
+        free(matr[i]);
+    }
+    free(matr);
+    free(braniPerPersona);
 
     return 0;
 }
@@ -72,3 +84,4 @@ char ***leggiFile(char nomeFile[], int *persone, int **braniPP) {
     fclose(fp);
     return matr;
 }
+
