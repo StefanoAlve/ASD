@@ -43,7 +43,7 @@ void CercaTrattaPartenza(int num_righe, struct_tratte *v_PartenzaSort[], char st
 
 int main() {
     char NomeFile[MAXN];
-    int fine = 0, *p_fine = &fine;
+    int fine = 0, *p_fine=&fine;
     struct_tratte v_tratte[MAXR];
     struct_Ordinamenti Sorting;
     struct_Ordinamenti *p_Sorting = &Sorting;

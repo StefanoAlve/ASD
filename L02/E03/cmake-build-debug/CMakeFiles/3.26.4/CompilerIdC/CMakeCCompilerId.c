@@ -337,10 +337,8 @@
 
 #elif defined(__LCC__) && (defined(__GNUC__) || defined(__GNUG__) || defined(__MCST__))
 # define COMPILER_ID "LCC"
-# define COMPILER_VERSION_MAJOR DEC(1)
-# if defined(__LCC__)
-#  define COMPILER_VERSION_MINOR DEC(__LCC__- 100)
-# endif
+# define COMPILER_VERSION_MAJOR DEC(__LCC__ / 100)
+# define COMPILER_VERSION_MINOR DEC(__LCC__ % 100)
 # if defined(__LCC_MINOR__)
 #  define COMPILER_VERSION_PATCH DEC(__LCC_MINOR__)
 # endif
