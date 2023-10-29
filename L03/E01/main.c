@@ -34,6 +34,7 @@ int main() {
     magg = majority(vet, nn);
     printf("\n\nil numero maggioritario e' %d", magg);
 
+    ///DEALLOCAZIONE MEMORIA
     free(vet);
 
     return 0;
@@ -51,15 +52,16 @@ int majority( int *a, int N) {
     if (N < lunghezzaVett/2){
         return -1;
     }
-
+    ///CONTATORE RICORRENZE VALORE
     for (i = 2; i <= N; i++){
         if (a[N-i] == magg)
             cont++;
     }
-
+    ///CASO DI RITORNO MAGGIORITARIO
     if (cont > lunghezzaVett/2) {
         return magg;
     }
+    ///CASO DI RICORSIONE
     else
         majority(a,N-1);
 
