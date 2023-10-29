@@ -3,10 +3,9 @@
 #define MAXN 50
 int majority( int *a, int N);
 
-int bool = 1;
 
 int main() {
-    int *vet, nn, tmp, i, magg, lunghezzaVett=0;
+    int *vet, nn, tmp, i, magg;
 
     ///POPOLO IL VETTORE
     printf("di quanti numeri e' il vettore?");
@@ -30,9 +29,6 @@ int main() {
     for(i = 0; i < nn; i++){
         printf("%d ", vet[i]);
     }
-
-    /*for (i = 0; vet[i] != -1; i++, lunghezzaVett++){}
-    printf("\nla lunghezza del vettore e' %d", lunghezzaVett);*/
 
 
     magg = majority(vet, nn);
