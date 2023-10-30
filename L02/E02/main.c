@@ -15,43 +15,50 @@ void free2d(int **m,int nr){
         free(m[i]);
     free(m);
 }
-int separa(int **mat,int nr,int nc) {
+void separa(int **mat,int nr,int nc,int **vetW,int **vetB) {
     int i, j, countW = 0,countB=0;
-    int *vetW,*vetB;
-    vetW = malloc(countW * sizeof(int));
-    vetB = malloc(countB * sizeof(int));
+    for (i = 0;i<nr;i++){
+        for(j=0;j<nc;j++){
+            if ((i+j)%2==0)
+                countW++;
+            else
+                countB++;
+        }
+    }
+    *vetW = (int*) malloc(countW * sizeof(int));
+    *vetB = (int*) malloc(countB * sizeof(int));
+    int B=0,W = 0;
     for (i = 0; i < nr; i++) {
         for (j = 0; j < nc; j++) {
             if ((i + j) % 2 == 0) {
-                vetW[countW] = mat[i][j];
-                countW++;
+                (*vetW)[W] = mat[i][j];
+                W++;
             }
             if ((i + j) % 2 != 0) {
-                vetB[countB] = mat[i][j];
-                countB++;
+                (*vetB)[B] = mat[i][j];
+                B++;
             }
         }
     }
 
     printf("Nel vettore bianco ci sono: \n");
     for(int k = 0;k<countW;k++){
-        printf("%d",vetW[k]);
+        printf("%d",(*vetW)[k]);
     }
     printf("\n");
     printf("Nel vettore nero ci sono: \n");
     for(int d = 0;d<countB;d++){
-        printf("%d",vetB[d
-        ]);
+        printf("%d",(*vetB)[d]);
     }
 
 
-    free(vetW);
-    free(vetB);
+
 }
 int main() {
     int nr=3,nc=3;
     int i,j;
     int **matr;
+    int *vetW,*vetB;
     FILE *fin;
     fin = fopen("mat.txt","r");
     if (fin==NULL){
@@ -66,8 +73,10 @@ int main() {
             fscanf(fin,"%d",&matr[i][j]);
         }
     }
-    separa(matr,nr,nc);
+    separa(matr,nr,nc,&vetW,&vetB);
     free2d(matr,nr);
     fclose(fin);
+    free(vetW);
+    free(vetB);
 }
 
