@@ -27,7 +27,7 @@ int main() {
 
 
 
-
+    ///ALLOCO IL VETTORE PLAYLIST DA CHE VERRA RIEMPITO RICORSIVAMENTE OGNI VOLTA NELLA FUNZIONE COMBINAZIONI
     playlist = (char **)malloc(persone*sizeof(char *));
     if(playlist == NULL){
         printf("errore in allocazione di memoria");
@@ -82,7 +82,7 @@ char ***leggiFile(char nomeFile[], int *persone, int **braniPP) {
         exit(1);
     }
 
-    ///ALLOCO I BRANI PER PERSONA
+    ///ALLOCO IL VETTORE DELLE RICORRENZE DEI BRANI PER PERSONA
     *braniPP = (int *)malloc((*persone)*sizeof(int ));
     if (braniPP == NULL) {
         printf("errore in allocazione righe");
@@ -94,7 +94,7 @@ char ***leggiFile(char nomeFile[], int *persone, int **braniPP) {
         exit(1);
     }
 
-    ///ALLOCO I BRANI PER PERSONA E LI RIEMPIO
+    ///ALLOCO IL NUMERO DI BRANI PER PERSONA E LI RIEMPIO
     for(i=0; i<(*persone); i++) {
 
         ///RIEMPIO IL VETTORE CHE CONTIENE I NUMERI DEI BRANI PER PERSONA
@@ -108,7 +108,7 @@ char ***leggiFile(char nomeFile[], int *persone, int **braniPP) {
             exit(1);
         }
 
-        ///ALLOCO I SINGOLI BRANI
+        ///ALLOCO I SINGOLI BRANI IN BASE ALLA LUNGHEZZA STANDARD DEI TITOLI
         for(j=0; j < tempBra[i]; j++) {
 
             matr[i][j] = (char *)malloc(MAXL*sizeof(char));
@@ -126,15 +126,26 @@ char ***leggiFile(char nomeFile[], int *persone, int **braniPP) {
     return matr;
 }
 
+
+///FUNZIONE CHE RICORSIVAMENTE PERCORRE TUTTA LA MATRICE E RIEMPIE IL VETTORE PLAYLIST CON OGNI COMBINAZIONE
+///POSSIBILE DI CANZONI E POI LE STAMPA
 int combinazioni(char ***matrice, int persone, int *braniPP, int k, int l, char **playlist) {
     int i, j;
 
+    ///L ITERA LUNGO QUANTI BRANI CI SONO PER ARTISTA
     for (l=0; l<braniPP[k]; l++) {
+
+        ///DALLA MATRICE IL NOMECANZONE VIENE INSERITO NELLA PLAYLIST
         strcpy(playlist[k], matrice[k][l]);
+
+        ///NEL CASO IN CUI NON SI E' ARRIVATI ALL ULTIMA PERSONA SI RICHIAMA LA FUNZIONE
+        ///PER ARRIVARE FINO APPUNTO ALL ULTIMA PERSONA CHE VERRA ITERATA FINO ALLA FINE OGNI VOLTA
         if(k != persone - 1) {
             j=k+1;
             combinazioni(matrice, persone, braniPP, j, l, playlist);
         }
+
+        ///DATO CHE IL VETTORE PLAYLIST E' COMPLETO LO PRINTO
         else{
             printf("playlist:\n");
             for (i = 0; i < persone; i++) {
