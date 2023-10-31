@@ -99,7 +99,7 @@ void separa(int **matrice, int nr, int nc, int **vBianchi, int **vNeri, int *pnb
         pNeri = (int *) malloc((dimensioneTot/2)*sizeof(int));
     }
     else{
-        pBianchi = (int *) malloc((dimensioneTot/2-1)*sizeof(int));
+        pBianchi = (int *) malloc((dimensioneTot/2)*sizeof(int));
         pNeri = (int *) malloc((dimensioneTot/2+1)*sizeof(int));
     }
     if(vBianchi == NULL || vNeri == NULL){
