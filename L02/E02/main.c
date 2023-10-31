@@ -1,6 +1,7 @@
 #include <stdio.h>
-
-int main() {
-    printf("Esercizio 2 L02\n");
+#include <stdlib.h>
+int **malloc2dR();
+void separa(int **mat, int nr, int nc, ...);
+int main(){
     return 0;
 }
