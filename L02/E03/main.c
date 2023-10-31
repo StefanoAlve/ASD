@@ -500,12 +500,12 @@ void deallocaOrdinamenti(spOrdinamenti *pSPOrdinamenti){
 
 void deallocaTratte(sTratta *tratte, int nTratte){
     for(int i=0; i<nTratte; i++){
-        free(tratte->data);
-        free(tratte->partenza);
-        free(tratte->ora_partenza);
-        free(tratte->destinazione);
-        free(tratte->codice_tratta);
-        free(tratte->ora_arrivo);
+        free(tratte[i].data);
+        free(tratte[i].partenza);
+        free(tratte[i].ora_partenza);
+        free(tratte[i].destinazione);
+        free(tratte[i].codice_tratta);
+        free(tratte[i].ora_arrivo);
     }
     free(tratte);
 }
