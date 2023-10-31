@@ -40,7 +40,7 @@ void ordinaPerArrivo(sTratta *pTratte[], int nr);
 void stampaTratta(sTratta *pTratte[], int nr);
 void ricercaPerPartenzaDico(sTratta *pTratte[], int nr, char partenza[]);
 void deallocaOrdinamenti(spOrdinamenti *pSPOrdinamenti);
-void deallocaTratte(sTratta *tratte);
+void deallocaTratte(sTratta *tratte, int nTratte);
 void stampaCont(sTratta *tratte, int nr);
 
 int main(void) {
@@ -60,7 +60,7 @@ int main(void) {
     }
     //Deallocazione
     deallocaOrdinamenti(&ordinamenti);
-    deallocaTratte(tratte);
+    deallocaTratte(tratte, nr);
     return 0;
 }
 
@@ -270,7 +270,7 @@ void selezionaDati(int *pnr, comando_e comando, sTratta tratte[], spOrdinamenti 
         case r_nuovo_file:
             //Dealloco ordinamenti precedenti e il vettore di struct tratte
             deallocaOrdinamenti(pSOrdinamenti);
-            deallocaTratte(tratte);
+            deallocaTratte(tratte, nr);
             //Realloco entrambi con i nuovi dati contenuti nel nuovo file
             nr = leggiFile(&tratte);
             *pnr = nr;
@@ -498,12 +498,14 @@ void deallocaOrdinamenti(spOrdinamenti *pSPOrdinamenti){
     }
 }
 
-void deallocaTratte(sTratta *tratte){
-    free(tratte->data);
-    free(tratte->partenza);
-    free(tratte->ora_partenza);
-    free(tratte->destinazione);
-    free(tratte->codice_tratta);
-    free(tratte->ora_arrivo);
+void deallocaTratte(sTratta *tratte, int nTratte){
+    for(int i=0; i<nTratte; i++){
+        free(tratte->data);
+        free(tratte->partenza);
+        free(tratte->ora_partenza);
+        free(tratte->destinazione);
+        free(tratte->codice_tratta);
+        free(tratte->ora_arrivo);
+    }
     free(tratte);
 }
