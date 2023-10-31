@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 int **malloc2dR(int nr, int nc);
+void free2d(int** mat, int nr);
 void leggi_file(char* name_file, int ***mat, int* nr, int* nc);
 void stampa_mat(int **mat, int nr, int nc);
 void separa(int ** mat, int nr, int nc, int **vb, int ** vn, int numB, int numN);
@@ -23,10 +24,11 @@ int main(void)
     printf("\nIl vettore contenente gli elementi delle caselle nere contiene: ");
     stampa_vet(vettN, numN);
     free(vettN);
+    free2d(mat, nr);
 }
 
 
-void leggi_file(char* name_file, int **mat, int* nr, int* nc)
+void leggi_file(char* name_file, int ***mat, int* nr, int* nc)
 {
     int i, j;
     int **m;
@@ -113,4 +115,13 @@ void stampa_vet(int *vett, int n)
 {
     for(int i = 0; i < n; i++)
         printf("%d ", vett[i]);
+}
+
+
+void free2d(int** mat, int nr)
+{
+    int i;
+    for (i = 0; i <nr; i++)
+        free(mat[i]);
+    free(mat);
 }
