@@ -20,9 +20,10 @@ int main() {
     vettB = mallocVett(nBlack); //allocazione vettore delle caselle nere
     vettW = mallocVett(nWhite);//allocazione vettore delle caselle bianche
     separa(m, nr, nc, vettB, vettW);
+    printf("\necco la stampa del vettore delle caselle bianche: ");
     stampa_vettore(vettW, nWhite);
+    printf("\necco la stampa del vettore delle caselle nere: ");
     stampa_vettore(vettB, nBlack);
-    //aggiungere stampa dei vettori
     free(vettB);
     free(vettW);
 
@@ -43,7 +44,7 @@ int **malloc2dR(int nr, int nc, FILE* fin){ //restituisce un puntatore a un vett
     int **m;
     m = (int **) malloc(nr * sizeof (int*) ); //m è un vettore di puntatori alle righe della matrice
 
-    for(int i = 0; i <= nr; i++){ //alloco un vettore per ogni riga
+    for(int i = 0; i < nr; i++){ //alloco un vettore per ogni riga
         m[i] = (int *) malloc(nc * sizeof(int)); //per ogni riga alloco un vettore di nc interi
     }
 
@@ -57,7 +58,7 @@ int **malloc2dR(int nr, int nc, FILE* fin){ //restituisce un puntatore a un vett
 }
 
 void freemalloc2d(int **m, int nr){
-    for(int i = 0; i<= nr; i++){
+    for(int i = 0; i< nr; i++){
         free(m[i]);
     }
     free(m);
@@ -82,6 +83,7 @@ int *mallocVett(int dim){ // allocazione di un vettore
 }
 void separa(int **m, int nr, int nc, int *vettB, int *vettW){
     int iB = 0, iW = 0; //iB indice vettore nere, iW indice vettore bianche
+
     for(int i = 0; i < nr; i++){
         for(int j = 0; j < nc; j++){
 
@@ -94,6 +96,6 @@ void separa(int **m, int nr, int nc, int *vettB, int *vettW){
 
 void stampa_vettore(int  *v, int dim){
     for(int i = 0; i< dim; i++){
-        printf("%d", v[i]);
+        printf("%d ", v[i]);
     }
 }
