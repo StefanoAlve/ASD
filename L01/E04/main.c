@@ -44,12 +44,7 @@ int main() {
     int prima_riga = 1, dim, option , richiedi_scelta = 1;
     struct corse *tratte;
 
-    tratte = leggi_tabella();
-    struct corse_multiordinate *tratte_ordinate = malloc(dim * 4 * sizeof(struct corse)) ;
-    OrdinaPerDate(tratte, tratte_ordinate, dim);
-    OrdinaPerTratta(tratte, tratte_ordinate,  dim);
-    OrdinaPerFermata(tratte,tratte_ordinate, dim, 0);
-    OrdinaPerFermata(tratte,tratte_ordinate, dim, 1);
+
 
     fin = apri_file_lettura(nome_file);
     fscanf(fin, "%d", &dim);//ricavo la lunghezza del file e quindi delle dim struct presenti nel vettore
@@ -57,6 +52,14 @@ int main() {
         printf("\nLUNGHEZZA DEL FILE NON SUPPORTATA");
     }
     fclose(fin);
+
+    tratte = leggi_tabella();
+    struct corse_multiordinate *tratte_ordinate = malloc(dim * 4 * sizeof(struct corse)) ;
+    OrdinaPerDate(tratte, tratte_ordinate, dim);
+    OrdinaPerTratta(tratte, tratte_ordinate,  dim);
+    OrdinaPerFermata(tratte,tratte_ordinate, dim, 0);
+    OrdinaPerFermata(tratte,tratte_ordinate, dim, 1);
+
     while (richiedi_scelta) {
         option = leggiComando();
         richiedi_scelta = selezionaDati(tratte, tratte_ordinate, dim, option);
