@@ -17,19 +17,19 @@ int main() {
     char nomeFile[30];
     printf("\nInserire il nome del file da aprire: ");
     scanf("%s", nomeFile);
-    mat = malloc2dR(nomeFile, &nr, &nc);
+    mat = malloc2dR(nomeFile, &nr, &nc);//uso passaggio di nr e nc by reference
     printf("\nSeparando i contenuti delle celle..");
-    contaDimensione(&nr, &nr, &nBianchi, &nNeri);
-    separa(mat, &nr, &nc, &vB, &vN, nBianchi, nNeri);
-    stampa_vettori(vB, vN, nBianchi, nNeri);
+    contaDimensione(&nr, &nr, &nBianchi, &nNeri);//conto se matrice ha dimensione nr*nc pari o dispari
+    separa(mat, &nr, &nc, &vB, &vN, nBianchi, nNeri);//chiamo funzione di separazione
+    stampa_vettori(vB, vN, nBianchi, nNeri);//chiamo funzione di stampa
     free_mat2dR(mat, &nr);
-    free(vB);
+    free(vB);//libero i vettori vB e vN
     free(vN);
     return 0;
 }
 
 int **malloc2dR(char *nomeFile, int *nr, int *nc) {
-    int **mat;
+    int **mat;//vettore di puntatori
     int i, j;
     FILE *fp;
     if ((fp = fopen(nomeFile, "r")) == NULL) {
@@ -37,12 +37,12 @@ int **malloc2dR(char *nomeFile, int *nr, int *nc) {
         exit(1);
     }
     printf("\nFile aperto.");
-    fscanf(fp, "%d %d", nr, nc);
+    fscanf(fp, "%d %d", nr, nc);//leggo prima riga in accordo con specifiche per trovare dimensioni matrice
     printf("\nLeggendo ed allocando da %s una matrice di %d righe e %d colonne.\n\n", nomeFile, *nr, *nc);
-    mat = (int **) malloc((*nr) * (sizeof(int *)));
+    mat = (int **) malloc((*nr) * (sizeof(int *)));//provo ad allocare vettore di puntatori
     if (mat == NULL) exit(1);
     for (i = 0; i < (*nr); i++) {
-        mat[i] = (int *) malloc((*nc) * sizeof(int *));
+        mat[i] = (int *) malloc((*nc) * sizeof(int *));//alloco ogni puntatore per il numero di colonne
         if (mat[i] == NULL) exit(3);
     }
     for (i = 0; i < (*nr); i++) {
