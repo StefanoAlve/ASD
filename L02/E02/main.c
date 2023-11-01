@@ -3,18 +3,25 @@
 
 int **malloc2dR(char *nomeFile, int *nr, int *nc);
 
-void separa(int **mat, int *nr, int *nc, int **vB, int **vN);
+void contaDimensione(int *nr, int *nc, int *nBianchi, int *nNeri);
+
+void separa(int **mat, int *nr, int *nc, int **vB, int **vN, int nBianchi, int nNeri);
+
+void stampa_vettori(int *vBianchi, int *vNeri, int nBianchi, int nNeri);
 
 void free_mat2dR(int **mat, int *nr);
 
+
 int main() {
-    int **mat = NULL, nr, nc, *vB = NULL, *vN = NULL;
+    int **mat = NULL, nr, nc, *vB = NULL, *vN = NULL, dim, nBianchi, nNeri;
     char nomeFile[30];
     printf("\nInserire il nome del file da aprire: ");
     scanf("%s", nomeFile);
     mat = malloc2dR(nomeFile, &nr, &nc);
     printf("\nSeparando i contenuti delle celle..");
-    separa(mat,&nr,&nc,&vB,&vN);
+    contaDimensione(&nr, &nr, &nBianchi, &nNeri);
+    separa(mat, &nr, &nc, &vB, &vN, nBianchi, nNeri);
+    stampa_vettori(vB, vN, nBianchi, nNeri);
     free_mat2dR(mat, &nr);
     free(vB);
     free(vN);
@@ -31,7 +38,7 @@ int **malloc2dR(char *nomeFile, int *nr, int *nc) {
     }
     printf("\nFile aperto.");
     fscanf(fp, "%d %d", nr, nc);
-    printf("\nLeggendoed allocando da %s una matrice di %d righe e %d colonne.\n", nomeFile, *nr, *nc);
+    printf("\nLeggendo ed allocando da %s una matrice di %d righe e %d colonne.\n\n", nomeFile, *nr, *nc);
     mat = (int **) malloc((*nr) * (sizeof(int *)));
     if (mat == NULL) exit(1);
     for (i = 0; i < (*nr); i++) {
@@ -47,11 +54,53 @@ int **malloc2dR(char *nomeFile, int *nr, int *nc) {
     }
     return mat;
 }
-void separa(int **mat,int *nr,int *nc,int **vB,int **vN){
 
+void separa(int **mat, int *nr, int *nc, int **vB, int **vN, int nBianchi, int nNeri) {
+    int i = 0, j = 0, num_neri = 0, num_bianchi = 0;
+    *vB = (int *) malloc(nBianchi * sizeof(int *));
+    *vN = (int *) malloc(nNeri * sizeof(int *));
+    if ((*vB) == NULL || (*vN) == NULL) {
+        printf("\nImpossibile allocare i due vettori dinamicamente.");
+        exit(4);
+    }
+    for (i = 0; i < (*nr); i++) {
+        for (j = 0; j < (*nc); j++) {
+            if ((i + j) % 2 == 0) {
+                (*vB)[num_bianchi] = mat[i][j];
+                num_bianchi++;
+            } else {
+                (*vN)[num_neri] = mat[i][j];
+                num_neri++;
+            }
+        }
+    }
 }
-void free_mat2dR(int **mat,int *nr){
-    for(int i=0;i<(*nr);i++){
+
+void stampa_vettori(int *vBianchi, int *vNeri, int nBianchi, int nNeri) {
+    printf("\nIl vettore delle caselle bianche contiene:\n");
+    for (int i = 0; i < nBianchi; i++) {
+        printf("%d ", vBianchi[i]);
+    }
+    printf("\nIl vettore delle caselle nere contiene:\n");
+    for (int j = 0; j < nNeri; j++) {
+        printf("%d ", vNeri[j]);
+    }
+}
+
+void contaDimensione(int *nr, int *nc, int *nBianchi, int *nNeri) {
+    int dim;
+    dim = (*nr) * (*nc);
+    if (dim % 2 == 0) {
+        *nBianchi = dim / 2;
+        *nNeri = dim / 2;
+    } else {
+        *nBianchi = (dim / 2) + 1;
+        *nNeri = (dim - *nBianchi);
+    }
+}
+
+void free_mat2dR(int **mat, int *nr) {
+    for (int i = 0; i < (*nr); i++) {
         free(mat[i]);
     }
     free(mat);
