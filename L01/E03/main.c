@@ -209,7 +209,7 @@ void stampa_log(dict tratte[lmax], int nrighefile){
     else if(strcmp(scelta,"file")==0){
        file =  fopen("stampa_log.txt","w");
         for(int i=0;i<nrighefile;i++){
-            fscanf(file,"%s %s %s %s", tratte[i].codice_tratta,tratte[i].partenza,tratte[i].destinazione,tratte[i].data);
+            fprintf(file,"%s %s %s %s", tratte[i].codice_tratta,tratte[i].partenza,tratte[i].destinazione,tratte[i].data);
             fprintf(file," %s %s %d \n",tratte[i].ora_partenza,tratte[i].ora_arrivo,tratte[i].ritardo);
         }
         fclose(file);
@@ -343,7 +343,7 @@ void ricerca_dico(dict tratte[lmax],int nrighefile){
         else if(strcmp(scelta,"file")==0){
             file =  fopen("stampa_log.txt","w");
             while(strcasecmp(tratte[m].partenza,partenza)==0){
-                fscanf(file,"%s %s %s %s", tratte[m].codice_tratta,tratte[m].partenza,tratte[m].destinazione,tratte[m].data);
+                fprintf(file,"%s %s %s %s", tratte[m].codice_tratta,tratte[m].partenza,tratte[m].destinazione,tratte[m].data);
                 fprintf(file," %s %s %d \n",tratte[m].ora_partenza,tratte[m].ora_arrivo,tratte[m].ritardo);
                 m++;
             }
