@@ -19,9 +19,10 @@ typedef struct{
 }node, *link;
 
 typedef enum{r_acquisizione,r_ricerca,r_cancellazione,r_stampa, r_fine, r_errore}comando_e;
-
+typedef enum{i_file, i_tastiera, i_errore}input_e;
 //Funzioni
 comando_e leggiComando();
+input_e leggiInput();
 void sceltaComando(comando_e comando);
 //newnode
 int main(void) {
@@ -65,8 +66,13 @@ comando_e leggiComando(){
     return comandoE;
 }
 void sceltaComando(comando_e comando){
+    input_e input;
     switch (comando){
         case (r_acquisizione):
+            do {
+                printf("Vuoi acquisire da file o da tastiera?:");
+                input = leggiInput();
+            }while(input == i_errore); //Finchè l'utente non inserirà un input corretto continuerò a chiedere
             break;
         case (r_ricerca):
             break;
@@ -79,6 +85,25 @@ void sceltaComando(comando_e comando){
         case (r_errore):
             break;
     }
+}
+
+input_e leggiInput(){
+    input_e inputE;
+    char tmp[MAXC], *input;
+    scanf(" %s", tmp);
+    input = strdup(tmp);
+
+    if(strcasecmp(input, "file") == 0){
+        inputE = i_file;
+    }
+    else if(strcasecmp(input, "tastiera") == 0){
+        inputE = i_tastiera;
+    }
+    else{
+        printf("Tipo di input inesistente, riprova!\n");
+        inputE = i_errore;
+    }
+    return inputE;
 }
     //acquisizione
         //file:
