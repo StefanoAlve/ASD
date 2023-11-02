@@ -24,6 +24,7 @@ typedef enum{i_file, i_tastiera, i_errore}input_e;
 comando_e leggiComando();
 input_e leggiInput();
 void sceltaComando(comando_e comando);
+int leggiFile(FILE *fp);
 //newnode
 int main(void) {
     //Inizializzazione variabili
@@ -67,22 +68,39 @@ comando_e leggiComando(){
 }
 void sceltaComando(comando_e comando){
     input_e input;
+    int nr;
+    FILE *fp;
     switch (comando){
-        case (r_acquisizione):
+        case r_acquisizione:
             do {
                 printf("Vuoi acquisire da file o da tastiera?:");
                 input = leggiInput();
-            }while(input == i_errore); //Finchè l'utente non inserirà un input corretto continuerò a chiedere
+            }while(input == i_errore);//Finchè l'utente non inserirà un input corretto continuerò a chiedere
+
+            switch (input){
+                case i_file:
+                    nr = leggiFile(fp);
+                    for(int i=0; i<nr; i++){
+                        acquisisci(nomeFile);
+                    }
+                    fclose(fp);
+                    break;
+                case i_tastiera:
+                    acquisisci(stdin);
+                    break;
+                case i_errore:
+                    break;
+            }
             break;
-        case (r_ricerca):
+        case r_ricerca:
             break;
-        case (r_cancellazione):
+        case r_cancellazione:
             break;
-        case (r_stampa):
+        case r_stampa:
             break;
-        case (r_fine):
+        case r_fine:
             break;
-        case (r_errore):
+        case r_errore:
             break;
     }
 }
@@ -104,6 +122,11 @@ input_e leggiInput(){
         inputE = i_errore;
     }
     return inputE;
+}
+
+int leggiFile(FILE *fp){
+
+    return nr;
 }
     //acquisizione
         //file:
