@@ -1,0 +1,25 @@
+Numero di righe scansionate: 6
+
+Riga numero 1:
+Codice tratta: GTT004	Partenza: Marmolada	Destinazione: Sebastopoli	Data: 2018/11/10	Ora partenza: 00:01:02	Ora arrivo: 00:12:00	Ritardo: 3
+
+
+Riga numero 2:
+Codice tratta: GTT003	Partenza: Einaudi	Destinazione: Cso_Trapani	Data: 2018/09/10	Ora partenza: 14:11:23	Ora arrivo: 14:38:23	Ritardo: 2
+
+
+Riga numero 3:
+Codice tratta: GTT002	Partenza: Politecnico	Destinazione: XVIII_Dicembre	Data: 2018/10/10	Ora partenza: 10:01:23	Ora arrivo: 10:12:08	Ritardo: 4
+
+
+Riga numero 4:
+Codice tratta: GTT002	Partenza: Politecnico	Destinazione: Piazza_Statuto	Data: 2018/11/10	Ora partenza: 23:11:59	Ora arrivo: 23:20:07	Ritardo: 0
+
+
+Riga numero 5:
+Codice tratta: GTT001	Partenza: Braccini	Destinazione: Porta_Nuova	Data: 2018/12/10	Ora partenza: 19:50:00	Ora arrivo: 20:06:00	Ritardo: 1
+
+
+Riga numero 6:
+Codice tratta: GTT001	Partenza: Braccini	Destinazione: Porta_Nuova	Data: 2018/10/10	Ora partenza: 18:50:00	Ora arrivo: 19:07:25	Ritardo: 1
+

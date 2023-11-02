@@ -1,11 +1,26 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 
-
-#define MAXL 30 //indica lunghezza massima della string
-//struct che definisce la singola corsa
-typedef struct {
+#define MAXL 30
+//Variabili globali
+typedef enum {
+    r_date,
+    r_partenza,
+    r_capolinea,
+    r_ritardo,
+    r_ritardo_tot,
+    r_ordina_data,
+    r_ordina_codice,
+    r_ordina_partenza,
+    r_ordina_arrivo,
+    r_ricerca_partenza_dico,
+    r_nuovo_file,
+    r_stampa,
+    r_fine,
+    r_errore
+} comando_e;
+typedef struct { //Struct contenente i dati relativi a ogni tratta
     char *codice_tratta;
     char *partenza;
     char *destinazione;
@@ -13,139 +28,96 @@ typedef struct {
     char *ora_partenza;
     char *ora_arrivo;
     int ritardo;
-} corsa;
+} s_corsa;
 
-//struct che contiene puntatori ai vettori di corsa
-typedef struct {
-    corsa **ordinatoPerCodice;
-    corsa **ordinatoPerData;
-    corsa **ordinatoPerPartenza;
-    corsa **ordinatoPerArrivo;
-} pOrdinato;
+typedef struct { //Struct contenente puntatori ai vettori di tratte ordinate per effettuare gli ordinamenti una singola volta e mantenerli in memoria
+    s_corsa **ordinateData;
+    s_corsa **ordinateCodice;
+    s_corsa **ordinatePartenza;
+    s_corsa **ordinateArrivo;
+} s_puntaOrdinamento;
 
-//definisco le variabili enum aggiornate
-typedef enum {
-    r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_ordina_data, r_ordina_codice,
-    r_ordina_partenza, r_ordina_arrivo, r_ricerca_dicotomica, r_fine, r_errore
-} comando_e;
-
-//definisco i prototipi delle funzioni da utilizzare
+//Funzioni
 comando_e leggiComando(void);
 
-void selezionaDati(corsa vettore_corse[], comando_e comando, int numRighe, int *pFine, pOrdinato *pOrdinamento);
+int leggiFile(s_corsa **corse);
 
-void stampaCorseIntervallo(corsa vettore_corse[], char *dataIn, char *dataFin, int numRighe);
+void inizializzaSPOrdinamenti(s_puntaOrdinamento *puntaOrdinamenti, int nr, s_corsa corse[]);
 
-void stampaCorseFermata(corsa vettore_corse[], char *fermataPartenza, int numRighe);
+void selezionaDati(int *pnr, comando_e comando, s_corsa corse[], s_puntaOrdinamento *puntaOrdinamenti, int *pfine);
 
-void stampaCorseCapolinea(corsa vettore_corse[], char *fermataCapolinea, int numRighe);
+void elencaCorseDate(s_corsa corse[], char datai[], char dataf[], int nr);
 
-void stampaCorseRitardoPerIntervallo(corsa vettore_corse[], char *dataIn, char *dataFin, char *capolinea, int numRighe);
+void elencaCorsePartenza(s_corsa corse[], char partenza[], int nr);
 
-void stampaCorseRitardoPerCodice(corsa vettore_corse[], char *codiceTratta, int numRighe);
+void elencaCorseCapolinea(s_corsa corse[], char capolinea[], int nr);
 
-int leggiFile(corsa **vettore_corse);//funzione che apre file, lo legge e riempie la struct
+void elencaCorseRitardo(s_corsa corse[], char datai[], char dataf[], int nr);
 
-void ordinaData(corsa *pCorse[], int numRighe);
+void elencaRitardoCompl(s_corsa corse[], char codiceTratta[], int nr);
 
-void ordinaCodice(corsa *pCorse[], int numRighe);
+void ordinaPerData(s_corsa *pCorse[], int nr);
 
-void ordinaPartenza(corsa *pCorse[], int numRighe);
+void ordinaPerCodice(s_corsa *pCorse[], int nr);
 
-void ordinaArrivo(corsa *pCorse[], int numRighe);
+void ordinaPerPartenza(s_corsa *pCorse[], int nr);
 
-void ordinaPerPartenzaDicotomica(corsa *pCorse[], int numRighe, char *partenza);
+void ordinaPerArrivo(s_corsa *pCorse[], int nr);
 
-void stampaOutput(corsa *pCorse[], int numRighe);
+void stampaTratta(s_corsa *pCorse[], int nr);
 
-void inizializzaPuntatoreTratte(pOrdinato *pOrdinamento, int numRighe, corsa vett_corse[]);
+void ricercaPerPartenzaDico(s_corsa *pCorse[], int nr, char partenza[]);
 
-void freePuntatoreTratte(pOrdinato *pOrdinamento);
+void deallocaPuntOrdinamenti(s_puntaOrdinamento *puntatoreOrdinamenti);
 
-void freeTratte(int numRighe, corsa *vett_corse);
+void deallocaTratte(s_corsa *corse, int nRighe);
 
-void stampaLog(int numRighe, corsa **vett_corse);
+void stampaCont(s_corsa *corse, int nRighe);
 
 int main(void) {
-    int nRighe, *pFine = NULL, fine = 0;
+    //Inizializzazione variabili
     comando_e comando;
-    pOrdinato ordinamenti;
-    corsa *vettore_corse;
-    pFine = &fine;
-    nRighe = leggiFile(&vettore_corse);
-    inizializzaPuntatoreTratte(&ordinamenti, nRighe, vettore_corse);
-    while (!fine && nRighe != 0) {
+    int nr, fine = 0;
+    s_corsa *tratte;
+    s_puntaOrdinamento ordinamenti;
+    //Apertura file
+    nr = leggiFile(&tratte);
+    inizializzaSPOrdinamenti(&ordinamenti, nr, tratte);
+    while (!fine && nr != -1) {
+        //Lettura Comando
         comando = leggiComando();
-        selezionaDati(vettore_corse, comando, nRighe, pFine, &ordinamenti);
-
+        //Corpo programma
+        selezionaDati(&nr, comando, tratte, &ordinamenti, &fine);
     }
-    freePuntatoreTratte(&ordinamenti);
-    freeTratte(nRighe, vettore_corse);
-
+    //Deallocazione
+    deallocaPuntOrdinamenti(&ordinamenti);
+    deallocaTratte(tratte, nr);
     return 0;
 }
 
-int leggiFile(corsa **vettore_corse) {//implemento la funzione
-    int righe, i = 0;
-    FILE *fp_in;//puntatore a file
-    char nomeFile[MAXL], sTemp[MAXL];
-    corsa *corse;
-    printf("Inserire il nome del file da aprire seguito da .txt:");
-    scanf("%s", nomeFile);
-    printf("Aprendo il file %s...\n", nomeFile);
-    fp_in = fopen(nomeFile, "r");
-    if (fp_in != NULL) {
-        fscanf(fp_in, "%d", &righe);
-        corse = (corsa *) malloc(righe * sizeof(corsa));
-        if (corse == NULL) {
-            printf("\nErrore assegnazione memoria");
-            exit(2);
-        }
-        for (int i = 0; i < righe; i++) {
-            fscanf(fp_in, "%s", sTemp);
-            corse[i].codice_tratta = strdup(sTemp);
-            fscanf(fp_in, "%s", sTemp);
-            corse[i].partenza = strdup(sTemp);
-            fscanf(fp_in, "%s", sTemp);
-            corse[i].destinazione = strdup(sTemp);
-            fscanf(fp_in, "%s", sTemp);
-            corse[i].data = strdup(sTemp);
-            fscanf(fp_in, "%s", sTemp);
-            corse[i].ora_partenza = strdup(sTemp);
-            fscanf(fp_in, "%s", sTemp);
-            corse[i].ora_arrivo = strdup(sTemp);
-            fscanf(fp_in, "%d", &corse[i].ritardo);
-        }
-        *vettore_corse = corse;
-        stampaLog(righe, vettore_corse);
-    } else {
-        printf("\nErrore nell'apertura del file.");
-        exit(1);
-    }
-    fclose(fp_in);
-    return righe;
-}
-
 comando_e leggiComando(void) {
-    comando_e comandoE;
+    //Inizializzazione variabili
     char comando[MAXL];
-    //Lista comandi aggiornata
-    printf("\nLista comandi:");
-    printf("\n\tdate-> elenca corse per intervallo di date inserito:\n");
-    printf("\tpartenza-> elenca corse per fermata di partenza inserita:\n");
-    printf("\tcapolinea-> corse in base a capolinea inserito:\n");
-    printf("\tritardo-> corse con ritardo a capolinea in un intervallo di date inserito\n");
-    printf("\tritardo_tot-> ritardo complessivo per codice di tratta inserito\n");
-    printf("\tordina_data-> ordina vettore per data e in caso verra' considerata l'ora\n");
-    printf("\tordina_codice-> ordina vettore per codice tratta\n");
-    printf("\tordina_partenza-> ordina vettore per fermata di partenza\n");
-    printf("\tordina_destinazione-> ordina vettore per fermata di destinazione\n");
-    printf("\tordina_partenza_dicotomica-> ordina vettore per partenza usando algoritmo di ordinamento dicotomico\n");
-    printf("\tfine-> termina il programma\n");
-    printf("\nInserisci un comando:");
-    scanf("%s", comando);
+    comando_e comandoE;
+    //Corpo funzione
+    printf("\nScegli un comando\n");
+    printf("date -> elenca corse partite tra due date\n");
+    printf("partenza -> elenca corse partite dalla fermata inserita\n");
+    printf("capolinea -> elenca corse che hanno il capolinea inserito\n");
+    printf("ritardo -> elenca le corse che hanno effettuato un ritardo nel periodo inserito\n");
+    printf("ritardo_tot -> indica il ritardo complessivo effettuato dalle corse con il codice di tratta inserito\n");
+    printf("ordina_data -> ordina le corse per data, in caso di data uguale verranno ordinate per ora\n");
+    printf("ordina_codice -> ordina le corse per codice\n");
+    printf("ordina_partenza -> ordina le corse secondo il nome della partenza\n");
+    printf("ordina_arrivo -> ordina le corse secondo il nome della destinazione\n");
+    printf("ricerca_partenza_dico -> esegue la ricerca dicotomica della partenza inserita\n");
+    printf("nuovo_file -> permette all'utente di aprire un nuovo file\n");
+    printf("stampa -> stampa il contenuto del file\n");
+    printf("fine -> termina il programma\n\n");
+    printf("inserisci un comando:");
+    scanf(" %s", comando);
     if (strcmp("date", comando) == 0) {
-        comandoE = 0;//assegno il valore ad enum
+        comandoE = 0;
     } else if (strcmp("partenza", comando) == 0) {
         comandoE = 1;
     } else if (strcmp("capolinea", comando) == 0) {
@@ -160,348 +132,410 @@ comando_e leggiComando(void) {
         comandoE = 6;
     } else if (strcmp("ordina_partenza", comando) == 0) {
         comandoE = 7;
-    } else if (strcmp("ordina_destinazione", comando) == 0) {
+    } else if (strcmp("ordina_arrivo", comando) == 0) {
         comandoE = 8;
-    } else if (strcmp("ordina_partenza_dicotomica", comando) == 0) {
+    } else if (strcmp("ricerca_partenza_dico", comando) == 0) {
         comandoE = 9;
-    } else if (strcmp("fine", comando) == 0) {
+    } else if (strcmp("nuovo_file", comando) == 0) {
         comandoE = 10;
-    } else {
+    } else if (strcmp("stampa", comando) == 0) {
         comandoE = 11;
-        printf("Comando non riconosciuto.\n");
+    } else if (strcmp("fine", comando) == 0) {
+        comandoE = 12;
+    } else {
+        printf("\nComando non riconosciuto! Riprova\n");
+        comandoE = 13;
     }
     return comandoE;
 }
 
-//funzione che gestisce gli inserimenti a seconda della scelta del comando e chiama le relative funzioni
-void selezionaDati(corsa vettore_corse[], comando_e comando, int numRighe, int *pFine, pOrdinato *pOrdinamento) {
-    char dataIn[MAXL], dataFin[MAXL], partenza[MAXL], capolinea[MAXL], codiceTratta[MAXL];
-    corsa *pCorse[numRighe];//puntatore alla struct
-    for (int i = 0; i < numRighe; ++i) {
-        pCorse[i] = &vettore_corse[i];
-    }
+int leggiFile(s_corsa **pcorse) {
+    //Inizializzazione variabili
+    FILE *fp;
+    int i, nr = -1;
+    char nomeFile[MAXL], tmp[MAXL];
+    s_corsa *corse; //Utilizzo variabile ausiliaria per rendere più leggibili le allocazioni dinamiche
+    //Apertura file
+    printf("Inserisci il nome del file:");
+    scanf("%s", nomeFile);
+    fp = fopen(nomeFile, "r");
+    if (fp != NULL) {
 
-    //gestisco gli input e le chiamate a funzioni di stampa
+        fscanf(fp, "%d", &nr);
+        corse = (s_corsa *) malloc(nr * sizeof(s_corsa));
+        if (corse == NULL) {
+            printf("Errore nell'assegnazione della memoria\n");
+            exit(1);
+        }
+        //Corpo programma
+        for (i = 0; i < nr; i++) {
+            //Alloco le stringhe dinamicamente utilizzando strdup, la funzione riconosce il \0 nel vettore di char statico tmp, alloca il giusto spazio di memoria per contenere la stringa, copia la stringa in quello spazio e ne restituisce il puntatore
+            fscanf(fp, "%s", tmp);
+            corse[i].codice_tratta = (char *) malloc(strlen(tmp) * sizeof(char) + sizeof(char));
+            strcpy(corse[i].codice_tratta, tmp);
+            fscanf(fp, "%s", tmp);
+            corse[i].partenza = (char *) malloc(strlen(tmp) * sizeof(char) + sizeof(char));
+            strcpy(corse[i].partenza, tmp);
+            fscanf(fp, "%s", tmp);
+            corse[i].destinazione = (char *) malloc(strlen(tmp) * sizeof(char) + sizeof(char));
+            strcpy(corse[i].destinazione, tmp);
+            fscanf(fp, "%s", tmp);
+            corse[i].data = (char *) malloc(strlen(tmp) * sizeof(char) + sizeof(char));
+            strcpy(corse[i].data, tmp);
+            fscanf(fp, "%s", tmp);
+            corse[i].ora_partenza = (char *) malloc(strlen(tmp) * sizeof(char) + sizeof(char));
+            strcpy(corse[i].ora_partenza, tmp);
+            fscanf(fp, "%s", tmp);
+            corse[i].ora_arrivo = (char *) malloc(strlen(tmp) * sizeof(char) + sizeof(char));
+            strcpy(corse[i].ora_arrivo, tmp);
+            fscanf(fp, "%d", &corse[i].ritardo);
+        }
+        stampaCont(corse, nr);
+        *pcorse = corse;
+    } else {
+        printf("Errore nell'apertura del file!\n");
+        exit(1);
+    }
+    fclose(fp);
+    return nr;
+}
+
+void inizializzaSPOrdinamenti(s_puntaOrdinamento *puntaOrdinamenti, int nr, s_corsa corse[]) {
+    // Alloca memoria per gli array all'interno di puntaOrdinamenti
+    puntaOrdinamenti->ordinateData = (s_corsa **) malloc(nr * sizeof(s_corsa *));
+    puntaOrdinamenti->ordinateArrivo = (s_corsa **) malloc(nr * sizeof(s_corsa *));
+    puntaOrdinamenti->ordinateCodice = (s_corsa **) malloc(nr * sizeof(s_corsa *));
+    puntaOrdinamenti->ordinatePartenza = (s_corsa **) malloc(nr * sizeof(s_corsa *));
+
+    if (puntaOrdinamenti->ordinateData && puntaOrdinamenti->ordinateArrivo && puntaOrdinamenti->ordinateCodice &&
+        puntaOrdinamenti->ordinatePartenza) {
+        for (int i = 0; i < nr; i++) {
+            puntaOrdinamenti->ordinateData[i] = &corse[i];
+            puntaOrdinamenti->ordinateArrivo[i] = &corse[i];
+            puntaOrdinamenti->ordinateCodice[i] = &corse[i];
+            puntaOrdinamenti->ordinatePartenza[i] = &corse[i];
+        }
+        //Inizializzo tutti gli ordinamenti
+        ordinaPerData(puntaOrdinamenti->ordinateData, nr);
+        ordinaPerPartenza(puntaOrdinamenti->ordinatePartenza, nr);
+        ordinaPerArrivo(puntaOrdinamenti->ordinateArrivo, nr);
+        ordinaPerCodice(puntaOrdinamenti->ordinateCodice, nr);
+    } else {
+        printf("Errore nell'allocazione della memoria\n");
+        exit(1);
+    }
+}
+
+
+void selezionaDati(int *pnr, comando_e comando, s_corsa corse[], s_puntaOrdinamento *puntaOrdinamenti, int *pfine) {
+    //Inizializzazione variabili
+    char partenza[MAXL], capolinea[MAXL], codiceTratta[MAXL], datai[MAXL], dataf[MAXL], partenza1[MAXL];
+    int nr = *pnr;
+    s_corsa *pTratte[nr];
+    for (int i = 0; i < nr; i++) {
+        pTratte[i] = &corse[i];
+    }
     switch (comando) {
         case r_date:
-            printf("\nInserisci la data iniziale del tipo aaaa/mm/gg:");
-            scanf("%s", dataIn);
-            printf("\nInserisci la data finale nel formato aaaa/mm/gg:");
-            scanf("%s", dataFin);
-            printf("\nRicerco corse partite dal %s al %s", dataIn, dataFin);
-            stampaCorseIntervallo(vettore_corse, dataIn, dataFin, numRighe);//chiama funzione di stampa
+            printf("\nInserisci la data da cui iniziare la ricerca nel formato aaaa/mm/gg: ");
+            scanf("%s", datai);
+            printf("\nInserisci la data in cui terminare la ricerca nel formato aaaa/mm/gg: ");
+            scanf("%s", dataf);
+            elencaCorseDate(corse, datai, dataf, nr);
             break;
         case r_partenza:
-            printf("\nInserire la fermata di partenza:");
+            printf("\nInserire nome fermata di partenza: ");
             scanf("%s", partenza);
-            stampaCorseFermata(vettore_corse, partenza, numRighe);//chiama funzione di stampa
+            elencaCorsePartenza(corse, partenza, nr);
             break;
         case r_capolinea:
-            printf("\nInserire il capolinea:");
+            printf("\nInserire nome capolinea: ");
             scanf("%s", capolinea);
-            stampaCorseCapolinea(vettore_corse, capolinea, numRighe);//chiama funzione di stampa
+            elencaCorseCapolinea(corse, capolinea, nr);
             break;
         case r_ritardo:
-            printf("\nInserire la destinazione:");
-            scanf("%s", capolinea);
-            printf("\nInserire la data iniziale:");
-            scanf("%s", dataIn);
-            printf("\nInserire la data finale:");
-            scanf("%s", dataFin);
-            stampaCorseRitardoPerIntervallo(vettore_corse, dataIn, dataFin, capolinea,
-                                            numRighe);//chiama funzione di stampa
+            printf("\nInserisci la data da cui iniziare la ricerca nel formato aaaa/mm/gg: ");
+            scanf("%s", datai);
+            printf("\nInserisci la data in cui terminare la ricerca nel formato aaaa/mm/gg: ");
+            scanf("%s", dataf);
+            elencaCorseRitardo(corse, datai, dataf, nr);
             break;
         case r_ritardo_tot:
-            printf("\nInserire codice tratta per ritardo:");
+            printf("\nInserire codice di tratta: ");
             scanf("%s", codiceTratta);
-            stampaCorseRitardoPerCodice(vettore_corse, codiceTratta, numRighe);//chiama funzione di stampa
+            elencaRitardoCompl(corse, codiceTratta, nr);
             break;
         case r_ordina_data:
-            stampaOutput(pOrdinamento->ordinatoPerData, numRighe);
+            printf("Le corse ordinate per data risultano:\n");
+            stampaTratta(puntaOrdinamenti->ordinateData, nr);
             break;
         case r_ordina_codice:
-            stampaOutput(pOrdinamento->ordinatoPerCodice, numRighe);
+            printf("Le corse ordinate per codice risultano:\n");
+            stampaTratta(puntaOrdinamenti->ordinateCodice, nr);
             break;
         case r_ordina_partenza:
-            stampaOutput(pOrdinamento->ordinatoPerPartenza, numRighe);
+            printf("Le corse ordinate per partenza risultano:\n");
+            stampaTratta(puntaOrdinamenti->ordinatePartenza, nr);
             break;
         case r_ordina_arrivo:
-            stampaOutput(pOrdinamento->ordinatoPerArrivo, numRighe);
+            printf("Le corse ordinate per destinazione risultano:\n");
+            stampaTratta(puntaOrdinamenti->ordinateArrivo, nr);
             break;
-        case r_ricerca_dicotomica:
-            printf("\nInserisci la stazione di partenza:");
-            scanf("%s", partenza);
-            ordinaPerPartenzaDicotomica(pCorse, numRighe, partenza);
+        case r_ricerca_partenza_dico:
+            printf("Inserisci partenza da ricercare: ");
+            scanf("%s", partenza1);
+            ricercaPerPartenzaDico(pTratte, nr, partenza1);
+            break;
+        case r_nuovo_file:
+
+            deallocaPuntOrdinamenti(puntaOrdinamenti);
+            deallocaTratte(corse, nr);
+            nr = leggiFile(&corse);
+            *pnr = nr;
+            inizializzaSPOrdinamenti(puntaOrdinamenti, nr, corse);
+            break;
+        case r_stampa:
+            stampaCont(corse, nr);
             break;
         case r_fine:
-            *pFine = 1;//aggiorno condizione di terminazione
-            printf("Fine programma.");
+            *pfine = 1;
+            printf("Programma terminato senza errori.\n");
             break;
         case r_errore:
             break;
     }
 }
 
-void stampaCorseFermata(corsa vettore_corse[], char *fermataPartenza, int numRighe) {
-    int flag = 0;
-    printf("\nLe tratte partite dalla fermata %s\n", fermataPartenza);
-    for (int i = 0; i < numRighe; i++) {
-        if (strcasecmp(vettore_corse[i].partenza, fermataPartenza) ==
-            0) {//confronto le due stringhe con funzione senza case-sensitive
-            printf("\n%s - %s partito alle ore %s della data %s\n", vettore_corse[i].partenza,
-                   vettore_corse[i].destinazione, vettore_corse[i].ora_partenza, vettore_corse[i].data);
-            //incremento l'indice della riga i-esima
-            flag++;
-        }
-    }
-    if (flag == 0) {
-        printf("\nNon sono state trovate tratte per la fermata %s", fermataPartenza);
-    }
-}
 
-void stampaCorseRitardoPerCodice(corsa vettore_corse[], char *codiceTratta, int numRighe) {
-    int ritardoComplessivo = 0, flag = 0;
-    for (int i = 0; i < numRighe; ++i) {
-        if (strcasecmp(vettore_corse[i].codice_tratta, codiceTratta) ==
-            0) {//confronto le due stringhe con funzione senza case-sensitive
-            ritardoComplessivo += vettore_corse[i].ritardo;
-            flag++;
+void elencaRitardoCompl(s_corsa corse[], char codiceTratta[], int nr) {
+    int ritardo_tot = 0, flag = 0;
+    for (int i = 0; i < nr; i++) {
+        if (strcasecmp(corse[i].codice_tratta, codiceTratta) == 0) {
+            ritardo_tot += corse[i].ritardo;
+            flag = 1;
         }
     }
-    if (flag == 0) {//se non ho minuti accumulati
-        printf("\n non e' presente la tratta %s", codiceTratta);
+    if (!flag) {
+        printf("\nNon sono presenti corse aventi tale codice di tratta.\n");
     } else {
-        printf("\nIl ritardo complessivo per la tratta %s e' %d minuti:\n", codiceTratta, ritardoComplessivo);
+        printf("\nIl ritardo complessivo delle corse con codice di tratta %s vale: %d minuti\n", codiceTratta,
+               ritardo_tot);
     }
 }
 
-void stampaCorseCapolinea(corsa vettore_corse[], char *fermataCapolinea, int numRighe) {
+void elencaCorseCapolinea(s_corsa corse[], char capolinea[], int nr) {
     int flag = 0;
-    printf("\nLe corse per la fermata %s\n", fermataCapolinea);
-    for (int i = 0; i < numRighe; ++i) {
-        if (strcasecmp(vettore_corse[i].destinazione, fermataCapolinea) ==
-            0) {//confronto le due stringhe con funzione senza case-sensitive
-            flag++;
-            printf("\n%s - %s arrivato alle ore %s del %s", vettore_corse[i].partenza, vettore_corse[i].destinazione,
-                   vettore_corse[i].ora_arrivo, vettore_corse[i].data);
+    printf("\nLe corse che hanno come capolinea %s sono:\n", capolinea);
+    for (int i = 0; i < nr; i++) {
+        if (strncasecmp(corse[i].destinazione, capolinea, strlen(capolinea)) == 0) {
+            printf("%s - %s del %s partito alle ore %s\n", corse[i].partenza, corse[i].destinazione, corse[i].data,
+                   corse[i].ora_partenza);
+            flag = 1;
         }
     }
-    if (flag == 0) {
-        printf("\nNon sono presenti corse per la fermata %s", fermataCapolinea);
+    if (!flag) {
+        printf("\nNon sono presenti corse aventi tale capolinea.\n");
     }
+
 }
 
-void stampaCorseIntervallo(corsa vettore_corse[], char *dataIn, char *dataFin, int numRighe) {
+void elencaCorsePartenza(s_corsa corse[], char partenza[], int nr) {
     int flag = 0;
-    printf("\nLe corse partite dal %s al %s", dataIn, dataFin);
-    for (int i = 0; i < numRighe; ++i) {
-        if (strcasecmp(vettore_corse[i].data, dataIn) >= 0 &&
-            strcasecmp(vettore_corse[i].data, dataFin)) {//controllo se la data sta nell'intervallo
-            flag++;
-            printf("\nCodice %s da %s a %s in data %s", vettore_corse[i].codice_tratta, vettore_corse[i].partenza,
-                   vettore_corse[i].destinazione, vettore_corse[i].data);
+    printf("\nLe corse che sono partite da %s sono:\n", partenza);
+    for (int i = 0; i < nr; i++) {
+        if (strncasecmp(corse[i].partenza, partenza, strlen(partenza)) == 0) {
+            printf("%s - %s del %s partito alle ore %s\n", corse[i].partenza, corse[i].destinazione, corse[i].data,
+                   corse[i].ora_partenza);
+            flag = 1;
         }
     }
-    if (flag == 0) {
-        printf("\nNon sono presenti corse nel periodo dal %s al %s", dataIn, dataFin);
+    if (!flag) {
+        printf("\nNon sono presenti corse aventi tale fermata di partenza.\n");
     }
 }
 
-void
-stampaCorseRitardoPerIntervallo(corsa vettore_corse[], char *dataIn, char *dataFin, char *capolinea, int numRighe) {
+void elencaCorseDate(s_corsa tratte[], char datai[], char dataf[], int nr) {
     int flag = 0;
-    printf("\nLe tratte che sono partite in ritardo tra il %s e il %s sono:\n", dataIn, dataFin);
-    for (int i = 0; i < numRighe; i++) {
-        if (strcmp(vettore_corse[i].data, dataIn) >= 0 &&
-            strcmp(vettore_corse[i].data, dataFin) <= 0) {//controllo se la data sta nell'intervallo
-            if (vettore_corse[i].ritardo > 0) {
-                printf("\n%s - %s del %s partito alle ore %s con un ritardo di %d\n", vettore_corse[i].partenza,
-                       vettore_corse[i].destinazione, vettore_corse[i].data, vettore_corse[i].ora_partenza,
-                       vettore_corse[i].ritardo);
+    printf("\nLe tratte che sono partite tra il %s e il %s sono:\n", datai, dataf);
+    for (int i = 0; i < nr; i++) {
+        if (strcmp(tratte[i].data, datai) >= 0 && strcmp(tratte[i].data, dataf) <= 0) {
+            printf("%s - %s del %s partito alle ore %s\n", tratte[i].partenza, tratte[i].destinazione, tratte[i].data,
+                   tratte[i].ora_partenza);
+            flag = 1;
+        }
+    }
+    if (!flag) {
+        printf("\nNon sono presenti corse nell'intervallo richiesto.\n");
+    }
+}
+
+void elencaCorseRitardo(s_corsa corse[], char datai[], char dataf[], int nr) {
+    int flag = 0;
+    printf("\nLe corse partite in ritardo tra il %s e il %s sono:\n", datai, dataf);
+    for (int i = 0; i < nr; i++) {
+        if (strcmp(corse[i].data, datai) >= 0 && strcmp(corse[i].data, dataf) <= 0) {
+            if (corse[i].ritardo > 0) {
+                printf("%s - %s del %s partito alle ore %s con un ritardo di %d\n", corse[i].partenza,
+                       corse[i].destinazione, corse[i].data, corse[i].ora_partenza, corse[i].ritardo);
                 flag = 1;
             }
         }
     }
-    if (flag == 0) {
-        printf("\nNon sono presenti tratte arrivate al capolinea %s in ritardo dal %s al %s.\n", capolinea, dataIn,
-               dataFin);
+    if (!flag) {
+        printf("\nNon sono presenti corse nell'intervallo richiesto.\n");
     }
 }
 
-void stampaOutput(corsa *pCorse[], int numRighe) {
-    for (int i = 0; i < numRighe; ++i) {
-        printf("\n%s %s %s %s %s %s %d", pCorse[i]->codice_tratta, pCorse[i]->partenza, pCorse[i]->destinazione,
-               pCorse[i]->data, pCorse[i]->ora_partenza, pCorse[i]->ora_arrivo, pCorse[i]->ritardo);
-    }
-}
-
-//utilizzzo insertion sort andando a verificare che se le date sono uguali allora confronto le ore di partenza ed in caso analogo conronto sull'orario di arrivo
-void ordinaData(corsa *pCorse[], int numRighe) {
-    int i, j, flag;
-    corsa *temp;
-    for (i = 1; i < numRighe; ++i) {
-        temp = pCorse[i];
+void ordinaPerData(s_corsa *pCorse[], int nr) {
+    //Insertion sort
+    int i, j, swap;
+    s_corsa *key;
+    for (i = 1; i < nr; i++) {
+        key = pCorse[i];
         j = i - 1;
-        flag = 1;
-        while (j >= 0 && flag) {
-            if (strcmp(temp->data, pCorse[j]->data) < 0) {
+        swap = 1;
+        while (j >= 0 && swap) {
+            if (strcmp(key->data, pCorse[j]->data) < 0) {
                 pCorse[j + 1] = pCorse[j];
-            } else if (strcmp(temp->data, pCorse[j]->data) == 0 &&
-                       strcmp(temp->ora_partenza, pCorse[j]->ora_partenza) < 0) {
+            } else if (strcmp(key->data, pCorse[j]->data) == 0 &&
+                       strcmp(key->ora_partenza, pCorse[j]->ora_partenza) < 0) {
                 pCorse[j + 1] = pCorse[j];
-            } else if (strcmp(temp->data, pCorse[j]->data) == 0 &&
-                       strcmp(temp->ora_partenza, pCorse[j]->ora_partenza) == 0 &&
-                       strcmp(temp->ora_arrivo, pCorse[j]->ora_arrivo) < 0) {
+            } else if (strcmp(key->data, pCorse[j]->data) == 0 &&
+                       strcmp(key->ora_partenza, pCorse[j]->ora_partenza) == 0 &&
+                       strcmp(key->ora_arrivo, pCorse[j]->ora_arrivo) < 0) {
                 pCorse[j + 1] = pCorse[j];
             } else {
-                flag = 0;
+                swap = 0;
             }
-            if (flag) {
+            if (swap) {
                 j--;
             }
         }
-        pCorse[j + 1] = temp;
+        pCorse[j + 1] = key;
     }
 }
 
-void ordinaCodice(corsa *pCorse[], int numRighe) {
+void ordinaPerPartenza(s_corsa *pCorse[], int nr) {
+    //Insertion sort
     int i, j;
-    corsa *temp;
-    for (i = 1; i < numRighe; i++) {
-        temp = pCorse[i];
+    s_corsa *key;
+
+    for (i = 1; i < nr; i++) {
+        key = pCorse[i];
         j = i - 1;
-        while (j >= 0 && strcmp(temp->codice_tratta, pCorse[j]->codice_tratta) < 0) {
+        while (j >= 0 && strcmp(key->partenza, pCorse[j]->partenza) < 0) {
             pCorse[j + 1] = pCorse[j];
             j--;
         }
-        pCorse[j + 1] = temp;
+        pCorse[j + 1] = key;
     }
 }
 
-void ordinaPartenza(corsa *pCorse[], int numRighe) {
+void ordinaPerArrivo(s_corsa *pCorse[], int nr) {
+    //Insertion sort
     int i, j;
-    corsa *temp;
-    for (i = 1; i < numRighe; i++) {
-        temp = pCorse[i];
+    s_corsa *key;
+
+    for (i = 1; i < nr; i++) {
+        key = pCorse[i];
         j = i - 1;
-        while (j >= 0 && strcmp(temp->partenza, pCorse[j]->partenza) < 0) {
+        while (j >= 0 && strcmp(key->destinazione, pCorse[j]->destinazione) < 0) {
             pCorse[j + 1] = pCorse[j];
             j--;
         }
-        pCorse[j + 1] = temp;
+        pCorse[j + 1] = key;
     }
 }
 
-void ordinaArrivo(corsa *pCorse[], int numRighe) {
+void ordinaPerCodice(s_corsa *pCorse[], int nr) {
+    //Insertion sort
     int i, j;
-    corsa *temp;
-    for (i = 1; i < numRighe; i++) {
-        temp = pCorse[i];
+    s_corsa *key;
+
+    for (i = 1; i < nr; i++) {
+        key = pCorse[i];
         j = i - 1;
-        while (j >= 0 && strcmp(temp->destinazione, pCorse[j]->destinazione) < 0) {
+        while (j >= 0 && strcmp(key->codice_tratta, pCorse[j]->codice_tratta) < 0) {
             pCorse[j + 1] = pCorse[j];
             j--;
         }
-        pCorse[j + 1] = temp;
+        pCorse[j + 1] = key;
     }
 }
 
-//ho scelto di utilizzare un ciclo do-while in quanto la mininma esecuzione è una ed implemento l'algoritmo di ricerca binaria
-void ordinaPerPartenzaDicotomica(corsa *pCorse[], int numRighe, char *partenza) {
-    ordinaPartenza(pCorse, numRighe);//ordino per partenze per usare la ricerca dicotomica
-    int i, j, flag = 0, xm;
-    i = 0;
-    j = numRighe - 1;
-    fflush(stdin);
-    fflush(stdout);
-    printf("\n\nLe corse trovate sono:\n");
-    do {
-        xm = (i + j) / 2;
-        if (strncasecmp(partenza, pCorse[xm]->partenza, 3) < 0) {
-            j = xm - 1;//mi sposto a sinistra di xm
-        } else if (strncasecmp(partenza, pCorse[xm]->partenza, 3) > 0) {
-            i = xm + 1;//mi sposto a destra di
+void ricercaPerPartenzaDico(s_corsa *pCorse[], int nr, char partenza[]) {
+    //Ricerca dicotomica basata sul confronto delle partenze
+    ordinaPerPartenza(pCorse, nr);
+    int l, r, cont = 0, pm, flag = 0;
+    l = 0;
+    r = nr - 1;
+    printf("Le corse trovate sono:\n");
+    while (l <= r && !cont) {
+        pm = (l + r) / 2;
+        if (strncasecmp(partenza, pCorse[pm]->partenza, strlen(partenza)) <
+            0) {
+            r = pm - 1;
+        } else if (strncasecmp(partenza, pCorse[pm]->partenza, strlen(partenza)) >
+                   0) {
+            l = pm + 1;
+        } else if (strncasecmp(partenza, pCorse[pm]->partenza, strlen(partenza)) == 0) {
+            printf("%s %s %s %s %s %s %d\n", pCorse[pm]->codice_tratta, pCorse[pm]->partenza,
+                   pCorse[pm]->destinazione, pCorse[pm]->data, pCorse[pm]->ora_partenza, pCorse[pm]->ora_arrivo,
+                   pCorse[pm]->ritardo);
+            flag = 1;
+            //Controllo i vicini dato
+            if (pm + 1 < nr && strncasecmp(partenza, pCorse[pm + 1]->partenza, strlen(partenza)) == 0)
+                printf("%s %s %s %s %s %s %d\n", pCorse[pm + 1]->codice_tratta, pCorse[pm + 1]->partenza,
+                       pCorse[pm + 1]->destinazione, pCorse[pm + 1]->data, pCorse[pm + 1]->ora_partenza,
+                       pCorse[pm + 1]->ora_arrivo, pCorse[pm + 1]->ritardo);
+            if (pm - 1 >= 0 && strncasecmp(partenza, pCorse[pm - 1]->partenza, strlen(partenza)) == 0)
+                printf("%s %s %s %s %s %s %d\n", pCorse[pm - 1]->codice_tratta, pCorse[pm - 1]->partenza,
+                       pCorse[pm - 1]->destinazione, pCorse[pm - 1]->data, pCorse[pm - 1]->ora_partenza,
+                       pCorse[pm - 1]->ora_arrivo, pCorse[pm - 1]->ritardo);
+            cont = 1;
         }
-            //stampo i valori se trovo la chiave su xm oppure sugli indici adiacenti ad xm
-        else if (strncasecmp(partenza, pCorse[xm]->partenza, 3) == 0) {
-            printf("%s %s %s %s %s %s %d\n", pCorse[xm]->codice_tratta, pCorse[xm]->partenza, pCorse[xm]->destinazione,
-                   pCorse[xm]->data, pCorse[xm]->ora_partenza, pCorse[xm]->ora_arrivo, pCorse[xm]->ritardo);
-            if (xm + 1 < numRighe && strncasecmp(partenza, pCorse[xm + 1]->partenza, 3) == 0)
-                printf("%s %s %s %s %s %s %d\n", pCorse[xm + 1]->codice_tratta, pCorse[xm + 1]->partenza,
-                       pCorse[xm + 1]->destinazione, pCorse[xm + 1]->data, pCorse[xm + 1]->ora_partenza,
-                       pCorse[xm + 1]->ora_arrivo, pCorse[xm + 1]->ritardo);
-            if (xm - 1 > 0 && strncasecmp(partenza, pCorse[xm - 1]->partenza, 3) == 0)
-                printf("%s %s %s %s %s %s %d\n", pCorse[xm - 1]->codice_tratta, pCorse[xm - 1]->partenza,
-                       pCorse[xm - 1]->destinazione, pCorse[xm - 1]->data, pCorse[xm - 1]->ora_partenza,
-                       pCorse[xm - 1]->ora_arrivo, pCorse[xm - 1]->ritardo);
-            flag = 1;//condizione di terminazione forzata perchè ho trovato la chiave
-        }
-    } while (!flag && i <= j);
+    }
+    if (!flag) {
+        printf("\nNon sono presenti tratte aventi tale fermata di partenza.\n");
+    }
 }
 
-void inizializzaPuntatoreTratte(pOrdinato *pOrdinamento, int numRighe, corsa vett_corse[]) {
-    pOrdinamento->ordinatoPerCodice = (corsa **) malloc(numRighe * sizeof(corsa *));
-    pOrdinamento->ordinatoPerData = (corsa **) malloc(numRighe * sizeof(corsa *));
-    pOrdinamento->ordinatoPerPartenza = (corsa **) malloc(numRighe * sizeof(corsa *));
-    pOrdinamento->ordinatoPerArrivo = (corsa **) malloc(numRighe * sizeof(corsa *));
-    if (pOrdinamento->ordinatoPerArrivo && pOrdinamento->ordinatoPerPartenza &&
-        pOrdinamento->ordinatoPerData && pOrdinamento->ordinatoPerCodice) {
-        for (int i = 0; i < numRighe; i++) {
-            pOrdinamento->ordinatoPerCodice[i] = &vett_corse[i];
-            pOrdinamento->ordinatoPerData[i] = &vett_corse[i];
-            pOrdinamento->ordinatoPerPartenza[i] = &vett_corse[i];
-            pOrdinamento->ordinatoPerArrivo[i] = &vett_corse[i];
-        }
-        //li ordino
-        ordinaPartenza(pOrdinamento->ordinatoPerPartenza, numRighe);
-        ordinaArrivo(pOrdinamento->ordinatoPerArrivo, numRighe);
-        ordinaData(pOrdinamento->ordinatoPerData, numRighe);
-        ordinaCodice(pOrdinamento->ordinatoPerCodice, numRighe);
-    } else {
-        printf("\nErrore nell'allocazione della memoria dinamica.");
-        exit(-2);
+void stampaTratta(s_corsa *pCorse[], int nr) {
+    for (int i = 0; i < nr; i++) {
+        printf("%s %s %s %s %s %s %d\n", pCorse[i]->codice_tratta, pCorse[i]->partenza, pCorse[i]->destinazione,
+               pCorse[i]->data, pCorse[i]->ora_partenza, pCorse[i]->ora_arrivo, pCorse[i]->ritardo);
     }
-
-
+    printf("\n");
 }
 
-void freePuntatoreTratte(pOrdinato *pOrdinamento) {
-    free(pOrdinamento->ordinatoPerArrivo);
-    free(pOrdinamento->ordinatoPerPartenza);
-    free(pOrdinamento->ordinatoPerCodice);
-    free(pOrdinamento->ordinatoPerData);
+void stampaCont(s_corsa *corse, int nRighe) {
+    printf("Il file contiene: \n");
+    for (int i = 0; i < nRighe; i++) {
+        printf("%s %s %s ", corse[i].codice_tratta, corse[i].partenza, corse[i].destinazione);
+        printf("%s ", corse[i].data);
+        printf("%s ", corse[i].ora_partenza);
+        printf("%s ", corse[i].ora_arrivo);
+        printf("%d\n", corse[i].ritardo);
+    }
 }
 
-void freeTratte(int numRighe, corsa *vett_corse) {
-    for (int i = 0; i < numRighe; i++) {
-        free(vett_corse[i].data);
-        free(vett_corse[i].partenza);
-        free(vett_corse[i].destinazione);
-        free(vett_corse[i].ora_partenza);
-        free(vett_corse[i].ora_arrivo);
+void deallocaPuntOrdinamenti(s_puntaOrdinamento *puntatoreOrdinamenti) {
+    if (puntatoreOrdinamenti != NULL) {
+        free(puntatoreOrdinamenti->ordinateData);
+        free(puntatoreOrdinamenti->ordinateArrivo);
+        free(puntatoreOrdinamenti->ordinateCodice);
+        free(puntatoreOrdinamenti->ordinatePartenza);
     }
-    free(vett_corse);
 }
 
-void stampaLog(int numRighe, corsa **vett_corse) {
-    FILE *fpout;
-    fpout = fopen("log.txt", "w");
-    if (fpout == NULL) {
-        printf("\nErrore. Impossibile aprire il file.");
-        exit(-1);
+void deallocaTratte(s_corsa *tratte, int nRighe) {
+    for (int i = 0; i < nRighe; i++) {
+        free(tratte[i].data);
+        free(tratte[i].partenza);
+        free(tratte[i].ora_partenza);
+        free(tratte[i].destinazione);
+        free(tratte[i].codice_tratta);
+        free(tratte[i].ora_arrivo);
     }
-    fprintf(fpout, "Numero di righe scansionate: %d\n", numRighe);
-    for (int i = 0; i < numRighe; i++) {
-        //stampo i contenuti delle righe lette da file
-        fprintf(fpout, "\nRiga numero %d:\n", i + 1);
-        fprintf(fpout, "Codice tratta: %s\t", vett_corse[i]->codice_tratta);
-        fprintf(fpout, "Partenza: %s\t", vett_corse[i]->partenza);
-        fprintf(fpout, "Destinazione: %s\t", vett_corse[i]->destinazione);
-        fprintf(fpout, "Data: %s\t", vett_corse[i]->data);
-        fprintf(fpout, "Ora partenza: %s\t", vett_corse[i]->ora_partenza);
-        fprintf(fpout, "Ora arrivo: %s\t", vett_corse[i]->ora_arrivo);
-        fprintf(fpout, "Ritardo: %d\n\n", vett_corse[i]->ritardo);
-    }
-    fclose(fpout);
-
+    free(tratte);
 }
