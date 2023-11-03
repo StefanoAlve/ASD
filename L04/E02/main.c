@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #define MAXC 51
 //Strutture
 typedef struct{
@@ -12,10 +13,12 @@ typedef struct{
     char *citta;
     int cap;
 }Item;
-typedef struct{
+
+typedef struct node *link, node_t;
+struct node{
     Item persona;
-    struct node *next;
-}node, *link;
+    link next;
+};
 
 typedef enum{r_acquisizione,r_ricerca,r_cancellazione,r_stampa, r_fine, r_errore}comando_e;
 typedef enum{i_file, i_tastiera, i_errore}input_e;
@@ -31,6 +34,7 @@ void deallocaNodi(link head);
 link inserisciOrdinato(link head, Item val);
 void stampaLista(link head, FILE *fp);
 int confrontaDate(int data1[3], int data2[3]);
+void ricerca(link head, char *codice);
 //newnode
 int main(void) {
     //Inizializzazione variabili
@@ -82,7 +86,8 @@ void sceltaComando(comando_e comando, link *listaPersone){
     Item persona;
     link head = *listaPersone;
     int flag, count = 0;
-    char tmp[MAXC], *nomeFile;
+    char tmp[MAXC], *nomeFile, *codice;
+
     switch (comando){
         case r_acquisizione:
             do {
@@ -127,6 +132,11 @@ void sceltaComando(comando_e comando, link *listaPersone){
             *listaPersone = head;
             break;
         case r_ricerca:
+            printf("Inserire il codice su cui eseguire la ricerca del tipo AXXXX dove x e' un numero tra 0 e 9:");
+            scanf(" %s", tmp);
+            codice = strdup(tmp);
+            ricerca(head, codice);
+            free(codice);
             break;
         case r_cancellazione:
             do {
@@ -147,6 +157,10 @@ void sceltaComando(comando_e comando, link *listaPersone){
             scanf(" %s", tmp);
             nomeFile = strdup(tmp);
             fout = fopen(nomeFile, "a");
+            if(fout == NULL){
+                printf("Errore nell'apertura del file!\n");
+                exit(1);
+            }
             stampaLista(head, fout);
             free(nomeFile);
             fclose(fout);
@@ -200,7 +214,7 @@ opzione_e leggiOpzione(){
 
 link newNode(Item persona, link next){
     link corrente;
-    corrente = (node*)malloc(sizeof(node));
+    corrente = (link)malloc(sizeof(node_t));
     if(corrente == NULL){
         printf("Errore nell'allocazione della memoria!\n");
         exit(1);
@@ -273,7 +287,7 @@ void stampaLista(link head, FILE *fp){
         printf("Lista Vuota!\n");
         return;
     }
-    for(corrente=head; corrente!= NULL; corrente=corrente->next){
+    for(corrente=head; corrente != NULL; corrente=corrente->next){
         fprintf(fp,"%s %s %s %d/%d/%d %s %s %d\n",corrente->persona.codice,corrente->persona.nome,corrente->persona.cognome,corrente->persona.data_di_nascita[0],corrente->persona.data_di_nascita[1],corrente->persona.data_di_nascita[2],corrente->persona.via,corrente->persona.citta,corrente->persona.cap);
     }
     fprintf(fp,"\n");
@@ -291,6 +305,22 @@ int confrontaDate(int data1[3], int data2[3]){
         return 0;
     else
         return -1;
+}
+
+void ricerca(link head, char *codice){
+    link corrente;
+    if(head == NULL){
+        printf("La lista e' vuota, acquisire almeno una persona prima di effettuare la ricerca\n");
+        return;
+    }
+    for(corrente=head; corrente!=NULL; corrente=corrente->next){
+        if(strcasecmp(corrente->persona.codice, codice) == 0){
+            printf("\nLa persona trovata risulta:\n");
+            printf("%s %s %s %d/%d/%d %s %s %d\n",corrente->persona.codice,corrente->persona.nome,corrente->persona.cognome,corrente->persona.data_di_nascita[0],corrente->persona.data_di_nascita[1],corrente->persona.data_di_nascita[2],corrente->persona.via,corrente->persona.citta,corrente->persona.cap);
+            return;
+        }
+    }
+    printf("Non esiste nessuna persona corrispondente a tale codice\n");
 }
 //deallocaNodi (devo deallocare anche tutte le persone)
 //acquisizione
