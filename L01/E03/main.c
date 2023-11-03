@@ -24,6 +24,7 @@ typedef enum{// enum con i possibili comandi che si possono scegliere
     r_ordina_codice,
     r_ordina_partenza,
     r_ordina_arrivo,
+    r_ricerca_lineare,
     r_ricerca_dico_part,
     r_fine
 }comando_e;
@@ -41,6 +42,7 @@ void ordina_codice(dict tratte[lmax],int nrighefile);
 void ordina_partenza(dict tratte[lmax],int nrighefile);
 void ordina_partenza2(dict tratte[lmax],int nrighefile);
 void ordina_arrivo(dict tratte[lmax],int nrighefile);
+void ricerca_lineare(dict tratte[lmax],int nrighefile);
 void ricerca_dico(dict tratte[lmax],int nrighefile);
 int main() {
     int nrighefile;
@@ -82,9 +84,9 @@ comando_e scegli_comandi() {
     char opzione[lmax];
     comando_e comando;
 
-    char comandi_possibili[12][lmax] = {"date", "partenza", "capolinea", "ritardo", "ritardo_tot", "stampa_log", "ordina_data",
-                                        "ordina_codice", "ordina_partenza", "ordina_arrivo","ricerca_dico_part", "fine"};
-    printf("Inserisci il comando (possibili: 'date (aaaa/mm/gg)','partenza','capolinea','ritardo','ritardo_tot','stampa_log','ordina_data','ordina_codice','ordina_partenza','ordina_arrivo','ricerca_dico_part','fine'):\n");
+    char comandi_possibili[13][lmax] = {"date", "partenza", "capolinea", "ritardo", "ritardo_tot", "stampa_log", "ordina_data",
+                                        "ordina_codice", "ordina_partenza", "ordina_arrivo","ricerca_lineare","ricerca_dico_part", "fine"};
+    printf("Inserisci il comando (possibili: 'date (aaaa/mm/gg)','partenza','capolinea','ritardo','ritardo_tot','stampa_log','ordina_data','ordina_codice','ordina_partenza','ordina_arrivo','ricerca_lineare','ricerca_dico_part','fine'):\n");
     scanf("%s", strlwr(opzione));
     for (comando = 0; comando < 12 && strcmp(opzione, comandi_possibili[comando]) != 0; comando++) {
     }
@@ -127,6 +129,8 @@ void menuParola (comando_e comando,dict tratte[lmax],int nrighefile) {
         case r_ordina_arrivo:
             ordina_arrivo(tratte,nrighefile);
             break;
+        case r_ricerca_lineare:
+            ricerca_lineare(tratte,nrighefile);
         case r_ricerca_dico_part:
             ricerca_dico(tratte,nrighefile);
             break;
@@ -300,56 +304,79 @@ void ordina_arrivo(dict tratte[lmax],int nrighefile){
     }
     stampa_log(tratte,nrighefile);
 }
-void ricerca_dico(dict tratte[lmax],int nrighefile){
-    ordina_partenza2(tratte,nrighefile);
-    int l=0,r = nrighefile-1,m, flag= 1;
+void ricerca_lineare(dict tratte[lmax],int nrighefile) {
+    ordina_partenza2(tratte, nrighefile);
+    int i;
     char partenza[lmax];
     printf("Scegli la stazione di partenza da cercare: \n");
-    scanf("%s",partenza);
-    while(l<=r &&flag && flag!=2){
-        m = (r+l)/2;
-        if (strcasecmp(tratte[m].partenza,partenza)>0){
-            r = m-1;
-        }
-        else if(strcasecmp(tratte[m].partenza,partenza)<0){
-            l= m+1;
-        }
-        else if(strcasecmp(tratte[m].partenza,partenza)==0){
-            flag=0;
+    scanf("%s", partenza);
+    FILE *file;
+    char scelta[lmax];
+    printf("Dove vuoi stampare su 'file' o su 'schermo': \n");
+    scanf("%s", scelta);
+    for (i = 0; i < nrighefile; i++) {
+        if (strcasecmp(tratte[i].partenza, partenza)==0) {
+            if (strcmp(scelta, "schermo") == 0){
+                printf("%s %s %s %s", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione,tratte[i].data);
+                printf(" %s %s %d \n", tratte[i].ora_partenza, tratte[i].ora_arrivo, tratte[i].ritardo);
+
+
+            }
+            else if(strcmp(scelta, "file") == 0){
+                fprintf(file,"%s %s %s %s", tratte[i].codice_tratta, tratte[i].partenza, tratte[i].destinazione,tratte[i].data);
+                fprintf(file," %s %s %d \n", tratte[i].ora_partenza, tratte[i].ora_arrivo, tratte[i].ritardo);
+
+            }
 
         }
-        else{
-            printf("Non è stata trovata la stazione %s",partenza);
-            flag = 2;
-        }
     }
-    if (!flag && m!=0){
-        while(strcasecmp(tratte[m-1].partenza,partenza)==0){
+
+}
+void ricerca_dico(dict tratte[lmax], int nrighefile) {
+    ordina_partenza2(tratte, nrighefile);
+    int l = 0, r = nrighefile - 1, m, flag = 1;
+    char partenza[lmax];
+    printf("Scegli la stazione di partenza da cercare: \n");
+    scanf("%s", partenza);
+    while (l <= r && flag && flag != 2) {
+            m = (r + l) / 2;
+            if (strcasecmp(tratte[m].partenza, partenza) > 0) {
+                r = m - 1;
+            } else if (strcasecmp(tratte[m].partenza, partenza) < 0) {
+                l = m + 1;
+            } else if (strcasecmp(tratte[m].partenza, partenza) == 0) {
+                flag = 0;
+
+            } else {
+                printf("Non è stata trovata la stazione %s", partenza);
+                flag = 2;
+            }
+        }
+    if (!flag && m != 0) {
+        while (strcasecmp(tratte[m - 1].partenza, partenza) == 0) {
             m--;
         }
     }
     FILE *file;
     char scelta[lmax];
     printf("Dove vuoi stampare su 'file' o su 'schermo': \n");
-    scanf("%s",scelta);
-    while(strcasecmp(tratte[m].partenza, partenza) == 0){
-        if(strcmp(scelta,"schermo")==0){
-            while(strcasecmp(tratte[m].partenza,partenza)==0){
-                printf("%s %s %s %s", tratte[m].codice_tratta,tratte[m].partenza,tratte[m].destinazione,tratte[m].data);
-                printf(" %s %s %d \n",tratte[m].ora_partenza,tratte[m].ora_arrivo,tratte[m].ritardo);
+    scanf("%s", scelta);
+    while (strcasecmp(tratte[m].partenza, partenza) == 0) {
+        if (strcmp(scelta, "schermo") == 0) {
+            while (strcasecmp(tratte[m].partenza, partenza) == 0) {
+                printf("%s %s %s %s", tratte[m].codice_tratta, tratte[m].partenza, tratte[m].destinazione,tratte[m].data);
+                printf(" %s %s %d \n", tratte[m].ora_partenza, tratte[m].ora_arrivo, tratte[m].ritardo);
                 m++;
             }
         }
-        else if(strcmp(scelta,"file")==0){
-            file =  fopen("stampa_log.txt","w");
-            while(strcasecmp(tratte[m].partenza,partenza)==0){
-                fprintf(file,"%s %s %s %s", tratte[m].codice_tratta,tratte[m].partenza,tratte[m].destinazione,tratte[m].data);
-                fprintf(file," %s %s %d \n",tratte[m].ora_partenza,tratte[m].ora_arrivo,tratte[m].ritardo);
+        else if (strcmp(scelta, "file") == 0) {
+            file = fopen("stampa_log.txt", "w");
+            while (strcasecmp(tratte[m].partenza, partenza) == 0) {
+                fprintf(file, "%s %s %s %s", tratte[m].codice_tratta, tratte[m].partenza, tratte[m].destinazione,tratte[m].data);
+                fprintf(file, " %s %s %d \n", tratte[m].ora_partenza, tratte[m].ora_arrivo, tratte[m].ritardo);
                 m++;
             }
             fclose(file);
+        }
     }
-}
-
-
 }
