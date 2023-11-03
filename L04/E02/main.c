@@ -34,7 +34,9 @@ void deallocaNodi(link head);
 link inserisciOrdinato(link head, Item val);
 void stampaLista(link head, FILE *fp);
 int confrontaDate(int data1[3], int data2[3]);
-void ricerca(link head, char *codice);
+link ricerca(link head);
+link cancellaCodice(link head, Item *val, int *flag);
+link cancellaData(link head, Item *val, int *finito, int datai[3], int dataf[3]);
 //newnode
 int main(void) {
     //Inizializzazione variabili
@@ -54,7 +56,15 @@ comando_e leggiComando(){
     comando_e comandoE;
     char tmp[MAXC], *comando;
     //Corpo programma
-    printf("Inserisci comando:");
+    printf("\n------------------------------------------------------------------------------\n");
+    printf("\t\t\t\tLISTA COMANDI");
+    printf("\n------------------------------------------------------------------------------\n");
+    printf("<acquisizione> -> acquisisci da file o da tastiera un nuovo elemento\n");
+    printf("<ricerca> -> ricerca di un elemento nella lista in base al codice\n");
+    printf("<cancellazione> -> cancellazione di uno o piu' elementi della lista\n");
+    printf("<fine> -> termina programma");
+    printf("\n------------------------------------------------------------------------------\n");
+    printf("\nInserisci comando:");
     scanf("%s", tmp);
     comando = strdup(tmp);
     if(strcasecmp(comando,"acquisizione") == 0){
@@ -83,10 +93,10 @@ void sceltaComando(comando_e comando, link *listaPersone){
     input_e input;
     opzione_e opzione;
     FILE *fin, *fout;
-    Item persona;
-    link head = *listaPersone;
-    int flag, count = 0;
-    char tmp[MAXC], *nomeFile, *codice;
+    Item persona, cancellato;
+    link head = *listaPersone, trovato = NULL;
+    int flag, count = 0, finito = 0, datai[3], dataf[3];
+    char tmp[MAXC], *nomeFile;
 
     switch (comando){
         case r_acquisizione:
@@ -115,9 +125,12 @@ void sceltaComando(comando_e comando, link *listaPersone){
                             printf("Nell'input a riga %d sono presenti errori di formato!\n",count);
                         }
                     }
+                    printf("\n La lista attuale risulta:\n");
+                    stampaLista(head, stdout);
                     fclose(fin);
                     free(nomeFile);
                     break;
+
                 case i_tastiera:
                     printf("Inserisci i dati anagrafici <codice> <nome> <cognome> <data_di_nascita> <via> <citta'> <cap>:");
                     flag = acquisisci(stdin, &persona);
@@ -127,30 +140,60 @@ void sceltaComando(comando_e comando, link *listaPersone){
                     else{
                         printf("Nell'input sono presenti errori di formato!\n");
                     }
+                    printf("\n La lista attuale risulta:\n");
+                    stampaLista(head, stdout);
                     break;
             }
             *listaPersone = head;
             break;
         case r_ricerca:
-            printf("Inserire il codice su cui eseguire la ricerca del tipo AXXXX dove x e' un numero tra 0 e 9:");
-            scanf(" %s", tmp);
-            codice = strdup(tmp);
-            ricerca(head, codice);
-            free(codice);
+            trovato = ricerca(head);
+            if(trovato != NULL){
+                printf("\nLa persona trovata risulta:\n");
+                printf("%s %s %s %d/%d/%d %s %s %d\n",trovato->persona.codice,trovato->persona.nome,trovato->persona.cognome,trovato->persona.data_di_nascita[0],trovato->persona.data_di_nascita[1],trovato->persona.data_di_nascita[2],trovato->persona.via,trovato->persona.citta,trovato->persona.cap);
+            }
             break;
         case r_cancellazione:
             do {
                 printf("Vuoi cancellare in base al codice o alle date?:");
                 opzione = leggiOpzione();
             }while(opzione == o_errore);//Finchè l'utente non inserirà un parametro corretto continuerò a chiedere
-            switch (opzione){
+            switch (opzione) {
                 case o_codice:
-                    //cancellaCodice();
+                    flag = 0;
+                    head = cancellaCodice(head, &cancellato, &flag);
+                    if (!flag) {
+                        printf("L'elemento cancellato risulta:\n");
+                        printf("%s %s %s %d/%d/%d %s %s %d\n", cancellato.codice, cancellato.nome, cancellato.cognome,
+                               cancellato.data_di_nascita[0], cancellato.data_di_nascita[1],
+                               cancellato.data_di_nascita[2], cancellato.via, cancellato.citta, cancellato.cap);
+                        printf("\n La lista attuale risulta:\n");
+                        stampaLista(head, stdout);
+                    }
                     break;
                 case o_date:
-                    //cancellaDate();
+                    count = 0;
+                    printf("Inserisci la data di inizio nel formato gg/mm/aaaa:");
+                    scanf(" %d/%d/%d", &datai[0],&datai[1],&datai[2]);
+                    printf("Inserisci la data di fine nel formato gg/mm/aaaa:");
+                    scanf(" %d/%d/%d", &dataf[0],&dataf[1],&dataf[2]);
+                    while (!finito){
+                        head = cancellaData(head, &cancellato, &finito, datai, dataf);
+                        if(!finito) {
+                            printf("L'elemento cancellato risulta:\n");
+                            printf("%s %s %s %d/%d/%d %s %s %d\n", cancellato.codice, cancellato.nome,
+                                   cancellato.cognome,
+                                   cancellato.data_di_nascita[0], cancellato.data_di_nascita[1],
+                                   cancellato.data_di_nascita[2], cancellato.via, cancellato.citta, cancellato.cap);
+                            count++;
+                        }
+                    }
+                    printf("Elementi eliminati: %d\n", count);
+                    printf("\n La lista attuale risulta:\n");
+                    stampaLista(head, stdout);
                     break;
             }
+            *listaPersone = head;
             break;
         case r_stampa:
             printf("Inserisci il nome del file in cui stampare:");
@@ -276,8 +319,8 @@ link inserisciOrdinato(link head, Item val) {
     //Corpo funzione
     if(head == NULL || confrontaDate(head->persona.data_di_nascita, key) <= 0)  //Se il la data di nascita di head è più piccola della key significa che è head è più vecchio
         return newNode(val, head); //Inserisco in testa
-    for (corrente=head->next, successivo=head; corrente!=NULL && (confrontaDate(key, corrente->persona.data_di_nascita) <= 0); successivo=corrente, corrente=corrente->next); //Ciclo sulla lista fino alla posizione corretta
-    successivo->next = newNode(val, corrente);
+    for (successivo=head->next, corrente=head; successivo!=NULL && (confrontaDate(key, successivo->persona.data_di_nascita) <= 0); corrente=successivo, successivo=successivo->next); //Ciclo sulla lista fino alla posizione corretta
+    corrente->next = newNode(val, successivo); //Inserisco in mezzo
     return head;
 }
 
@@ -291,6 +334,9 @@ void stampaLista(link head, FILE *fp){
         fprintf(fp,"%s %s %s %d/%d/%d %s %s %d\n",corrente->persona.codice,corrente->persona.nome,corrente->persona.cognome,corrente->persona.data_di_nascita[0],corrente->persona.data_di_nascita[1],corrente->persona.data_di_nascita[2],corrente->persona.via,corrente->persona.citta,corrente->persona.cap);
     }
     fprintf(fp,"\n");
+    if(fp != stdout) {
+        printf("Stampa su file eseguita con successo!\n");
+    }
 }
 
 
@@ -307,21 +353,79 @@ int confrontaDate(int data1[3], int data2[3]){
         return -1;
 }
 
-void ricerca(link head, char *codice){
+link ricerca(link head){
     link corrente;
+    char tmp[MAXC], *codice;
+    printf("Inserire il codice su cui eseguire la ricerca del tipo AXXXX dove x e' un numero tra 0 e 9:");
+    scanf(" %s", tmp);
+    codice = strdup(tmp);
     if(head == NULL){
         printf("La lista e' vuota, acquisire almeno una persona prima di effettuare la ricerca\n");
-        return;
+        free(codice);
+        return NULL;
     }
     for(corrente=head; corrente!=NULL; corrente=corrente->next){
         if(strcasecmp(corrente->persona.codice, codice) == 0){
-            printf("\nLa persona trovata risulta:\n");
-            printf("%s %s %s %d/%d/%d %s %s %d\n",corrente->persona.codice,corrente->persona.nome,corrente->persona.cognome,corrente->persona.data_di_nascita[0],corrente->persona.data_di_nascita[1],corrente->persona.data_di_nascita[2],corrente->persona.via,corrente->persona.citta,corrente->persona.cap);
-            return;
+            free(codice);
+            return corrente;
         }
     }
     printf("Non esiste nessuna persona corrispondente a tale codice\n");
+    free(codice);
+    return NULL;
 }
+
+link cancellaCodice(link head, Item *val, int *flag){
+    link corrente, precedente, cancellato;
+    int trovato = 0;
+    cancellato = ricerca(head);
+    if(cancellato !=NULL){
+        for(corrente = head, precedente = NULL; corrente != NULL; precedente = corrente, corrente = corrente->next){
+            if(corrente == cancellato){
+                if(corrente == head){ //Aggiunta in testa
+                    head = corrente->next;
+                }
+                else { // Aggiunta tra due nodi
+                    precedente->next = cancellato->next;
+                }
+                trovato = 1;
+                *val = cancellato->persona;
+                free(cancellato);
+                break;
+            }
+        }
+    }
+    if(!trovato){
+        *flag = 1;
+    }
+    return head;
+}
+
+link cancellaData(link head, Item *val, int *finito, int datai[3], int dataf[3]){
+    link corrente, precedente;
+    int flag = 0;
+    for(corrente = head, precedente = NULL; corrente != NULL; precedente = corrente, corrente = corrente->next){
+        if(confrontaDate(corrente->persona.data_di_nascita, datai) >= 0 && confrontaDate(corrente->persona.data_di_nascita, dataf) <= 0){
+            if(corrente == head){ //Aggiunta in testa
+                head = corrente->next;
+            }
+            else{ //Aggiunta tra due nodi
+                precedente->next = corrente->next;
+            }
+            *val = corrente->persona;
+            flag = 1;
+            free(corrente);
+            break;
+        }
+    }
+    if(!flag){
+        *finito = 1;
+    }
+    return head;
+}
+
+
+
 //deallocaNodi (devo deallocare anche tutte le persone)
 //acquisizione
         //file:
