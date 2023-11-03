@@ -31,18 +31,18 @@ typedef enum {
 comando_e LeggiComando();
 int LeggiFile(struct_tratte **v_tratte);
 void StampaStruct(int i, struct_tratte *v_tratte[]);
-void EseguiComando(int num_righe, struct_tratte v_tratte[], struct_Ordinamenti *p_Sorting, comando_e comando, int *p_fine);
+void EseguiComando(int *num_righe, struct_tratte v_tratte[], struct_Ordinamenti *p_Sorting, comando_e comando, int *p_fine);
 void StampaVideo(int num_righe, struct_tratte *Vett_ordinato[]); //funzione stampa per i vettori di puntatori a struct ordinati
 void StampaVideo1(int num_righe, struct_tratte v_tratte[]); //funzione stampa per solo il vettore di struct originale
 void StampaFile(int num_righe, struct_tratte v_tratte[], char NomeFout[]);
-void Ordinamenti(struct_Ordinamenti *p_Sorting, int num_righe, struct_tratte v_tratte[]);
+void Ordinamenti(struct_Ordinamenti *p_Sorting, int *num_righe, struct_tratte v_tratte[]);
 void DataOraSort(int num_righe, struct_tratte *v_DataOraSort[]);
 void CodTrattaSort(int num_righe, struct_tratte *v_CodTrattaSort[]);
 void PartenzaSort(int num_righe, struct_tratte *v_PartenzaSort[]);
 void DestinazioneSort(int num_righe, struct_tratte *v_DestinazioneSort[]);
 void CercaTrattaPartenza(int num_righe, struct_tratte *v_PartenzaSort[], char stazione_partenza[], int len_partenza);
 void DeallocOrdinamenti(struct_Ordinamenti *p_Sorting);
-void DeallocVettTratte(struct_tratte *v_tratte);
+void DeallocVettTratte(struct_tratte Tratta);
 
 int main() {
     int fine = 0, *p_fine=&fine;
@@ -54,18 +54,21 @@ int main() {
     num_righe = LeggiFile(&v_tratte);
 
     //Ordinamenti
-    Ordinamenti(&Sorting,num_righe,v_tratte);
+    Ordinamenti(&Sorting,&num_righe,v_tratte);
 
     while (!fine && num_righe != 0){
         comando = LeggiComando();
         if (comando != invalid){
-            EseguiComando(num_righe,v_tratte,&Sorting,comando,p_fine);
+            EseguiComando(&num_righe,v_tratte,&Sorting,comando,p_fine);
         } else {
             printf("Comando non riconosciuto, Riprovare\n");
         }
     }
     DeallocOrdinamenti(&Sorting);
-    DeallocVettTratte(v_tratte);
+    for (int i = 0; i<num_righe; i++){
+        DeallocVettTratte(v_tratte[i]);
+    }
+    free(v_tratte);
     printf("\nProgramma terminato Correttamente!\n");
 
     return 0;
@@ -125,7 +128,7 @@ int LeggiFile(struct_tratte **v_tratte){
     fp = fopen(NomeFile,"r");
 
     if (fp != NULL){ // condizione per verificare la corretta apertura del file
-        fscanf(fp,"%d",&nr);
+        fscanf(fp," %d ",&nr);
 
         //Allocazione dinamica vettore di struct
         Tratte = (struct_tratte *)malloc(nr * sizeof(struct_tratte));
@@ -133,13 +136,13 @@ int LeggiFile(struct_tratte **v_tratte){
 
         while (!feof(fp)){ // finchè non arrivo a fine file...
             //strdup copia la stringa e restituisce il puntatore allocandola dinamicamente
-            fscanf(fp,"%s", temp); Tratte[i].codiceTratta = strdup(temp);
-            fscanf(fp,"%s", temp); Tratte[i].partenza = strdup(temp);
-            fscanf(fp,"%s", temp); Tratte[i].destinazione = strdup(temp);
-            fscanf(fp,"%s", temp); Tratte[i].data = strdup(temp);
-            fscanf(fp,"%s", temp); Tratte[i].o_partenza = strdup(temp);
-            fscanf(fp,"%s", temp); Tratte[i].o_arrivo = strdup(temp);
-            fscanf(fp,"%d",&Tratte[i].ritardo);
+            fscanf(fp," %s ", temp); Tratte[i].codiceTratta = strdup(temp);
+            fscanf(fp," %s ", temp); Tratte[i].partenza = strdup(temp);
+            fscanf(fp," %s ", temp); Tratte[i].destinazione = strdup(temp);
+            fscanf(fp," %s ", temp); Tratte[i].data = strdup(temp);
+            fscanf(fp," %s ", temp); Tratte[i].o_partenza = strdup(temp);
+            fscanf(fp," %s ", temp); Tratte[i].o_arrivo = strdup(temp);
+            fscanf(fp," %d ",&Tratte[i].ritardo);
 
             i++;
         }
@@ -162,50 +165,53 @@ void StampaStruct(int i, struct_tratte *v_tratte[]) {
     printf("%d\n", v_tratte[i]->ritardo);
 }
 
-void EseguiComando(int num_righe, struct_tratte v_tratte[], struct_Ordinamenti *p_Sorting, comando_e comando, int *p_fine){
-    int opzione_stampa, len_partenza;
+void EseguiComando(int *num_righe, struct_tratte v_tratte[], struct_Ordinamenti *p_Sorting, comando_e comando, int *p_fine){
+    int opzione_stampa, len_partenza, nr;
     char NomeFout[MAXN],stazione_partenza[MAXN];
     switch (comando){
         case stampa_log:
             printf("1: Stampa a video\n2: Stampa su file\nScegli un comando (1 o 2): ");
             scanf("%d", &opzione_stampa);
             if (opzione_stampa == 1){
-                StampaVideo1(num_righe,v_tratte);
+                StampaVideo1(*num_righe,v_tratte);
             } else if (opzione_stampa == 2) {
                 printf("Inserire il nome file:\n");
                 scanf("%s",NomeFout);
-                StampaFile(num_righe,v_tratte,NomeFout);
+                StampaFile(*num_righe,v_tratte,NomeFout);
             } else {
                 printf("Opzione non valida\n");
             }
             break;
         case sort_data_ora:
-            StampaVideo(num_righe,p_Sorting -> v_DataOraSort);
+            StampaVideo(*num_righe,p_Sorting -> v_DataOraSort);
             break;
         case sort_codTratta:
-            StampaVideo(num_righe,p_Sorting -> v_CodTrattaSort);
+            StampaVideo(*num_righe,p_Sorting -> v_CodTrattaSort);
             break;
         case sort_partenza:
-            StampaVideo(num_righe,p_Sorting -> v_PartenzaSort);
+            StampaVideo(*num_righe,p_Sorting -> v_PartenzaSort);
             break;
         case sort_destinazione:
-            StampaVideo(num_righe,p_Sorting -> v_DestinazioneSort);
+            StampaVideo(*num_righe,p_Sorting -> v_DestinazioneSort);
             break;
         case search_tratta_partenza:
             printf("Nome stazione partenza (anche parziale): ");
             scanf(" %s",stazione_partenza);
             printf("\n");
             len_partenza = strlen(stazione_partenza);
-            CercaTrattaPartenza(num_righe,p_Sorting -> v_PartenzaSort,stazione_partenza,len_partenza);
+            CercaTrattaPartenza(*num_righe,p_Sorting -> v_PartenzaSort,stazione_partenza,len_partenza);
             break;
         case leggi_file:
             //Deallocazione dati
             DeallocOrdinamenti(p_Sorting);
-            DeallocVettTratte(v_tratte);
+            for (int i = 0; i<*num_righe; i++){
+                DeallocVettTratte(v_tratte[i]);
+            }
+            free(v_tratte);
             //Lettura nuovo file e nuova allocazione
-            num_righe = LeggiFile(&v_tratte);
+            nr = LeggiFile(&v_tratte);
             //Ordinamenti sui nuovi dati
-            Ordinamenti(p_Sorting,num_righe,v_tratte);
+            Ordinamenti(p_Sorting,&nr,v_tratte);
             break;
         case fine:
             *p_fine = 1;
@@ -255,17 +261,17 @@ void StampaFile(int num_righe, struct_tratte v_tratte[], char NomeFout[]){
     fclose(fp);
 }
 
-void Ordinamenti(struct_Ordinamenti *p_Sorting, int num_righe, struct_tratte v_tratte[]) {
+void Ordinamenti(struct_Ordinamenti *p_Sorting, int *num_righe, struct_tratte v_tratte[]) {
     //Allocazione dinamica vettori di puntatori a struct per gli ordinamenti
-    p_Sorting->v_DataOraSort = (struct_tratte **) malloc(num_righe * sizeof(struct_tratte *));
-    p_Sorting->v_CodTrattaSort = (struct_tratte **) malloc(num_righe * sizeof(struct_tratte *));
-    p_Sorting->v_PartenzaSort = (struct_tratte **) malloc(num_righe * sizeof(struct_tratte *));
-    p_Sorting->v_DestinazioneSort = (struct_tratte **) malloc(num_righe * sizeof(struct_tratte *));
+    p_Sorting->v_DataOraSort = (struct_tratte **) malloc(*num_righe * sizeof(struct_tratte *));
+    p_Sorting->v_CodTrattaSort = (struct_tratte **) malloc(*num_righe * sizeof(struct_tratte *));
+    p_Sorting->v_PartenzaSort = (struct_tratte **) malloc(*num_righe * sizeof(struct_tratte *));
+    p_Sorting->v_DestinazioneSort = (struct_tratte **) malloc(*num_righe * sizeof(struct_tratte *));
 
     if (p_Sorting->v_DataOraSort == NULL && p_Sorting->v_CodTrattaSort == NULL && p_Sorting->v_PartenzaSort == NULL &&
         p_Sorting->v_DestinazioneSort == NULL)
         exit(1);
-    for (int i = 0; i < num_righe; i++){
+    for (int i = 0; i < *num_righe; i++){
         // Inizializzazione dei vettori di puntatori
         p_Sorting -> v_DataOraSort[i] = &v_tratte[i];
         p_Sorting -> v_CodTrattaSort[i] = &v_tratte[i];
@@ -273,10 +279,10 @@ void Ordinamenti(struct_Ordinamenti *p_Sorting, int num_righe, struct_tratte v_t
         p_Sorting -> v_DestinazioneSort[i] = &v_tratte[i];
     }
 
-    DataOraSort(num_righe,p_Sorting -> v_DataOraSort);
-    CodTrattaSort(num_righe,p_Sorting -> v_CodTrattaSort);
-    PartenzaSort(num_righe,p_Sorting -> v_PartenzaSort);
-    DestinazioneSort(num_righe,p_Sorting -> v_DestinazioneSort);
+    DataOraSort(*num_righe,p_Sorting -> v_DataOraSort);
+    CodTrattaSort(*num_righe,p_Sorting -> v_CodTrattaSort);
+    PartenzaSort(*num_righe,p_Sorting -> v_PartenzaSort);
+    DestinazioneSort(*num_righe,p_Sorting -> v_DestinazioneSort);
 }
 
 void DataOraSort(int num_righe, struct_tratte *v_DataOraSort[]){
@@ -386,12 +392,11 @@ void DeallocOrdinamenti(struct_Ordinamenti *p_Sorting){
     }
 }
 
-void DeallocVettTratte(struct_tratte *v_tratte){
-    free(v_tratte->codiceTratta);
-    free(v_tratte->partenza);
-    free(v_tratte->destinazione);
-    free(v_tratte->data);
-    free(v_tratte->o_partenza);
-    free(v_tratte->o_arrivo);
-    free(v_tratte);
+void DeallocVettTratte(struct_tratte Tratta){
+    free(Tratta.codiceTratta);
+    free(Tratta.partenza);
+    free(Tratta.destinazione);
+    free(Tratta.data);
+    free(Tratta.o_partenza);
+    free(Tratta.o_arrivo);
 }
