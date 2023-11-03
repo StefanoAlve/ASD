@@ -42,33 +42,32 @@ void partenze(dict tratte[lmax],int nrighefile);// confronta le partente nel fil
 void capolinea(dict tratte[lmax],int nrighefile);// confronta i capolinea nel file con quelli in input
 void ritardo(dict tratte[lmax],int nrighefile);// visualizza i ritardi delle tratte inserite in input
 void ritardo_tot(dict tratte[lmax],int nrighefile);// visualizza il ritardo totale della tratta inserita da input
-void stampa_log(dict *ptratte[lmax],int nrighefile);
-void ordina_per_data(dict *ptratte[lmax],int nrighemax);
-void ordina_codice(dict *ptratte[lmax],int nrighefile);
-void ordina_partenza(dict *ptratte[lmax],int nrighefile);
-void ordina_partenza2(dict tratte[lmax],int nrighefile);
-void ordina_arrivo(dict *ptratte[lmax],int nrighefile);
-void ricerca_lineare(dict tratte[lmax],int nrighefile);
-void ricerca_dico(dict tratte[lmax],int nrighefile);
-void inizializzaSpOrdinamenti(spOrdinamenti *pOrdinamenti,int nrighefile,dict tratte[lmax]);
+void stampa_log(dict *ptratte[lmax],int nrighefile);// stampa a video o in un nuovo file
+void ordina_per_data(dict *ptratte[lmax],int nrighemax);// funzione che ordina rispetto alle date
+void ordina_codice(dict *ptratte[lmax],int nrighefile);// funzione che ordina rispetto ai codici delle tratte
+void ordina_partenza(dict *ptratte[lmax],int nrighefile);// funzione che ordina rispetto alla partenza delle tratte
+void ordina_partenza2(dict tratte[lmax],int nrighefile);// funzione che ordina rispetto alla partenza delle tratte ma non stampa
+void ordina_arrivo(dict *ptratte[lmax],int nrighefile);// funzione che ordina rispetto all arrivo delle tratte
+void ricerca_lineare(dict tratte[lmax],int nrighefile);// ricerca lineare di una tratta rispetto alla partenza
+void ricerca_dico(dict tratte[lmax],int nrighefile);//ricerca dicotomica di una tratta rispetto alla partenza
+void inizializzaSpOrdinamenti(spOrdinamenti *pOrdinamenti,int nrighefile,dict tratte[lmax]);// ordina in primisi cosi da avere subito le struct ordinate, senza modificare quella iniziale
 int main() {
     int nrighefile;
     FILE *fin;
-    int *pfine = NULL,fine = 0;
+
     dict tratte[lmax];
     spOrdinamenti ordinamenti;
     spOrdinamenti *pOrdinameti;
     pOrdinameti = &ordinamenti;
-    pfine = &fine;
     fin  = fopen("corse.txt","r");
     if (fin == NULL){
         printf("Errore!");
         return -1;
     }
     fscanf(fin,"%d",&nrighefile);
-    //printf("%d",nrighefile);
+
     ins_in_dict(fin,tratte,nrighefile);
-    //printf("%s",comando);
+
     fclose(fin);
 
     comando_e comando = scegli_comandi();
@@ -77,7 +76,7 @@ int main() {
     menuParola(comando,tratte,pOrdinameti,nrighefile);
 
 }
-void ins_in_dict(FILE *fin,dict tratte[lmax], int nrighefile){
+void ins_in_dict(FILE *fin,dict tratte[lmax], int nrighefile){// legge da file e inserisce nella struct
     for (int i = 0;i<nrighefile;i++)
     {
         fscanf(fin,"%s",tratte[i].codice_tratta);
@@ -89,7 +88,7 @@ void ins_in_dict(FILE *fin,dict tratte[lmax], int nrighefile){
         fscanf(fin,"%d",&tratte[i].ritardo);
     }
 }
-comando_e scegli_comandi() {
+comando_e scegli_comandi() {//vengono scelti i comandi possibili
     char opzione[lmax];
     comando_e comando;
     char comandi_possibili[13][lmax] = {"date", "partenza", "capolinea", "ritardo", "ritardo_tot", "stampa_log", "ordina_data",
@@ -105,7 +104,7 @@ comando_e scegli_comandi() {
 
     return comando;
 }
-void menuParola (comando_e comando,dict tratte[lmax],spOrdinamenti *spOrdinamenti ,int nrighefile) {
+void menuParola (comando_e comando,dict tratte[lmax],spOrdinamenti *spOrdinamenti ,int nrighefile) {// il comando dentra nella funzione e in base alla corrispondenza si risolve
     switch (comando) {
         case r_date:
             date(tratte,nrighefile);
@@ -152,7 +151,7 @@ void menuParola (comando_e comando,dict tratte[lmax],spOrdinamenti *spOrdinament
 
     }
 }
-void date (dict tratte[lmax],int nrighefile)
+void date (dict tratte[lmax],int nrighefile)// ricerca delle tratte tra due date
 {
     char data1[lmax],data2[lmax];
     scanf("%s",data1);
@@ -164,7 +163,7 @@ void date (dict tratte[lmax],int nrighefile)
         }
     }
 }
-void partenze(dict tratte[lmax],int nrighefile){
+void partenze(dict tratte[lmax],int nrighefile){// ricerca tratte in base alla partenza
     char partenza[lmax];
     scanf("%s",partenza);
     printf("Le corse che partite da %s sono:\n",strupr(partenza));
@@ -175,7 +174,7 @@ void partenze(dict tratte[lmax],int nrighefile){
         }
     }
 }
-void capolinea(dict tratte[lmax],int nrighefile){
+void capolinea(dict tratte[lmax],int nrighefile){//ricerca del capolinea della tratta
     char destinazione[lmax];
     scanf("%s",destinazione);
     printf("Le corse aventi destinzione %s sono:", strupr(destinazione));
@@ -186,7 +185,7 @@ void capolinea(dict tratte[lmax],int nrighefile){
         }
     }
 }
-void ritardo(dict tratte[lmax],int nrighefile){
+void ritardo(dict tratte[lmax],int nrighefile){// ricerca del ritardo tra due date di una tratta
     char data1[lmax],data2[lmax];
     scanf("%s",data1);
     scanf("%s",data2);
@@ -197,7 +196,7 @@ void ritardo(dict tratte[lmax],int nrighefile){
         }
     }
 }
-void ritardo_tot(dict tratte[lmax],int nrighefile){
+void ritardo_tot(dict tratte[lmax],int nrighefile){// ritardo totale di una tratta
     char codice_tratta[lmax];
     int ritardo_tot=0;
     scanf("%s",codice_tratta);
@@ -211,18 +210,18 @@ void ritardo_tot(dict tratte[lmax],int nrighefile){
 
 
 }
-void stampa_log(dict *ptratte[lmax], int nrighefile){
+void stampa_log(dict *ptratte[lmax], int nrighefile){// funzione che stampa su file o su schermo
     FILE *file;
     char scelta[lmax];
     printf("Dove vuoi stampare su 'file' o su 'schermo': \n");
     scanf("%s",scelta);
-    if(strcmp(scelta,"schermo")==0){
+    if(strcmp(scelta,"schermo")==0){//stampa su schermo
         for(int i=0;i<nrighefile;i++) {
             printf("%s %s %s %s", ptratte[i]->codice_tratta,ptratte[i]->partenza,ptratte[i]->destinazione,ptratte[i]->data);
             printf(" %s %s %d \n",ptratte[i]->ora_partenza,ptratte[i]->ora_arrivo,ptratte[i]->ritardo);
         }
     }
-    else if(strcmp(scelta,"file")==0){
+    else if(strcmp(scelta,"file")==0){// stampa su file
         file =  fopen("stampa_log.txt","w");
         for(int i=0;i<nrighefile;i++){
             fprintf(file,"%s %s %s %s", ptratte[i]->codice_tratta,ptratte[i]->partenza,ptratte[i]->destinazione,ptratte[i]->data);
@@ -232,7 +231,7 @@ void stampa_log(dict *ptratte[lmax], int nrighefile){
 
     }
 }
-void ordina_per_data(dict *ptratte[lmax],int nrighefile){
+void ordina_per_data(dict *ptratte[lmax],int nrighefile){// ordina per data in base ad un algoritmo di insertion sort
     int i, j, l=0, r=nrighefile-1, x;
     dict *key;
 
@@ -260,9 +259,9 @@ void ordina_per_data(dict *ptratte[lmax],int nrighefile){
         }
         ptratte[j+1] = key;
     }
-    //stampa_log(ptratte,nrighefile);
+
 }
-void ordina_codice(dict *ptratte[lmax],int nrighefile){
+void ordina_codice(dict *ptratte[lmax],int nrighefile){// ordina per codice della tratta
     dict *key;
     int i, j, l=0, r=nrighefile-1;
     for (i = l+1; i <= r; i++) {
@@ -274,9 +273,9 @@ void ordina_codice(dict *ptratte[lmax],int nrighefile){
         }
         ptratte[j+1] = key;
     }
-    //stampa_log(ptratte,nrighefile);
+
 }
-void ordina_partenza(dict *ptratte[lmax],int nrighefile){
+void ordina_partenza(dict *ptratte[lmax],int nrighefile){// ordina per partenza della tratta
     dict *key;
     int i, j, l=0, r=nrighefile-1;
     for (i = l+1; i <= r; i++) {
@@ -288,9 +287,9 @@ void ordina_partenza(dict *ptratte[lmax],int nrighefile){
         }
         ptratte[j+1] = key;
     }
-   // stampa_log(ptratte,nrighefile);
+
 }
-void ordina_partenza2(dict tratte[lmax],int nrighefile){
+void ordina_partenza2(dict tratte[lmax],int nrighefile){// ordina per partenza della tratta ma non stampa
     dict tratte2;
     int i, j, l=0, r=nrighefile-1;
     for (i = l+1; i <= r; i++) {
@@ -303,7 +302,7 @@ void ordina_partenza2(dict tratte[lmax],int nrighefile){
         tratte[j+1] = tratte2;
     }
 }
-void ordina_arrivo(dict *ptratte[lmax],int nrighefile){
+void ordina_arrivo(dict *ptratte[lmax],int nrighefile){// ordina per capolinea della tratta
     dict *key;
     int i, j, l=0, r=nrighefile-1;
     for (i = l+1; i <= r; i++) {
@@ -315,7 +314,7 @@ void ordina_arrivo(dict *ptratte[lmax],int nrighefile){
         }
         ptratte[j+1] = key;
     }
-    //stampa_log(ptratte,nrighefile);
+
 }
 void ricerca_lineare(dict tratte[lmax],int nrighefile) {
     ordina_partenza2(tratte, nrighefile);

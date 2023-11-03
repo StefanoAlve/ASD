@@ -43,7 +43,7 @@ void ordina_partenza(dict tratte[lmax],int nrighefile); // funzione che ordina r
 void ordina_partenza2(dict tratte[lmax],int nrighefile);// funzione che ordina rispetto alla partenza delle trstte ma non stampa
 void ordina_arrivo(dict tratte[lmax],int nrighefile);// funzione che ordina rispetto all arrivo delle tratte
 void ricerca_lineare(dict tratte[lmax],int nrighefile);// ricerca lineare di una tratta rispetto alla partenza
-void ricerca_dico(dict tratte[lmax],int nrighefile);// ricerca dicotomica di una tratta rispetto alla partenza
+void ricerca_dico(dict tratte[lmax],int nrighefile);//ricerca dicotomica di una tratta rispetto alla partenza
 int main() {
     int nrighefile;
     FILE *fin;
