@@ -7,7 +7,7 @@ typedef struct{
     char *codice;
     char *nome;
     char *cognome;
-    char *data_di_nascita;
+    int data_di_nascita[3];
     char *via;
     char *citta;
     int cap;
@@ -23,20 +23,25 @@ typedef enum{o_codice, o_date, o_errore}opzione_e;
 //Funzioni
 comando_e leggiComando();
 input_e leggiInput();
-void sceltaComando(comando_e comando);
+void sceltaComando(comando_e comando, link *listaPersone);
 opzione_e leggiOpzione();
 link newNode(Item persona, link next);
-Item acquisisci(FILE *fp);
-void deallocaPersona(Item persona);
-
+int acquisisci(FILE *fp, Item *persona);
+void deallocaNodi(link head);
+link inserisciOrdinato(link head, Item val);
+void stampaLista(link head, FILE *fp);
+int confrontaDate(int data1[3], int data2[3]);
 //newnode
 int main(void) {
     //Inizializzazione variabili
     comando_e comando;
+    link listaPersone = NULL;
     do {
         comando = leggiComando();
-        sceltaComando(comando);
+        sceltaComando(comando, &listaPersone);
     }while(comando != r_fine);
+
+    deallocaNodi(listaPersone);
 }
 
 
@@ -70,11 +75,13 @@ comando_e leggiComando(){
     free(comando);
     return comandoE;
 }
-void sceltaComando(comando_e comando){
+void sceltaComando(comando_e comando, link *listaPersone){
     input_e input;
     opzione_e opzione;
-    FILE *fp;
+    FILE *fin, *fout;
     Item persona;
+    link head = *listaPersone;
+    int flag, count = 0;
     char tmp[MAXC], *nomeFile;
     switch (comando){
         case r_acquisizione:
@@ -88,24 +95,36 @@ void sceltaComando(comando_e comando){
                     printf("Inserisci il nome del file:");
                     scanf("%s", tmp);
                     nomeFile = strdup(tmp);
-                    fp = fopen(nomeFile, "r");
-                    if(fp == NULL){
+                    fin = fopen(nomeFile, "r");
+                    if(fin == NULL){
                         printf("Errore nell'apertura del file!\n");
                         exit(1);
                     }
-                    while(!feof(fp)){
-                        persona = acquisisci(fp);
-                        deallocaPersona(persona);
+                    while(!feof(fin)){
+                        count++;
+                        flag = acquisisci(fin, &persona);
+                        if(flag) {
+                            head = inserisciOrdinato(head, persona);
+                        }
+                        else{
+                            printf("Nell'input a riga %d sono presenti errori di formato!\n",count);
+                        }
                     }
-                    fclose(fp);
+                    fclose(fin);
                     free(nomeFile);
                     break;
                 case i_tastiera:
                     printf("Inserisci i dati anagrafici <codice> <nome> <cognome> <data_di_nascita> <via> <citta'> <cap>:");
-                    persona = acquisisci(stdin);
-                    deallocaPersona(persona);
+                    flag = acquisisci(stdin, &persona);
+                    if(flag) {
+                        head = inserisciOrdinato(head, persona);
+                    }
+                    else{
+                        printf("Nell'input sono presenti errori di formato!\n");
+                    }
                     break;
             }
+            *listaPersone = head;
             break;
         case r_ricerca:
             break;
@@ -124,6 +143,13 @@ void sceltaComando(comando_e comando){
             }
             break;
         case r_stampa:
+            printf("Inserisci il nome del file in cui stampare:");
+            scanf(" %s", tmp);
+            nomeFile = strdup(tmp);
+            fout = fopen(nomeFile, "a");
+            stampaLista(head, fout);
+            free(nomeFile);
+            fclose(fout);
             break;
         case r_fine:
             break;
@@ -173,48 +199,101 @@ opzione_e leggiOpzione(){
 }
 
 link newNode(Item persona, link next){
-    link x;
-    x = (node*)malloc(sizeof(node));
-    if(x == NULL){
+    link corrente;
+    corrente = (node*)malloc(sizeof(node));
+    if(corrente == NULL){
         printf("Errore nell'allocazione della memoria!\n");
         exit(1);
     }
-    x->persona = persona;
-    x->next = next;
-    return x;
+    corrente->persona = persona;
+    corrente->next = next;
+    return corrente;
 }
 
-Item acquisisci(FILE *fp){
+int acquisisci(FILE *fp, Item *persona){
     //Inizializzazione variabili
-    Item persona;
     char tmp[MAXC];
+    int flag = 0;
     //Corpo programma
-    fscanf(fp," %s",tmp);
-    persona.codice = strdup(tmp);
-    fscanf(fp, " %s", tmp);
-    persona.nome = strdup(tmp);
-    fscanf(fp, " %s", tmp);
-    persona.cognome = strdup(tmp);
-    fscanf(fp, " %s", tmp);
-    persona.data_di_nascita = strdup(tmp);
-    fscanf(fp, " %s", tmp);
-    persona.via = strdup(tmp);
-    fscanf(fp, " %s", tmp);
-    persona.citta = strdup(tmp);
-    fscanf(fp, "%d", &persona.cap);
+    flag += fscanf(fp," %s",tmp);
+    persona->codice = strdup(tmp);
+    flag += fscanf(fp, " %s", tmp);
+    persona->nome = strdup(tmp);
+    flag += fscanf(fp, " %s", tmp);
+    persona->cognome = strdup(tmp);
+    flag += fscanf(fp, "%d/%d/%d", &persona->data_di_nascita[0],&persona->data_di_nascita[1],&persona->data_di_nascita[2]);
+    flag += fscanf(fp, " %s", tmp);
+    persona->via = strdup(tmp);
+    flag += fscanf(fp, " %s", tmp);
+    persona->citta = strdup(tmp);
+    flag += fscanf(fp, "%d", &persona->cap);
 
-    return persona;
+    if(flag != 9){
+        return 0;
+    }
+    return 1;
 }
 
-void deallocaPersona(Item persona){
-    free(persona.codice);
-    free(persona.nome);
-    free(persona.cognome);
-    free(persona.data_di_nascita);
-    free(persona.via);
-    free(persona.citta);
+void deallocaNodi(link head){
+    link corrente = head, successivo;
+    Item persona;
+    while(corrente!=NULL) {
+        successivo=corrente->next;
+        persona = corrente->persona;
+
+        free(persona.codice);
+        free(persona.nome);
+        free(persona.cognome);
+        free(persona.via);
+        free(persona.citta);
+
+        free(corrente);
+        corrente = successivo;
+    }
 }
-    //acquisizione
+
+link inserisciOrdinato(link head, Item val) {
+    link corrente, successivo;
+    int key[3];
+    //Inizializzazione della chiave
+    for(int i = 0; i<3; i++){
+        key[i] = val.data_di_nascita[i];
+    }
+    //Corpo funzione
+    if(head == NULL || confrontaDate(head->persona.data_di_nascita, key) <= 0)  //Se il la data di nascita di head è più piccola della key significa che è head è più vecchio
+        return newNode(val, head); //Inserisco in testa
+    for (corrente=head->next, successivo=head; corrente!=NULL && (confrontaDate(key, corrente->persona.data_di_nascita) <= 0); successivo=corrente, corrente=corrente->next); //Ciclo sulla lista fino alla posizione corretta
+    successivo->next = newNode(val, corrente);
+    return head;
+}
+
+void stampaLista(link head, FILE *fp){
+    link corrente;
+    if(head == NULL){
+        printf("Lista Vuota!\n");
+        return;
+    }
+    for(corrente=head; corrente!= NULL; corrente=corrente->next){
+        fprintf(fp,"%s %s %s %d/%d/%d %s %s %d\n",corrente->persona.codice,corrente->persona.nome,corrente->persona.cognome,corrente->persona.data_di_nascita[0],corrente->persona.data_di_nascita[1],corrente->persona.data_di_nascita[2],corrente->persona.via,corrente->persona.citta,corrente->persona.cap);
+    }
+    fprintf(fp,"\n");
+}
+
+
+int confrontaDate(int data1[3], int data2[3]){
+    int dataN1, dataN2;
+    //Passo in numero le date e le confronto
+    dataN1 = data1[0]+100*data1[1]+10000*data1[2];
+    dataN2 =data2[0]+100*data2[1]+10000*data2[2];
+    if(dataN1 > dataN2)
+        return 1;
+    else if(dataN1 == dataN2)
+        return 0;
+    else
+        return -1;
+}
+//deallocaNodi (devo deallocare anche tutte le persone)
+//acquisizione
         //file:
             //leggiFile
             //for
