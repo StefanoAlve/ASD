@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int gcd1(int x, int y) {
-    if (x > y) {
+    if (x > y) { //se il primo numero è più grande del secondo
         if (x % 2 == 0 && y % 2 == 0) {
             return 2 * (gcd1((x / 2), (y / 2)));
         }
@@ -15,7 +15,7 @@ int gcd1(int x, int y) {
             return gcd1(x / 2, y);
         }
     }
-    else if (x<y)
+    else if (x<y) // se il primo numero è più piccolo del secondo
     {
         if (x % 2 == 0 && y % 2 == 0)
         {
@@ -34,7 +34,7 @@ int gcd1(int x, int y) {
         }
 
     }
-    else if(x == y)
+    else if(x == y)// condizione di terminazione
         return x;
 
 }
