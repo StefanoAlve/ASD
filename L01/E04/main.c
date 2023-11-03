@@ -96,10 +96,10 @@ comando_e scegli_comandi() {
                                         "ordina_codice", "ordina_partenza", "ordina_arrivo","ricerca_lineare","ricerca_dico_part", "fine"};
     printf("Inserisci il comando (possibili: 'date (aaaa/mm/gg)','partenza','capolinea','ritardo','ritardo_tot','stampa_log','ordina_data','ordina_codice','ordina_partenza','ordina_arrivo','ricerca_lineare','ricerca_dico_part','fine'):\n");
     scanf("%s", strlwr(opzione));
-    for (comando = 0; comando < 12 && strcmp(opzione, comandi_possibili[comando]) != 0; comando++) {
+    for (comando = 0; comando < 13 && strcmp(opzione, comandi_possibili[comando]) != 0; comando++) {
     }
 
-    if (comando == 12) {
+    if (comando == 13) {
         printf("Errore");
     }
 
