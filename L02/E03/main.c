@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #define righemax 1000
 #define lmax 31
-typedef struct{ //dizionario che conterrà le informazioni del file
+typedef struct{ //struct di puntatori agli argomenti della struct
     char *codice_tratta;
     char *partenza;
     char *destinazione;
@@ -407,7 +407,7 @@ void inizializzaSpOrdinamenti(spOrdinamenti *pOrdinamenti,int nrighefile,dict tr
     }
 }
 
-int leggi_file(dict **ptratte){
+int leggi_file(dict **ptratte){// possibilità di inserire un scrivendo il nome
     FILE *fin;
     int i, nrighefile;
     char nome_file[lmax],tmp[lmax];
@@ -443,7 +443,7 @@ int leggi_file(dict **ptratte){
     return nrighefile;
 
 }
-void deallocaOrdinamenti(spOrdinamenti *spOrdinamenti){
+void deallocaOrdinamenti(spOrdinamenti *spOrdinamenti){//deallocazione degli ordinamenti
     if (spOrdinamenti != NULL) {
         free(spOrdinamenti->ordina_date);
         free(spOrdinamenti->ordina_codice);
@@ -451,7 +451,7 @@ void deallocaOrdinamenti(spOrdinamenti *spOrdinamenti){
         free(spOrdinamenti->ordina_arrivo);
     }
 }
-void deallocaTratte(dict *tratte,int num_tratte){
+void deallocaTratte(dict *tratte,int num_tratte){//deallocazione delle tratte
     for(int i=0; i<num_tratte; i++){
         free(tratte[i].data);
         free(tratte[i].partenza);
