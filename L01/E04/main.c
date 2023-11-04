@@ -111,7 +111,7 @@ comando_e LeggiComando(){
     printf("Arrivo_sort: ordinamento corse per stazione di arrivo\n");
     printf("Cerca_tratta: cerca tratte per stazione di partenza\n");
     printf("Fine: per terminare il programma\n\n");
-    printf("Inserire il comando da eseguire: ");
+    printf("Inserire il comando da eseguire (Scrivere la parola come compare sul menu): ");
     scanf("%s",comando);
 
     if (strcmp("Stampa",comando) == 0){
