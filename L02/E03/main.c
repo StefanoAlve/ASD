@@ -88,7 +88,7 @@ comando_e LeggiComando(){
     printf("Cerca_tratta: cerca tratte per stazione di partenza\n");
     printf("Leggi_file: lettura dati del file in input con allocazione dinamica\n");
     printf("Fine: per terminare il programma\n\n");
-    printf("Inserire il comando da eseguire: ");
+    printf("Inserire il comando da eseguire (Scrivere il comando come appare nel menu): ");
     scanf("%s",comando);
 
     if (strcmp("Stampa",comando) == 0){
@@ -132,7 +132,7 @@ int LeggiFile(struct_tratte **v_tratte){
 
         //Allocazione dinamica vettore di struct
         Tratte = (struct_tratte *)malloc(nr * sizeof(struct_tratte));
-        if (v_tratte == NULL) exit(1);
+        if (Tratte == NULL) {printf("Errore allocazione dinamica"); exit(1);}
 
         while (!feof(fp)){ // finchè non arrivo a fine file...
             //strdup copia la stringa e restituisce il puntatore allocandola dinamicamente
@@ -270,7 +270,7 @@ void Ordinamenti(struct_Ordinamenti *p_Sorting, int *num_righe, struct_tratte v_
 
     if (p_Sorting->v_DataOraSort == NULL && p_Sorting->v_CodTrattaSort == NULL && p_Sorting->v_PartenzaSort == NULL &&
         p_Sorting->v_DestinazioneSort == NULL)
-        exit(1);
+        {printf("Errore allocazione dinamica"); exit(1);}
     for (int i = 0; i < *num_righe; i++){
         // Inizializzazione dei vettori di puntatori
         p_Sorting -> v_DataOraSort[i] = &v_tratte[i];
