@@ -93,7 +93,7 @@ comando_e LeggiComando(){
     printf("Ritardo: corse terminate in ritardo in un intervallo di date\n");
     printf("Ritardo_tot: ritardo complessivo di una determinata tratta\n");
     printf("Fine: per terminare il programma\n\n");
-    printf("Inserire il comando da eseguire: ");
+    printf("Inserire il comando da eseguire (Scrivere la parola come compare sul menu): ");
     scanf("%s",comando);
 
     if (strcmp("Date",comando) == 0){
