@@ -42,10 +42,10 @@ int **malloc2dR(char NomeFile[], int *nr, int *nc){
 
     //Allocazione dinamica matrice e riempimento matrice
     mat = (int **)malloc((*nr)*(sizeof(int *))); //Allocazione vettore di puntatori
-    if (mat == NULL) exit(1);
+    if (mat == NULL) {printf("Errore allocazione dinamica"); exit(1);}
     for (i = 0; i < *nr; i++){
         mat[i] = (int *)malloc((*nc)* sizeof(int)); //Allocazione vettori di interi
-        if (mat[i] == NULL) exit(1);
+        if (mat[i] == NULL) {printf("Errore allocazione dinamica"); exit(1);}
         for (j = 0; j < *nc; j++){
             if (!feof(fp)) fscanf(fp,"%d",&mat[i][j]);
         }
@@ -66,7 +66,7 @@ void separa(int **mat, int *vBianchi, int *vNeri, int nr, int nc, int *nB, int *
         vBianchi = (int *) malloc(((DimTotMat/2)+1) * sizeof(int));
         vNeri = (int *) malloc((DimTotMat/2) * sizeof(int));
     }
-    if (vBianchi == NULL || vNeri == NULL) exit(1);
+    if (vBianchi == NULL || vNeri == NULL) {printf("Errore allocazione dinamica"); exit(1);}
 
     //Inserimento valori della matrice nei 2 vettori
     for (i=0;i<nr;i++){
