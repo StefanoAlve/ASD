@@ -5,7 +5,7 @@
 
 // Prototipi delle funzioni
 char *cercaRegexp(char *src, char *regexp);
-int controlloCondizioni(char **pippo, char **pluto);
+int controlloCondizioni(char **ppstr, char **ppRegExp);
 int validitaStringa(char *p_stringa);
 int validitaEspReg(char *p_espreg);
 
@@ -102,77 +102,77 @@ char *cercaRegexp(char *src, char *regexp){
 
 // Funzione per il controllo delle condizioni dell'espressione regolare
 // se ritorna 2 significa che è stato trovato un errore di sintassi nella espressione regolare
-// pippo è il puntatore al puntatore a str, mentre pluto è il puntatore al puntatore a RegExp
-int controlloCondizioni(char **pippo, char **pluto) {
+// ppstr è il puntatore al puntatore a str, mentre ppRegExp è il puntatore al puntatore a RegExp
+int controlloCondizioni(char **ppstr, char **ppRegExp) {
     int a = 0; // mi consente di individuare il riscontro positivo nel controllo delle quadre con più caratteri possibili
 
-    if (isupper(**pluto) || islower(**pluto)) {
-        if (**pippo == **pluto) {
-            (*pluto)++;
-            (*pippo)++;
+    if (isupper(**ppRegExp) || islower(**ppRegExp)) {
+        if (**ppstr == **ppRegExp) {
+            (*ppRegExp)++;
+            (*ppstr)++;
             return 1;
         }
     }
-    if (**pluto == '.') {
-        (*pluto)++;
-        (*pippo)++;
+    if (**ppRegExp == '.') {
+        (*ppRegExp)++;
+        (*ppstr)++;
         return 1;
     }
-    if (**pluto == '\\') {
-        (*pluto)++;
-        if (**pluto == 'a') {
-            if (islower(**pippo)) {
-                (*pluto)++;
-                (*pippo)++;
+    if (**ppRegExp == '\\') {
+        (*ppRegExp)++;
+        if (**ppRegExp == 'a') {
+            if (islower(**ppstr)) {
+                (*ppRegExp)++;
+                (*ppstr)++;
                 return 1;
             }
         }
-        if (**pluto == 'A') {
-            if (isupper(**pippo)) {
-                (*pluto)++;
-                (*pippo)++;
+        if (**ppRegExp == 'A') {
+            if (isupper(**ppstr)) {
+                (*ppRegExp)++;
+                (*ppstr)++;
                 return 1;
             }
         } else {
             return 2;
         }
     }
-    if (**pluto == ']'){
+    if (**ppRegExp == ']'){
         return 2;
     }
-    if (**pluto == '['){
-        (*pluto)++;
-        if (**pluto == '^'){
-            (*pluto)++;
-            if (!isupper(**pluto) && !islower(**pluto)){
+    if (**ppRegExp == '['){
+        (*ppRegExp)++;
+        if (**ppRegExp == '^'){
+            (*ppRegExp)++;
+            if (!isupper(**ppRegExp) && !islower(**ppRegExp)){
                 return 2;
             }
-            if (**pippo != **pluto){
-                (*pluto)++;
-                if (**pluto != ']'){
+            if (**ppstr != **ppRegExp){
+                (*ppRegExp)++;
+                if (**ppRegExp != ']'){
                     return 2;
                 } else {
-                    (*pluto)++; // muovo il puntatore al primo carattere != da ]
-                    (*pippo)++;
+                    (*ppRegExp)++; // muovo il puntatore al primo carattere != da ]
+                    (*ppstr)++;
                     return 1;
                 }
             }
         }
-        if (**pluto != '^'){
-            if (!isupper(**pluto) && !islower(**pluto)){
+        if (**ppRegExp != '^'){
+            if (!isupper(**ppRegExp) && !islower(**ppRegExp)){
                 return 2;
             }
-            while (**pluto != ']'){
-                if (**pippo == **pluto){
+            while (**ppRegExp != ']'){
+                if (**ppstr == **ppRegExp){
                     a = 1;
                 }
-                (*pluto)++;
+                (*ppRegExp)++;
             }
-            (*pluto)++; // muovo il puntatore al primo carattere != da ]
-            (*pippo)++;
+            (*ppRegExp)++; // muovo il puntatore al primo carattere != da ]
+            (*ppstr)++;
             return a;
         }
     }
-    (*pippo)++; // sposto il puntatore al carattere successivo in caso di nessun riscontro
+    (*ppstr)++; // sposto il puntatore al carattere successivo in caso di nessun riscontro
     return 0;
 }
