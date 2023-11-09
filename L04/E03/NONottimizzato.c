@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <time.h>
 
-#define numPietre 4
 #define MAXC 100
 typedef struct{
     int z;
@@ -17,12 +15,8 @@ void stampaCollana(char *sequenza, int n);
 void stampa_collane(pietre *collane, int nCollane);
 void inizializzaRimanenti(int rimanenti[4], pietre collana);
 void wrapperTrovaComb(int nCollane, pietre *collane);
-int trovaComb(char *val, char *sol, int rimanenti[4], int n_dist, int dimSol, int pos, int flag, int start);
+int trovaComb(char *val, char *sol, int rimanenti[4], int n_dist, int dimSol, int pos, int flag);
 int controlloValidita(char *sol, int pos);
-int pietreValide(int *restanti);
-void riduciPietreNonValide(int *restanti, int *k);
-int controlloStart(int *restanti);
-
 int main(void) {
     //Inizializzazione variabili
     int nCollane;
@@ -94,7 +88,7 @@ void inizializzaRimanenti(int rimanenti[4], pietre collana){
     rimanenti[3] = collana.s;
 }
 
-int trovaComb(char *val, char *sol, int rimanenti[4], int n_dist, int dimSol, int pos, int flag, int start){
+int trovaComb(char *val, char *sol, int rimanenti[4], int n_dist, int dimSol, int pos, int flag){
     int i;
     if(pos>=dimSol){
         printf("La collana piu' lunga puo' essere riempita con %d pietre:\n", dimSol);
@@ -102,12 +96,12 @@ int trovaComb(char *val, char *sol, int rimanenti[4], int n_dist, int dimSol, in
         flag = 1;
         return flag;
     }
-    for(i=start; i<n_dist; i++){
+    for(i=0; i<n_dist; i++){
         if(rimanenti[i] > 0){
             rimanenti[i]--;
             sol[pos] = val[i];
             if(controlloValidita(sol, pos)){
-                flag = trovaComb(val, sol, rimanenti, n_dist, dimSol, pos+1, flag, 0);
+                flag = trovaComb(val, sol, rimanenti, n_dist, dimSol, pos+1, flag);
             }
             rimanenti[i]++;
             if(flag){
@@ -119,7 +113,6 @@ int trovaComb(char *val, char *sol, int rimanenti[4], int n_dist, int dimSol, in
 }
 
 int controlloValidita(char *sol, int pos){
-    /// Eseguo il controllo delle condizioni imposte
     char precedente = sol[pos-1], valido = 0;
     if(pos == 0){
         valido = 1;
@@ -150,62 +143,21 @@ int controlloValidita(char *sol, int pos){
 }
 
 void wrapperTrovaComb(int nCollane, pietre *collane){
-    /// Utilizzo un wrapper per contenere la funzione trovaComb in modo da non inserire troppi dati superflui nel main
-    int flag, rimanenti[numPietre],dimSol, pos = 0;
-    unsigned long inizio, tempo;
-    char val[numPietre] = {'z','r','t','s'}, *sol;
+    int flag=0, rimanenti[4],dimSol, pos = 0;
+    char val[4] = {'z','r','t','s'}, *sol;
 
     //Corpo funzione
     for(int i = 0; i<nCollane; i++){
-        inizio = clock();
         printf("\nTest n.%d:\n", i+1);
         inizializzaRimanenti(rimanenti, collane[i]);
         dimSol = rimanenti[0]+rimanenti[1]+rimanenti[2]+rimanenti[3];
         flag = 0;
         while(!flag){
             sol = (char*)malloc(dimSol*sizeof(char));
-            if(pietreValide(rimanenti)) {
-                flag = trovaComb(val, sol, rimanenti, 4, dimSol, pos, flag, controlloStart(rimanenti));
-                dimSol--;
-            }
-            else{
-                riduciPietreNonValide(rimanenti, &dimSol);
-            }
+            flag = trovaComb(val,sol,rimanenti,4,dimSol,pos,flag);
+            dimSol--;
             free(sol);
         }
-        tempo = clock()-inizio;
-        printf("Tempo impiegato: %lu secondi\n",(tempo/1000));
     }
     free(collane);
-}
-
-int pietreValide(int *restanti){
-    /// Una collana, per essere valida deve avere al massimo un numero di rubini che differisce al massimo da quello dai topazi di 1
-    int valido = 0;
-    int r,t;
-    r = restanti[1]; t = restanti[2];
-    if (t <= 1+r && r <= t+1)
-        valido = 1;
-    return valido;
-}
-
-void riduciPietreNonValide(int *restanti, int *k){
-    /// Impongo una collana valida imponendo la condizione presentata il pietreValide, se ho rubini o topazi in eccesso li modifico e aggiorno la nuova dimensione massima
-    int r,t;
-    r = restanti[1]; t = restanti[2];
-    if (r > t+1)
-        r = t+1;
-    if (t > 1+r)
-        t = r+1;
-    *k = restanti[0]+restanti[3]+r+t;
-    restanti[1] = r; restanti[2] = t;
-}
-
-int controlloStart(int *restanti){
-    /// Se il numero di rubini è minore di quello di topazi la sequenza inizierà sicuramente con il topazio (applico questa condizione per ottimizzare di molto la velocità di esecuzione)
-    int start = 0;
-    if(restanti[1]<restanti[2]){
-        start = 2;
-    }
-    return start;
 }
