@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #define MAXL 50
 
-
-
 typedef struct{
     int val1;
     int val2;
@@ -12,8 +10,6 @@ typedef struct{
 void leggiFile(int *v, int *e, char nomefile[], arcs **archi);
 int controlloVortex(int *tmp, arcs *archi, int e, int v);
 void insDellePart(int pos, int *tmp, arcs *archi, int e, int v);
-
-
 
 ///VERTEX COVER (I NODI DEVONO COPRIRE TUTTI GLI ARCHI)
 int main() {
@@ -26,7 +22,9 @@ int main() {
     printf("inserire il nome del file in cui estrarre il grafo");
     scanf("%s", nomefile);
 
+    ///LETTURA FILE E RIEMPIMENTO ARCHI
     leggiFile(&v, &e, nomefile, &archi);
+
     for (i = 0; i < e; i++){
         printf("arco %d : %d--%d\n", i, archi[i].val1, archi[i].val2);
     }
@@ -69,7 +67,7 @@ void leggiFile(int *v, int *e, char nomefile[], arcs **archi){
         printf("errore in lettura file");
         exit(1);
     }
-
+    ///PRENDO NUMERO NODI E ARCHI
     fscanf(fp, "%d %d", v, e);
     ///FACCIO LA MALLOC DELLA STRUCT E LA RIEMPIO
     *archi = (arcs *)malloc((*e)*sizeof(arcs ));
@@ -111,6 +109,8 @@ int controlloVortex(int *tmp, arcs *archi, int e, int v){
     return bool;
 }
 
+
+///UTILIZZO ALGORITMO DELL'INSIEME DELLE PARTI
 void insDellePart(int pos, int *tmp, arcs *archi, int e, int v) {
     int j;
     if (pos >= v) {
@@ -125,6 +125,7 @@ void insDellePart(int pos, int *tmp, arcs *archi, int e, int v) {
             printf("}\n");
         }
     }
+    ///IN QUESTO MODO FACCIO TUTTE LE COMBINAZIONI POSSIBILI TRA I VERTICI IN MANIERA RICORSIVA
     else {
         tmp[pos] = 0;
         insDellePart(pos + 1, tmp, archi, e, v);
