@@ -5,6 +5,7 @@
 
 typedef struct{
     int vertice1;
+
     int vertice2;
 } arco;
 
