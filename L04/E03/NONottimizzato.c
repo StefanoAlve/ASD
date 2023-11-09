@@ -150,7 +150,7 @@ void wrapperTrovaComb(int nCollane, pietre *collane){
     float inizio, tempo;
     //Corpo funzione
     for(int i = 0; i<nCollane; i++){
-        inizio = clock();
+        inizio = (float)clock();
         printf("\nTest n.%d:\n", i+1);
         inizializzaRimanenti(rimanenti, collane[i]);
         dimSol = rimanenti[0]+rimanenti[1]+rimanenti[2]+rimanenti[3];
@@ -161,7 +161,7 @@ void wrapperTrovaComb(int nCollane, pietre *collane){
             dimSol--;
             free(sol);
         }
-        tempo = clock()-inizio;
+        tempo = (float)clock()-inizio;
         printf("Tempo impiegato: %.3f secondi\n",(tempo/1000));
     }
     free(collane);
