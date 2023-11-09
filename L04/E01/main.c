@@ -38,11 +38,6 @@ int main() {
 
     if(numSol != 0) printf("Numero di soluzioni: %d", numSol);
 
-//    for(int i = 0; i < dimensione.NumArchi; i++){
-//        printf("%d %d", archi[i].Vertice1, archi[i].Vertice2);
-//        printf("\n");
-//    }
-
     fclose(fin);
     free(archi);
     return 0;
