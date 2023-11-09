@@ -73,6 +73,7 @@ link leggiFile(char nomeFile[MAXL], link head) {
     return head;
 }
 
+///CREA UN NUOVO NODO
 link newNode(Item val, link next) {
     link x = malloc(sizeof *x);
     if (x==NULL)
@@ -88,11 +89,13 @@ link listInsOrd (link h, Item val) {
     link x, p;
     if (h == NULL || confrontoDataGrande(val, h->val))
         return h = newNode(val,h);
+    ///ITERA FINO A TROVARE IL PUNTO DOVE INSERIRE
     for (x=h->next, p=h;x!=NULL && confrontoDataGrande(x->val,val); p=x, x=x->next);
     p->next = newNode(val, x);
     return h;
 }
 
+///FUNZIONE CHE CONFRONTA QUALE VALORE DI DATA E' MAGGIORE, SE IL PRIMO TORNA 1 SENNO 0
 int confrontoDataGrande(Item val1, Item val2){
     int bool = 0;
     if (val1.data.anno < val2.data.anno) {
