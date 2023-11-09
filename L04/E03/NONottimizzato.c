@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <time.h>
+#define numPietre 4
 #define MAXC 100
 typedef struct{
     int z;
@@ -13,10 +14,11 @@ typedef struct{
 int leggiFile(pietre **pCollane);
 void stampaCollana(char *sequenza, int n);
 void stampa_collane(pietre *collane, int nCollane);
-void inizializzaRimanenti(int rimanenti[4], pietre collana);
+void inizializzaRimanenti(int rimanenti[numPietre], pietre collana);
 void wrapperTrovaComb(int nCollane, pietre *collane);
-int trovaComb(char *val, char *sol, int rimanenti[4], int n_dist, int dimSol, int pos, int flag);
+int trovaComb(char *val, char *sol, int rimanenti[numPietre], int n_dist, int dimSol, int pos, int flag);
 int controlloValidita(char *sol, int pos);
+
 int main(void) {
     //Inizializzazione variabili
     int nCollane;
@@ -143,11 +145,12 @@ int controlloValidita(char *sol, int pos){
 }
 
 void wrapperTrovaComb(int nCollane, pietre *collane){
-    int flag=0, rimanenti[4],dimSol, pos = 0;
+    int flag,rimanenti[numPietre],dimSol, pos = 0;
     char val[4] = {'z','r','t','s'}, *sol;
-
+    float inizio, tempo;
     //Corpo funzione
     for(int i = 0; i<nCollane; i++){
+        inizio = clock();
         printf("\nTest n.%d:\n", i+1);
         inizializzaRimanenti(rimanenti, collane[i]);
         dimSol = rimanenti[0]+rimanenti[1]+rimanenti[2]+rimanenti[3];
@@ -158,6 +161,8 @@ void wrapperTrovaComb(int nCollane, pietre *collane){
             dimSol--;
             free(sol);
         }
+        tempo = clock()-inizio;
+        printf("Tempo impiegato: %.3f secondi\n",(tempo/1000));
     }
     free(collane);
 }
