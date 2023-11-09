@@ -38,9 +38,9 @@ void stampa_tratta_video(struct corse *v, int indice);
 void stampa_tratta_file(struct corse *v, int indice, FILE* fout);
 void RicercaDicotomica(struct corse *v, int dim, char *nome_fermata, int len);
 void freestructcorse(struct corse *v,int dim);
-struct corse *sceltaNuovoFile(struct corse *v,int dim);
+struct corse *sceltaNuovoFile(struct corse *v,struct corse_multiordinate *s, int dim);
 struct corse_multiordinate *allocastructMultiordinate(int dim);
-void freestructMultiordinate();
+void freestructMultiordinate(struct corse_multiordinate *ptratte_ordinate);
 
 int main() {
     FILE *fin;
@@ -70,7 +70,13 @@ int main() {
         option = leggiComando();
         richiedi_scelta = selezionaDati(tratte, tratte_ordinate, dim, option);
         printf("\n%d", richiedi_scelta);
-        tratte = sceltaNuovoFile(tratte,dim);
+
+        tratte = sceltaNuovoFile(tratte,tratte_ordinate, dim);
+        tratte_ordinate = allocastructMultiordinate(dim); //allocazione struct_multiordinate
+        OrdinaPerDate(tratte, tratte_ordinate, dim);
+        OrdinaPerTratta(tratte, tratte_ordinate,  dim);
+        OrdinaPerFermata(tratte,tratte_ordinate, dim, 0);
+        OrdinaPerFermata(tratte,tratte_ordinate, dim, 1);
     }
 
     printf("\nTermine Codice");
@@ -88,6 +94,7 @@ void stampa_tratta_video(struct corse *v, int indice){
     printf(" %s", v[indice].ora_arrivo);
     printf(" %d", v[indice].ritardo);
 }
+
 void stampa_tratta_pointer(struct corse **v, int dim){
     int indice;
     printf("\n");
@@ -174,13 +181,20 @@ struct corse *leggi_tabella(char *nome_file){ //funzione che legge la tabella co
 struct corse_multiordinate *allocastructMultiordinate(int dim){ //allocazione dinamica di tutti gli elementi presenti all'interno della struct contenente i multiordinamenti
     struct corse_multiordinate *tratte_ordinate = malloc(4*sizeof(struct corse));
 
-    for (int i = 0; i < 4; i++) {
-        tratte_ordinate->ordinata_per_date = malloc(dim * sizeof(struct corse));
-        tratte_ordinate[i].ordinata_per_tratta = malloc(dim * sizeof(struct corse));
-        tratte_ordinate[i].ordinata_per_partenza = malloc(dim * sizeof(struct corse));
-        tratte_ordinate[i].ordinata_per_capolinea = malloc(dim * sizeof(struct corse));
-    }
+    tratte_ordinate->ordinata_per_date = malloc(dim * sizeof(struct corse));
+    tratte_ordinate->ordinata_per_tratta = malloc(dim * sizeof(struct corse));
+    tratte_ordinate->ordinata_per_partenza = malloc(dim * sizeof(struct corse));
+    tratte_ordinate->ordinata_per_capolinea = malloc(dim * sizeof(struct corse));
+
     return tratte_ordinate;
+}
+
+void freestructMultiordinate(struct corse_multiordinate *ptratte_ordinate){
+    free(ptratte_ordinate->ordinata_per_date);
+    free(ptratte_ordinate->ordinata_per_tratta);
+    free(ptratte_ordinate->ordinata_per_partenza);
+    free(ptratte_ordinate->ordinata_per_capolinea);
+    free(ptratte_ordinate);
 }
 
 void freestructcorse(struct corse *v,int dim) { //funzione per liberare gli indirizzi delle stringhe precedentemente allocate dinamicamente in memoria
@@ -193,8 +207,9 @@ void freestructcorse(struct corse *v,int dim) { //funzione per liberare gli indi
         free(v[i].ora_arrivo);
     }
 }
-struct corse *sceltaNuovoFile(struct corse *v,int dim){
+struct corse *sceltaNuovoFile(struct corse *v,struct corse_multiordinate *s, int dim){
     char *choice, *nomefile;
+    struct corse *tratte;
     int flag = 1;
     while(flag){
         printf("\nVuoi effettuare la lettura di un nuovo file? ");
@@ -204,7 +219,9 @@ struct corse *sceltaNuovoFile(struct corse *v,int dim){
             printf("\nInserisci il nome del nuovo file da leggere ");
             scanf("%s ", nomefile);
             freestructcorse(v,dim);
+            freestructMultiordinate(s);
             return leggi_tabella(nomefile);
+
         }
         else if(strcasecmp(choice, "no") == 0){
             flag = 0;
@@ -335,7 +352,7 @@ void leggi_per_date(struct corse *v,char *data1, char *data2, int dim, int flag_
 
     if (strcmp(data1, data2) <= 0 ) { //nel caso in cui venga data come prima data una data successiva alla seconda, l'intervallo di date non è valido
         if(stampa){
-            FILE* fout = apri_file_scrittura("C:\\Users\\calve\\OneDrive\\Desktop\\primo semestre\\Algoritmi\\laboratorio\\lab01\\ES02_lab01\\lettura_date.txt");
+            FILE* fout = apri_file_scrittura("lettura_date.txt");
             for (int i = 0; i < dim; i++) {
                 if(strcmp(v[i].data,data1) >= 0 && strcmp(v[i].data, data2) <= 0 && !flag_ritardo) {
                     stampa_tratta_file(v, i, fout);
@@ -370,7 +387,7 @@ void leggi_per_date(struct corse *v,char *data1, char *data2, int dim, int flag_
 void leggi_tratte_nome_fermata(struct corse *v, char *nome_fermata, int dim, int stampa, int flag_capolinea, int len ){
     int flag = 1;
     if(stampa){
-        FILE* fout = apri_file_scrittura("C:\\Users\\calve\\OneDrive\\Desktop\\primo semestre\\Algoritmi\\laboratorio\\lab01\\ES02_lab01\\lettura_per_stazione.txt");
+        FILE* fout = apri_file_scrittura("lettura_per_stazione.txt");
         for (int i = 0; i < dim && !flag_capolinea; i++ ) { //il flag_capolinea viene utilizzato in base all'utilizzo della funzione,
             //se per la ricerca a partire da una stazione di partenza, flag_capolinea = 0, o per la ricerca
             // a partire da un capolinea flag_capolinea = 1
@@ -413,7 +430,7 @@ int calcola_ritardo_tratta(struct corse *v, char *codice_tratta, int dim, int st
         }
     }
     if(stampa){
-        FILE* fout = apri_file_scrittura("C:\\Users\\calve\\OneDrive\\Desktop\\primo semestre\\Algoritmi\\laboratorio\\lab01\\ES02_lab01\\ritardo_totale_linea.txt");
+        FILE* fout = apri_file_scrittura("ritardo_totale_linea.txt");
         fprintf(fout,"%d", ritardo_tot);
         fclose(fout);
     }
@@ -546,4 +563,5 @@ void RicercaDicotomica(struct corse *v, int dim, char *nome_fermata, int len) {
         printf("\nnon sono state trovate informazioni relative alla fermata richiesta");
     }
 }
+
 
