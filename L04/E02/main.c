@@ -49,7 +49,9 @@ link inputElemento(link head);
 link ricercaCodice(link head);
 link ricercaCodiceRiallaccio(link head);
 link ricercaData(link head, char iniziale[11]);
-void cancelloData(link x, char dataFinale[11]);
+link cancelloData(link x, char dataFinale[11], link head, char dataIniziale[11]);
+link cancTesta(link x,link head, int giorno, int mese, int anno);
+link cancGenerica(link x, link head, int giorno, int mese, int anno);
 
 
 
@@ -164,7 +166,7 @@ comando_e scelta(){
     printf("ricerca_per_codice -> ricerca di un elemento in base al codice identificativo\n");
     printf("codice_cancellazione -> cancellazione di un elemento in base al codice identificativo\n");
     printf("date_comprese_cancellazione -> cancellazione di elementi con data compresa tra due prese in input\n");
-    printf("stampa -> stampa la lista\n");
+    printf("stampa -> stampa la lista su un file\n");
     printf("fine -> uscita dal programma\n\n");
     printf("-------------------------------------------------------------------------------------------------------\n\n");
 
@@ -244,9 +246,9 @@ link filtroDati(comando_e comando, link head){
             printf("inserire la data di fine gg/mm/aaaa :");
             scanf("%s", data2);
 
-            x = ricercaData(head, data1);
+            x = ricercaData(head, data2);
             if(x != NULL) {
-                cancelloData(x, data2);
+                head = cancelloData(x, data1, head, data2);
             }
             else
                 printf("non sono stati trovati valori tra queste date");
@@ -265,11 +267,24 @@ link filtroDati(comando_e comando, link head){
 ///FUNZIONE CHE STAMPA LA LISTA
 void stampaLista(link head) {
     link x;
+    char fileOut[MAXL];
+    FILE *fp;
+
+    printf("scegliere il nome del file di output: \n");
+    scanf("%s", fileOut);
+
+    if((fp = fopen(fileOut, "w")) == NULL){
+        printf("errore in apertura file");
+        exit(1);
+    }
+
     ///CICLO ITERATIVO SU TUTTA LA LISTA
     for (x=head; x!=NULL; x=x->next){
-        printf("%s %s %s %02d/%02d/%02d %s %s %05d\n", x->val.codice, x->val.nome, x->val.cognome,
+        fprintf(fp,"%s %s %s %02d/%02d/%02d %s %s %05d\n", x->val.codice, x->val.nome, x->val.cognome,
                x->val.data.giorno, x->val.data.mese, x->val.data.anno, x->val.via, x->val.citta, x->val.cap);
     }
+
+    fclose(fp);
 }
 
 ///FUNZIONE CHE STAMPA IL SINGOLO NODO
@@ -345,19 +360,20 @@ link ricercaData(link head, char iniziale[11]) {
     ///SEPARO LA STRNGA
     sscanf(iniziale,"%d/%d/%d", &giorno, &mese, &anno);
 
+
     ///CICLO ITERATIVO SULLA LISTA FINO AL RAGGIUNGIMENTO DEL CAMPO VOLUTO O FINO ALLA FINE
     if (head == NULL)
         return NULL;
-    for (x=head, p=NULL; x!=NULL; p=x, x=x->next){
-        if (x->val.data.anno > anno) {
+    for (x=head, p=x; x!=NULL; p=x, x=x->next){
+        if (x->val.data.anno < anno) {
             return p;
         }
         else if(x->val.data.anno == anno){
-            if(x->val.data.mese > mese){
+            if(x->val.data.mese < mese){
                 return p;
             }
             else if(x->val.data.mese == mese) {
-                if(x->val.data.giorno >= giorno){
+                if(x->val.data.giorno <= giorno){
                     return p;
                 }
             }
@@ -367,30 +383,114 @@ link ricercaData(link head, char iniziale[11]) {
     return x;
 }
 
-void cancelloData(link x, char dataFinale[11]) {
-    int giorno, mese, anno;
-    link y;
+///FUNZIONE CHE DECIDE IL MODO IN CUI CANCELLARE LA DATA
+link cancelloData(link x, char dataFinale[11], link head, char dataIniziale[11]) {
+    int giorno, mese, anno, gg, mm, aaaa;
+
 
     sscanf(dataFinale,"%d/%d/%d", &giorno, &mese, &anno);
-    for(y=x->next; y->next != NULL; y=x->next) {
-        if (y->val.data.anno <= anno) {
+    sscanf(dataIniziale,"%d/%d/%d", &gg, &mm, &aaaa);
+
+    ///CASO CON X = HEAD
+    if(x == head){
+        ///(CANCELLAZIONE IN TESTA)
+        if (x->val.data.anno <= aaaa) {
+            head = cancTesta(x, head, giorno, mese, anno);
+        }
+        ///(CANCELLAZIONE IN TESTA)
+        else if(x->val.data.anno == aaaa){
+            if(x->val.data.mese < mese){
+                head = cancTesta(x, head, giorno, mese, anno);
+            }
+            ///(CANCELLAZIONE IN TESTA)
+            else if(x->val.data.mese == mese) {
+                if(x->val.data.giorno <= giorno){
+                    head = cancTesta(x, head, giorno, mese, anno);
+                }
+                ///CANCELLA NON IN TESTA
+                else {
+                    cancGenerica(x, head, giorno, mese, anno);
+                }
+            }
+            ///CANCELLA NON IN TESTA
+            else {
+                cancGenerica(x, head, giorno, mese, anno);
+            }
+
+        }
+        ///CANCELLA NON IN TESTA
+        else {
+            cancGenerica(x, head, giorno, mese, anno);
+        }
+    }
+    ///CASO CON X != HEAD
+    else {
+        cancGenerica(x, head, giorno, mese, anno);
+    }
+    return head;
+}
+
+///CANCELLA VALORI PARTENDO DALLA TESTA IN BASE ALLA DATA
+link cancTesta(link x,link head, int giorno, int mese, int anno){
+
+    for (x = x; x->next != NULL; x = head) {
+        if (x->val.data.anno > anno) {
+            head = head->next;
+            stampaSingolo(x);
+            free(x);
+
+        } else if (x->val.data.anno == anno) {
+            if (x->val.data.mese > mese) {
+                head = head->next;
+                stampaSingolo(x);
+                free(x);
+
+            } else if (x->val.data.mese == mese) {
+                if (x->val.data.giorno >= giorno) {
+                    head = head->next;
+                    stampaSingolo(x);
+                    free(x);
+                }
+                else
+                    return head;
+            }
+            else
+                return head;
+        }
+        else
+            return head;
+    }
+    return head;
+}
+
+///FUNZIONE PER CANCELLARE PER DATA IN MANIERA GENERICA (x != head)
+link cancGenerica(link x, link head, int giorno, int mese, int anno){
+    link y;
+
+    for (y = x->next; y->next != NULL; y = x->next) {
+        if (y->val.data.anno > anno) {
             x->next = y->next;
             stampaSingolo(y);
             free(y);
         } else if (y->val.data.anno == anno) {
-            if (y->val.data.mese < mese) {
+            if (y->val.data.mese > mese) {
                 x->next = y->next;
                 stampaSingolo(y);
                 free(y);
             } else if (y->val.data.mese == mese) {
-                if (y->val.data.giorno <= giorno) {
+                if (y->val.data.giorno >= giorno) {
                     x->next = y->next;
                     stampaSingolo(y);
                     free(y);
                 }
+                else
+                    return x;
             }
+            else
+                return x;
         }
+        else
+            return x;
     }
-
-
+    return x;
 }
