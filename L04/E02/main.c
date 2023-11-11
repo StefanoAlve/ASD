@@ -34,10 +34,11 @@ int leggiTerminazione();
 int VerificaData(data_di_nascita *data1, data_di_nascita *data2); //funzione per effettuare un confronto fra date, se la prima data risulta minore della seconda ritorna 1, altrimenti ritorna 0
 void StampaRisultato(Item *persona);
 void StampaFile(link h);
+void freeList(link h);
 link letturaAnagrafica(int scelta, int *terminazione, link h);
 link OperaSuLista(int scelta, int *terminazione, link h);
 link InserisciItem(link h, int flag_file); //funzione per leggere un nuovo elemento da inserire nella lista
-link newNode(Item *persona, link next);//funzione per la creazione di un nuovo nodo della lista
+link newNode(Item *val, link next);//funzione per la creazione di un nuovo nodo della lista
 link SortListIns(link h, Item *persona); //funzione per inserimento in lista di un Item
 link EliminaCodice(link h, char *codice, Item **Pestratto);
 link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **Pestratto);
@@ -51,7 +52,7 @@ Item *RicercaCodice(link h, char *codice);
 int main() {
 
     int terminazione1 = 0, terminazione2 = 0, scelta;
- //se desidero terminare l'inserimento di elementi nella lista inserisci assume valore 0
+    //se desidero terminare l'inserimento di elementi nella lista inserisci assume valore 0
 
     link h = NULL ;
 
@@ -64,38 +65,39 @@ int main() {
         scelta = leggiComandoOperazione();
         h = OperaSuLista(scelta, &terminazione2, h);
     }
+    freeList(h);
     return 0;
 }
 
 
 
 int leggiComandoAcquisizione(){ //funzione che legge il comando da eseguire
-    char *option;
-    int scelta , flag_scelta = 1;
+    char option[10];
+    int flag_scelta = 1;
     while(flag_scelta) {
-        printf("\nScegli se leggere da file o da tastiera");
+        printf("\nScegli se leggere da file o da tastiera: ");
         scanf("%s", option);
 
-        if(strcasecmp(option,"tastiera") == 0)     { return scelta = 0;}
+        if(strcasecmp(option,"tastiera") == 0)     { return 0;}
 
-        else if(strcasecmp(option,"file") == 0)     { return scelta = 1;}
+        else if(strcasecmp(option,"file") == 0)     { return 1;}
     }
 }
 int leggiComandoOperazione(){
     char *option;
-    int scelta , flag_scelta = 1;
+    int flag_scelta = 1;
     while(flag_scelta) {
         printf("\nScegli quale operazione effettuare:"
                "\n\t-RicercaCodice; \n\t-EliminaCodice;\n\t-EliminaDate;\n\t-StampaFile;\n");
         scanf("%s", option);
 
-        if(strcasecmp(option,"RicercaCodice") == 0)     { return scelta = 0;}
+        if(strcasecmp(option,"RicercaCodice") == 0)     { return 0;}
 
-        else if(strcasecmp(option,"EliminaCodice") == 0)     { return scelta = 1;}
+        else if(strcasecmp(option,"EliminaCodice") == 0)     { return 1;}
 
-        else if(strcasecmp(option,"EliminaDate") == 0)     { return scelta = 2;}
+        else if(strcasecmp(option,"EliminaDate") == 0)     { return 2;}
 
-        else if(strcasecmp(option,"StampaFile") == 0)     { return scelta = 3;}
+        else if(strcasecmp(option,"StampaFile") == 0)     { return 3;}
 
     }
 }
@@ -103,78 +105,14 @@ int leggiComandoOperazione(){
 
 int leggiTerminazione(){
     char *option;
-    int scelta , flag_scelta = 1;
+    int  flag_scelta = 1;
     while(flag_scelta) {
         printf("\nVuoi terminare questo processo? ");
         scanf("%s", option);
 
-        if(strcasecmp(option,"si") == 0)     { return scelta = 0;}
+        if(strcasecmp(option,"si") == 0)     { return 1;}
 
-        else if(strcasecmp(option,"no") == 0)     { return scelta = 1;}
-    }
-}
-
-link letturaAnagrafica(int scelta, int *terminazione, link h){
-
-    switch (scelta) {
-        case r_tastiera:
-            h = InserisciItem(h, 0);
-            *terminazione = leggiTerminazione();
-            return h;
-
-        case r_file:
-                h = InserisciItem(h, 1);
-                *terminazione = leggiTerminazione();
-                return h;
-            }
-    }
-
-link OperaSuLista(int scelta, int *terminazione, link h){
-    char codice[5];
-    Item *elemento_estratto = malloc(sizeof(Item));
-    switch (scelta) {
-        case r_ricercaCodice:
-            printf("Inserisci il codice con cui fare la ricerca nel formato AXXXX dove X è un numero tra 0 e 9: ");
-            scanf("%s", codice);
-            StampaRisultato(RicercaCodice(h,codice));
-            *terminazione = leggiTerminazione();
-            return h;
-
-        case r_cancellazioneCodice:
-
-            printf("Inserisci il codice dell'elemento da eliminare dalla lista nel formato AXXXX dove X è un numero tra 0 e 9:  ");
-
-            scanf("%s", codice);
-
-
-
-            h = EliminaCodice(h, codice, &elemento_estratto);
-
-            StampaRisultato(elemento_estratto);
-
-            free(elemento_estratto);
-            *terminazione = leggiTerminazione();
-            return h;
-
-        case r_cancellazioneDate:
-            printf("Inserisci la prima delle due date dell'intervallo per cui eliminare gli elementi nel formato gg/mm/aaaa: ");
-            data_di_nascita *data1 = malloc(sizeof(data_di_nascita)), *data2 = malloc(sizeof(data_di_nascita));
-            scanf("%d/%d/%d",&data1->giorno, &data1->mese, &data1->anno );
-            printf("Inserisci la seconda delle due date dell'intervallo per cui eliminare gli elementi nel formato gg/mm/aaaa: ");
-            scanf("%d/%d/%d",&data2->giorno, &data2->mese, &data2->anno );
-
-            h =  EliminaDate(h, data1, data2, &elemento_estratto);
-
-            free(data1);
-            free(data2);
-            free(elemento_estratto);
-            *terminazione = leggiTerminazione();
-            return h;
-
-        case r_StampaFile:
-            StampaFile(h);
-            *terminazione = leggiTerminazione();
-            return h;
+        else if(strcasecmp(option,"no") == 0)     { return 0;}
     }
 }
 
@@ -230,10 +168,84 @@ void StampaFile(link h){
 
 }
 
-link newNode(Item *persona, link next) {//passo alla funzione newnode l'elemento di tipo item da aggiungere nella lista e un puntatore next
+void freeList(link h){
+    link x,t;
+    for(x = h; x!=NULL;x = t->next){
+        t = x; //variabile necessaria per l'avanzamento del ciclo, altrimenti nell'aggiornamento di x dovrei prendere un valore da una variabile che non punta più
+        free(x->persona);
+        free(x);
+    }
+}
+
+link letturaAnagrafica(int scelta, int *terminazione, link h){
+
+    switch (scelta) {
+        case r_tastiera:
+            h = InserisciItem(h, 0);
+            *terminazione = leggiTerminazione();
+            return h;
+
+        case r_file:
+            h = InserisciItem(h, 1);
+            *terminazione = leggiTerminazione();
+            return h;
+    }
+}
+
+link OperaSuLista(int scelta, int *terminazione, link h){
+    char codice[5];
+    Item *elemento_estratto = malloc(sizeof(Item));
+    switch (scelta) {
+        case r_ricercaCodice:
+            printf("Inserisci il codice con cui fare la ricerca nel formato AXXXX dove X è un numero tra 0 e 9: ");
+            scanf("%s", codice);
+            StampaRisultato(RicercaCodice(h,codice));
+            *terminazione = leggiTerminazione();
+            return h;
+
+        case r_cancellazioneCodice:
+
+            printf("Inserisci il codice dell'elemento da eliminare dalla lista nel formato AXXXX dove X è un numero tra 0 e 9:  ");
+
+            scanf("%s", codice);
+
+
+
+            h = EliminaCodice(h, codice, &elemento_estratto);
+
+            StampaRisultato(elemento_estratto);
+
+            free(elemento_estratto);
+            *terminazione = leggiTerminazione();
+            return h;
+
+        case r_cancellazioneDate:
+            printf("Inserisci la prima delle due date dell'intervallo per cui eliminare gli elementi nel formato gg/mm/aaaa: ");
+            data_di_nascita *data1 = malloc(sizeof(data_di_nascita)), *data2 = malloc(sizeof(data_di_nascita));
+            scanf("%d/%d/%d",&data1->giorno, &data1->mese, &data1->anno );
+            printf("Inserisci la seconda delle due date dell'intervallo per cui eliminare gli elementi nel formato gg/mm/aaaa: ");
+            scanf("%d/%d/%d",&data2->giorno, &data2->mese, &data2->anno );
+
+            h =  EliminaDate(h, data1, data2, &elemento_estratto);
+
+            free(data1);
+            free(data2);
+            free(elemento_estratto);
+            *terminazione = leggiTerminazione();
+            return h;
+
+        case r_StampaFile:
+            StampaFile(h);
+            *terminazione = leggiTerminazione();
+            return h;
+    }
+}
+
+link newNode(Item *val, link next) {//passo alla funzione newnode l'elemento di tipo item da aggiungere nella lista e un puntatore next
     //in questo modo aggiungo in coda alla testa
     link x = malloc(sizeof(struct node)); //allocazione di un nodo
-
+    Item *persona = malloc(sizeof(Item));
+    persona = val;
     if(x == NULL){
         return NULL;
     }else{
@@ -246,7 +258,7 @@ link newNode(Item *persona, link next) {//passo alla funzione newnode l'elemento
 
 link InserisciItem(link h, int flag_file){
     Item *persona;
-    link p = NULL; //puntatore a predecessore, in un ciclo salvo qui ciò che è puntato dall'elemento precedente in coda
+
     if(flag_file) {
         FILE *fin = apertura_file_lettura();
         while (!feof(fin)) {
@@ -260,9 +272,9 @@ link InserisciItem(link h, int flag_file){
             fscanf(fin, "%d", &persona->cap);
 
             h = SortListIns(h, persona);
-            free(persona);
-            fclose(fin);
+
         }
+        fclose(fin);
     }
     else if (!flag_file){
         persona =(Item*) malloc(sizeof (Item));
@@ -273,7 +285,7 @@ link InserisciItem(link h, int flag_file){
         printf("\nInserisci cognome: ");
         scanf("%s", persona->cognome);
         printf("\nInserisci la data di nascita nel formato gg/mm/aaaa: ");
-        scanf("%d/%d/%d", persona->data.giorno, persona->data.mese, persona->data.anno);
+        scanf("%d/%d/%d", &persona->data.giorno, &persona->data.mese, &persona->data.anno);
         printf("\nInserisci la via di residenza (es:ViaMarcoPolo) : ");
         scanf("%s", persona->via);
         printf("\nInserisci la città di residenza: ");
@@ -295,10 +307,10 @@ link SortListIns(link h, Item *persona){
         return newNode(persona, h);//non ho una testa della lista quindi ritorno direttamente un nuovo nodo che sarà la mia nuova testa
     }
     for (x = h->next, p = h; x!=NULL && !VerificaData(&persona->data, &x->persona->data); x = x->next);  //ciclo che mi permette di avanzare nella lista finchè persona.data è maggiore di h->persona->data
-                                                                                                                  //cioè finchè non trovo un elemento maggiore di quello che voglio inserire
+    //cioè finchè non trovo un elemento maggiore di quello che voglio inserire
     p->next = newNode(persona, x);//quando termino il ciclo di avanzamento nella lista significa che l'elemento trovato nella lista risulta maggiore di quello che voglio inserire
-                                        //in questo caso ci inserisco sopra l'elemento minore
-                                        //poiche ricerco un ordinamento crescente
+    //in questo caso ci inserisco sopra l'elemento minore
+    //poiche ricerco un ordinamento crescente
     return h;//ritorno la testa della lista
 }
 
@@ -373,20 +385,31 @@ Item *RicercaCodice(link h, char *codice){ //funzione che ritorna il puntatore a
 }
 
 FILE *apertura_file_lettura(){
-    char *nome_file;
+    char nome_file[50];
     FILE *fin;
     printf("\nInserisci il nome del file da aprire: ");
     scanf("%s", nome_file);
     fin = fopen(nome_file, "r");
+    if(fin == NULL){
+        printf("\nImpossibile aprire il file ");
+        exit(1);
+    }
     return fin;
 }
+
 FILE *apertura_file_scrittura(){
-    char *nome_file;
+    char nome_file[50];
     FILE *fout;
     printf("\nInserisci il nome del file da aprire: ");
     scanf("%s", nome_file);
     fout = fopen(nome_file, "w");
+
+    if(fout == NULL){
+        printf("\nImpossibile aprire il file ");
+        exit(1);
+    }
     return fout;
 }
+
 
 
