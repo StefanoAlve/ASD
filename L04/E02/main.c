@@ -226,7 +226,7 @@ void StampaFile(link h){
             printf("\nNon è stato possibile effettuare la stampa su file");
         }
     }
-
+    fclose(fout);
 
 }
 
