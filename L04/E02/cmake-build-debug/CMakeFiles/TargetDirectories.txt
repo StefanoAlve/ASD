@@ -1,3 +1,0 @@
-C:/Users/calve/OneDrive/Desktop/primo semestre/Algoritmi/laboratorio/L04/E02/cmake-build-debug/CMakeFiles/E02.dir
-C:/Users/calve/OneDrive/Desktop/primo semestre/Algoritmi/laboratorio/L04/E02/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/calve/OneDrive/Desktop/primo semestre/Algoritmi/laboratorio/L04/E02/cmake-build-debug/CMakeFiles/rebuild_cache.dir
