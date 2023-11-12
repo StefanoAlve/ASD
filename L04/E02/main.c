@@ -51,8 +51,7 @@ Item *RicercaCodice(link h, char *codice);
 
 int main() {
 
-    int terminazione1 = 0, terminazione2 = 0, scelta;
-    //se desidero terminare l'inserimento di elementi nella lista inserisci assume valore 0
+    int terminazione1 = 0, terminazione2 = 0, scelta;//se desidero terminare l'inserimento di elementi nella lista inserisci assume valore 0
 
     link h = NULL ;
 
@@ -65,7 +64,7 @@ int main() {
         scelta = leggiComandoOperazione();
         h = OperaSuLista(scelta, &terminazione2, h);
     }
-    freeList(h);
+    freeList(h);//controllare funzionamento, termina con segmentation error
     return 0;
 }
 
@@ -84,7 +83,7 @@ int leggiComandoAcquisizione(){ //funzione che legge il comando da eseguire
     }
 }
 int leggiComandoOperazione(){
-    char *option;
+    char option[50];
     int flag_scelta = 1;
     while(flag_scelta) {
         printf("\nScegli quale operazione effettuare:"
@@ -104,7 +103,7 @@ int leggiComandoOperazione(){
 
 
 int leggiTerminazione(){
-    char *option;
+    char option[3];
     int  flag_scelta = 1;
     while(flag_scelta) {
         printf("\nVuoi terminare questo processo? ");
@@ -147,7 +146,7 @@ void StampaRisultato(Item *persona){
                persona->data.mese, persona->data.anno,persona->via, persona->citta, persona->cap);
     }
     else{
-        printf("\nNon è stato trovata una corrispondenza");
+        printf("\nNon e stata trovata una corrispondenza");
     }
 
 }
@@ -161,7 +160,7 @@ void StampaFile(link h){
                     x->persona->data.mese, x->persona->data.anno, x->persona->via, x->persona->citta, x->persona->cap);
         }
         else{
-            printf("\nNon è stato possibile effettuare la stampa su file");
+            printf("\nNon e stato possibile effettuare la stampa su file");
         }
     }
     fclose(fout);
@@ -197,7 +196,7 @@ link OperaSuLista(int scelta, int *terminazione, link h){
     Item *elemento_estratto = malloc(sizeof(Item));
     switch (scelta) {
         case r_ricercaCodice:
-            printf("Inserisci il codice con cui fare la ricerca nel formato AXXXX dove X è un numero tra 0 e 9: ");
+            printf("Inserisci il codice con cui fare la ricerca nel formato AXXXX dove X e un numero tra 0 e 9: ");
             scanf("%s", codice);
             StampaRisultato(RicercaCodice(h,codice));
             *terminazione = leggiTerminazione();
@@ -205,11 +204,9 @@ link OperaSuLista(int scelta, int *terminazione, link h){
 
         case r_cancellazioneCodice:
 
-            printf("Inserisci il codice dell'elemento da eliminare dalla lista nel formato AXXXX dove X è un numero tra 0 e 9:  ");
+            printf("Inserisci il codice dell'elemento da eliminare dalla lista nel formato AXXXX dove X e un numero tra 0 e 9:  ");
 
             scanf("%s", codice);
-
-
 
             h = EliminaCodice(h, codice, &elemento_estratto);
 
@@ -258,7 +255,7 @@ link newNode(Item *val, link next) {//passo alla funzione newnode l'elemento di 
 
 link InserisciItem(link h, int flag_file){
     Item *persona;
-
+    int flag;
     if(flag_file) {
         FILE *fin = apertura_file_lettura();
         while (!feof(fin)) {
@@ -267,6 +264,9 @@ link InserisciItem(link h, int flag_file){
             fscanf(fin, "%s", persona->nome);
             fscanf(fin, "%s", persona->cognome);
             fscanf(fin, "%d/%d/%d", &persona->data.giorno, &persona->data.mese, &persona->data.anno);
+            if((persona->data.giorno < 1|| persona->data.giorno > 31  ) || (persona->data.mese < 1|| persona->data.mese > 12 ) || (persona->data.anno < 1900 || persona->data.anno > 2023 )){
+                break; //nel caso in ui vengano letti dei valori non validi il ciclo viene interrotto e l'elemento non viene aggiunto alla lista
+            }
             fscanf(fin, "%s", persona->via);
             fscanf(fin, "%s", persona->citta);
             fscanf(fin, "%d", &persona->cap);
@@ -286,6 +286,16 @@ link InserisciItem(link h, int flag_file){
         scanf("%s", persona->cognome);
         printf("\nInserisci la data di nascita nel formato gg/mm/aaaa: ");
         scanf("%d/%d/%d", &persona->data.giorno, &persona->data.mese, &persona->data.anno);
+        while(flag){//controllo inserimento dati validi
+            if((persona->data.giorno < 1|| persona->data.giorno > 31  ) || (persona->data.mese < 1|| persona->data.giorno > 12 ) || (persona->data.anno < 1900 || persona->data.giorno > 2023 )){
+                printf("\nData di nascita non valida\n Inserisci dei valori validi: ");
+                scanf("%d/%d/%d", &persona->data.giorno, &persona->data.mese, &persona->data.anno);
+            }
+            else{
+                flag = 0;
+            }
+
+        }
         printf("\nInserisci la via di residenza (es:ViaMarcoPolo) : ");
         scanf("%s", persona->via);
         printf("\nInserisci la città di residenza: ");
@@ -294,23 +304,22 @@ link InserisciItem(link h, int flag_file){
         scanf("%d", &persona->cap);
 
         h = SortListIns(h, persona);
-        free(persona);
+
     }
     return h;
 }
 
 link SortListIns(link h, Item *persona){
     link x, p; //x elemento successivo, p predecessore (sono entrambi puntatori a struct node
-    int flag_minore = 0; //quando viene trovato un elemento minore rispetto ad un altro inserisco l'elemento subito prima
 
     if(h == NULL || VerificaData(&h->persona->data, &persona->data)){
         return newNode(persona, h);//non ho una testa della lista quindi ritorno direttamente un nuovo nodo che sarà la mia nuova testa
     }
     for (x = h->next, p = h; x!=NULL && !VerificaData(&persona->data, &x->persona->data); x = x->next);  //ciclo che mi permette di avanzare nella lista finchè persona.data è maggiore di h->persona->data
-    //cioè finchè non trovo un elemento maggiore di quello che voglio inserire
+                                                                                                                  //cioè finchè non trovo un elemento maggiore di quello che voglio inserire
     p->next = newNode(persona, x);//quando termino il ciclo di avanzamento nella lista significa che l'elemento trovato nella lista risulta maggiore di quello che voglio inserire
-    //in questo caso ci inserisco sopra l'elemento minore
-    //poiche ricerco un ordinamento crescente
+                                        //in questo caso ci inserisco sopra l'elemento minore
+                                        //poiche ricerco un ordinamento crescente
     return h;//ritorno la testa della lista
 }
 
@@ -376,8 +385,9 @@ link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **
 
 Item *RicercaCodice(link h, char *codice){ //funzione che ritorna il puntatore all'item corrispondente
     link x;
-    for(x = h; x!=NULL && strcasecmp(codice, h->persona->codice) != 0; x = x->next){
-        if(strcasecmp(codice, h->persona->codice) == 0){
+
+    for(x = h; x!=NULL; x = x->next){
+        if(strcasecmp(codice, x->persona->codice) == 0){
             return x->persona;
         }
     }
@@ -410,6 +420,3 @@ FILE *apertura_file_scrittura(){
     }
     return fout;
 }
-
-
-
