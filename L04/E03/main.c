@@ -7,12 +7,13 @@ typedef struct {
     int numero[4];
 }stones;
 
+
 stones *leggiFile(char nomeFile[MAXL], stones *pietre, int *nr);
 void collane(stones *pietre, int nr);
 int maxCompl(stones *pietre, int riga);
 int maxTraDue(stones *pietre, int i, int j, int riga);
 void stampaPietre(stones *pietre, int riga);
-void stampaCollana(int collana[4]);
+void stampaCollana(int collana[4], int tot);
 
 int main() {
     char nomeFile[MAXL];
@@ -33,6 +34,8 @@ int main() {
     }*/
 
     collane(pietre, nr);
+
+    free(pietre);
 
     return 0;
 }
@@ -74,48 +77,74 @@ void collane(stones *pietre, int nr) {
         for(j=0; j<4; j++) {
             collana[j] = 0;
         }
+        ///FUNZIONE DI STAMPA PIETRE
+        stampaPietre(pietre, i);
         ///ELEMENTO DA CUI PARTIRE
         indexMax = maxCompl(pietre, i);
 
+
+
         pietre[i].numero[indexMax] -= 1;
         collana[indexMax] += 1;
-
+        cont++;
         index = indexMax;
-        printf("TEST #%d\n", index+1);
 
-        ///FUNZIONE DI STAMPA PIETRE
-        stampaPietre(pietre, i);
 
-        while(flag){
+        while (flag) {
             ///CASO ZAFFIRO E TOPAZIO
-            if(index == z || index == t){
+            if (index == z || index == t) {
                 ///CONDIZIONE TERMINATRICE
-                if (pietre[i].numero[z] == 0 && pietre[i].numero[r] == 0)
+                if (pietre[i].numero[z] == 0 && pietre[i].numero[r] == 0) {
+                    //if (pietre[i].numero[s] == 0 || pietre[i].numero[t] == 0)
                     flag = 0;
-                else {
-                    index = maxTraDue(pietre, z, r, i);
-                    pietre[i].numero[index] -= 1;
-                    collana[index] += 1;
-                    cont++;
+
+                } else {
+                    if (pietre[i].numero[s] == 0 && pietre[i].numero[t] == 0) {
+                        index = z;
+                        pietre[i].numero[index] -= 1;
+                        collana[index] += 1;
+                        cont++;
+                        if (pietre[i].numero[z] == 0)
+                            flag = 0;
+                    } else {
+                        index = maxTraDue(pietre, z, r, i);
+                        pietre[i].numero[index] -= 1;
+                        collana[index] += 1;
+                        cont++;
+                    }
                 }
             }
-            ///CASO SMERALDO E RUBINO
-            else if(index == s || index == r) {
+                ///CASO SMERALDO E RUBINO
+            else if (index == s || index == r) {
                 ///CONDIZIONE TERMINATRICE
-                if(pietre[i].numero[s] == 0 && pietre[i].numero[t] == 0)
+                if (pietre[i].numero[s] == 0 &&
+                    pietre[i].numero[t] == 0 /*&& (pietre[i].numero[z] == 0 || pietre[i].numero[r] == 0)*/)
                     flag = 0;
-                ///DECREMENTO PIETRE E INCREMENTO COLLANA
+                    ///DECREMENTO PIETRE E INCREMENTO COLLANA
                 else {
-                    index = maxTraDue(pietre, s, t, i);
-                    pietre[i].numero[index] -= 1;
-                    collana[index] += 1;
-                    cont++;
+                    if (pietre[i].numero[z] == 0 && pietre[i].numero[r] == 0) {
+                        index = s;
+                        pietre[i].numero[index] -= 1;
+                        collana[index] += 1;
+                        cont++;
+                        if (pietre[i].numero[s] == 0)
+                            flag = 0;
+                    } else {
+                        index = maxTraDue(pietre, s, t, i);
+                        pietre[i].numero[index] -= 1;
+                        collana[index] += 1;
+                        cont++;
+                    }
+
                 }
             }
         }
         ///FUNZIONE DI STAMPA COLLANA
-        stampaCollana(collana);
+        stampaCollana(collana, cont);
         flag = 1;
+        cont = 0;
+
+
     }
 }
 
@@ -142,12 +171,14 @@ int maxTraDue(stones *pietre, int i, int j, int riga) {
     return max;
 }
 
-void stampaCollana(int collana[4]) {
-    int totCollana = collana[0]+collana[1]+collana[2]+collana[3];
-    printf("COLLANA MASSIMA\n zaffiro = %d, rubino = %d,  topazio = %d, smeraldo = %d, TOT COLLANA = %d\n", collana[0],
-           collana[1], collana[2], collana[3], totCollana);
+///STAMPA LA COLLANA
+void stampaCollana(int collana[4], int tot) {
+
+    printf("COLLANA MASSIMA\nzaffiro = %d, rubino = %d,  topazio = %d, smeraldo = %d, TOT COLLANA = %d\n\n", collana[0],
+           collana[1], collana[2], collana[3], tot);
 }
 
+///STAMPA LE PIETRE
 void stampaPietre(stones *pietre, int riga){
     int tot=pietre[riga].numero[0] + pietre[riga].numero[1] + pietre[riga].numero[2] + pietre[riga].numero[3];
 
