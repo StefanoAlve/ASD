@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/ASD/L04/E02/cmake-build-debug"
+			"value" : "c:/ASD/L05/E01/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -431,7 +431,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/ASD/L04/E02/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/ASD/L05/E01/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -503,7 +503,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/ASD/L04/E02"
+			"value" : "C:/ASD/L05/E01"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -515,7 +515,7 @@
 				}
 			],
 			"type" : "PATH",
-			"value" : "C:/Program Files (x86)/E02"
+			"value" : "C:/Program Files (x86)/E01"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -731,7 +731,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "E02"
+			"value" : "E01"
 		},
 		{
 			"name" : "CMAKE_RANLIB",
@@ -1110,7 +1110,7 @@
 			"value" : "FALSE"
 		},
 		{
-			"name" : "E02_BINARY_DIR",
+			"name" : "E01_BINARY_DIR",
 			"properties" : 
 			[
 				{
@@ -1119,10 +1119,10 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/ASD/L04/E02/cmake-build-debug"
+			"value" : "C:/ASD/L05/E01/cmake-build-debug"
 		},
 		{
-			"name" : "E02_IS_TOP_LEVEL",
+			"name" : "E01_IS_TOP_LEVEL",
 			"properties" : 
 			[
 				{
@@ -1134,7 +1134,7 @@
 			"value" : "ON"
 		},
 		{
-			"name" : "E02_SOURCE_DIR",
+			"name" : "E01_SOURCE_DIR",
 			"properties" : 
 			[
 				{
@@ -1143,7 +1143,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/ASD/L04/E02"
+			"value" : "C:/ASD/L05/E01"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",
