@@ -1,0 +1,9 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_13_11_2023_20_36_[Changes]2" date="1699904214355" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_13_11_2023_20_36_[Changes]2/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 13/11/2023 20:36 [Changes]" />
+  <binary>
+    <option name="BEFORE_PATH" value="cmake-build-debug/CMakeFiles/3.26.4/CMakeDetermineCompilerABI_C.bin" />
+    <option name="AFTER_PATH" value="cmake-build-debug/CMakeFiles/3.26.4/CMakeDetermineCompilerABI_C.bin" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_13_11_2023_20_36_[Changes]2/CMakeDetermineCompilerABI_C.bin" />
+  </binary>
+</changelist>

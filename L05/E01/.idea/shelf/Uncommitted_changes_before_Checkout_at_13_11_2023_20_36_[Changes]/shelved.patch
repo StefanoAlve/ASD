@@ -1,0 +1,296 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"CMakePresetLoader\"><![CDATA[{\r\n  \"useNewFormat\": true\r\n}]]></component>\r\n  <component name=\"CMakeReloadState\">\r\n    <option name=\"reloaded\" value=\"true\" />\r\n  </component>\r\n  <component name=\"CMakeRunConfigurationManager\">\r\n    <generated>\r\n      <config projectName=\"E01\" targetName=\"E01\" />\r\n    </generated>\r\n  </component>\r\n  <component name=\"CMakeSettings\">\r\n    <configurations>\r\n      <configuration PROFILE_NAME=\"Debug\" ENABLED=\"true\" CONFIG_NAME=\"Debug\" />\r\n    </configurations>\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"0000e456-220c-46f2-b230-353fab283a94\" name=\"Changes\" comment=\"\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ClangdSettings\">\r\n    <option name=\"formatViaClangd\" value=\"false\" />\r\n  </component>\r\n  <component name=\"ExecutionTargetManager\" SELECTED_TARGET=\"CMakeBuildProfile:Debug\" />\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/../..\" />\r\n  </component>\r\n  <component name=\"ProjectApplicationVersion\">\r\n    <option name=\"ide\" value=\"CLion\" />\r\n    <option name=\"majorVersion\" value=\"2023\" />\r\n    <option name=\"minorVersion\" value=\"2.2\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 5\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2Y4euUoWYk9TQKFR6K9CrKW6rAk\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.cidr.known.project.marker\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"cf.first.check.clang-format\": \"false\",\r\n    \"cidr.known.project.marker\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration default=\"true\" type=\"CLionExternalRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\">\r\n      <method v=\"2\">\r\n        <option name=\"CLION.EXTERNAL.BUILD\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"E01\" type=\"CMakeRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"E01\" TARGET_NAME=\"E01\" CONFIG_NAME=\"Debug\" RUN_TARGET_PROJECT_NAME=\"E01\" RUN_TARGET_NAME=\"E01\">\r\n      <method v=\"2\">\r\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"0000e456-220c-46f2-b230-353fab283a94\" name=\"Changes\" comment=\"\" />\r\n      <created>1699789501721</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1699789501721</updated>\r\n      <workItem from=\"1699789503790\" duration=\"62000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 87ab14e7a0596e7c00e4def50a7b8bd6630bfca8)
++++ b/.idea/workspace.xml	(date 1699904170867)
+@@ -3,9 +3,9 @@
+   <component name="AutoImportSettings">
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+-  <component name="CMakePresetLoader"><![CDATA[{
+-  "useNewFormat": true
+-}]]></component>
++  <component name="CMakePresetLoader">{
++  &quot;useNewFormat&quot;: true
++}</component>
+   <component name="CMakeReloadState">
+     <option name="reloaded" value="true" />
+   </component>
+@@ -20,7 +20,9 @@
+     </configurations>
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="0000e456-220c-46f2-b230-353fab283a94" name="Changes" comment="" />
++    <list default="true" id="0000e456-220c-46f2-b230-353fab283a94" name="Changes" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -38,37 +40,47 @@
+     <option name="majorVersion" value="2023" />
+     <option name="minorVersion" value="2.2" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 5
+-}]]></component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 5
++}</component>
+   <component name="ProjectId" id="2Y4euUoWYk9TQKFR6K9CrKW6rAk" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "RunOnceActivity.cidr.known.project.marker": "true",
+-    "WebServerToolWindowFactoryState": "false",
+-    "cf.first.check.clang-format": "false",
+-    "cidr.known.project.marker": "true",
+-    "git-widget-placeholder": "main",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
++    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
++    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
++    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+-}]]></component>
+-  <component name="RunManager">
+-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
++}</component>
++  <component name="RunManager" selected="C/C++ File.main.c">
++    <configuration name="E01" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="E01" TARGET_NAME="E01" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="E01" RUN_TARGET_NAME="E01">
+       <method v="2">
+-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
++        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="E01" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="E01" TARGET_NAME="E01" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="E01" RUN_TARGET_NAME="E01">
++    <configuration default="true" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+       <method v="2">
+         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+       </method>
+     </configuration>
++    <configuration name="main.c" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="E01" TARGET_NAME="main.c" CONFIG_NAME="main.c">
++      <option name="sourceFile" value="main.c" />
++      <method v="2">
++        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
++      </method>
++    </configuration>
++    <list>
++      <item itemvalue="C/C++ File.main.c" />
++      <item itemvalue="CMake Application.E01" />
++    </list>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+@@ -79,6 +91,7 @@
+       <option name="presentableId" value="Default" />
+       <updated>1699789501721</updated>
+       <workItem from="1699789503790" duration="62000" />
++      <workItem from="1699904161841" duration="10000" />
+     </task>
+     <servers />
+   </component>
+Index: cmake-build-debug/CMakeCache.txt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+># This is the CMakeCache file.\r\n# For build in directory: c:/ASD/L05/E01/cmake-build-debug\r\n# It was generated by CMake: C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cmake.exe\r\n# You can edit this file to change values found and used by cmake.\r\n# If you do not want to change any of the values, simply exit the editor.\r\n# If you do want to change a value, simply edit, save, and exit the editor.\r\n# The syntax for the file is as follows:\r\n# KEY:TYPE=VALUE\r\n# KEY is the name of a variable in the cache.\r\n# TYPE is a hint to GUIs for the type of VALUE, DO NOT EDIT TYPE!.\r\n# VALUE is the current value for the KEY.\r\n\r\n########################\r\n# EXTERNAL cache entries\r\n########################\r\n\r\n//Path to a program.\r\nCMAKE_ADDR2LINE:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/addr2line.exe\r\n\r\n//Path to a program.\r\nCMAKE_AR:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/ar.exe\r\n\r\n//Choose the type of build, options are: None Debug Release RelWithDebInfo\r\n// MinSizeRel ...\r\nCMAKE_BUILD_TYPE:STRING=Debug\r\n\r\n//Enable colored diagnostics throughout.\r\nCMAKE_COLOR_DIAGNOSTICS:BOOL=ON\r\n\r\n//C compiler\r\nCMAKE_C_COMPILER:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc.exe\r\n\r\n//A wrapper around 'ar' adding the appropriate '--plugin' option\r\n// for the GCC compiler\r\nCMAKE_C_COMPILER_AR:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc-ar.exe\r\n\r\n//A wrapper around 'ranlib' adding the appropriate '--plugin' option\r\n// for the GCC compiler\r\nCMAKE_C_COMPILER_RANLIB:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc-ranlib.exe\r\n\r\n//Flags used by the C compiler during all build types.\r\nCMAKE_C_FLAGS:STRING=\r\n\r\n//Flags used by the C compiler during DEBUG builds.\r\nCMAKE_C_FLAGS_DEBUG:STRING=-g\r\n\r\n//Flags used by the C compiler during MINSIZEREL builds.\r\nCMAKE_C_FLAGS_MINSIZEREL:STRING=-Os -DNDEBUG\r\n\r\n//Flags used by the C compiler during RELEASE builds.\r\nCMAKE_C_FLAGS_RELEASE:STRING=-O3 -DNDEBUG\r\n\r\n//Flags used by the C compiler during RELWITHDEBINFO builds.\r\nCMAKE_C_FLAGS_RELWITHDEBINFO:STRING=-O2 -g -DNDEBUG\r\n\r\n//Libraries linked by default with all C applications.\r\nCMAKE_C_STANDARD_LIBRARIES:STRING=-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32\r\n\r\n//Path to a program.\r\nCMAKE_DLLTOOL:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/dlltool.exe\r\n\r\n//Flags used by the linker during all build types.\r\nCMAKE_EXE_LINKER_FLAGS:STRING=\r\n\r\n//Flags used by the linker during DEBUG builds.\r\nCMAKE_EXE_LINKER_FLAGS_DEBUG:STRING=\r\n\r\n//Flags used by the linker during MINSIZEREL builds.\r\nCMAKE_EXE_LINKER_FLAGS_MINSIZEREL:STRING=\r\n\r\n//Flags used by the linker during RELEASE builds.\r\nCMAKE_EXE_LINKER_FLAGS_RELEASE:STRING=\r\n\r\n//Flags used by the linker during RELWITHDEBINFO builds.\r\nCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=\r\n\r\n//Enable/Disable output of compile commands during generation.\r\nCMAKE_EXPORT_COMPILE_COMMANDS:BOOL=\r\n\r\n//Value Computed by CMake.\r\nCMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/ASD/L05/E01/cmake-build-debug/CMakeFiles/pkgRedirects\r\n\r\n//Convert GNU import libraries to MS format (requires Visual Studio)\r\nCMAKE_GNUtoMS:BOOL=OFF\r\n\r\n//Install path prefix, prepended onto install directories.\r\nCMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/E01\r\n\r\n//Path to a program.\r\nCMAKE_LINKER:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/ld.exe\r\n\r\n//make program\r\nCMAKE_MAKE_PROGRAM:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe\r\n\r\n//Flags used by the linker during the creation of modules during\r\n// all build types.\r\nCMAKE_MODULE_LINKER_FLAGS:STRING=\r\n\r\n//Flags used by the linker during the creation of modules during\r\n// DEBUG builds.\r\nCMAKE_MODULE_LINKER_FLAGS_DEBUG:STRING=\r\n\r\n//Flags used by the linker during the creation of modules during\r\n// MINSIZEREL builds.\r\nCMAKE_MODULE_LINKER_FLAGS_MINSIZEREL:STRING=\r\n\r\n//Flags used by the linker during the creation of modules during\r\n// RELEASE builds.\r\nCMAKE_MODULE_LINKER_FLAGS_RELEASE:STRING=\r\n\r\n//Flags used by the linker during the creation of modules during\r\n// RELWITHDEBINFO builds.\r\nCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING=\r\n\r\n//Path to a program.\r\nCMAKE_NM:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/nm.exe\r\n\r\n//Path to a program.\r\nCMAKE_OBJCOPY:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/objcopy.exe\r\n\r\n//Path to a program.\r\nCMAKE_OBJDUMP:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/objdump.exe\r\n\r\n//Value Computed by CMake\r\nCMAKE_PROJECT_DESCRIPTION:STATIC=\r\n\r\n//Value Computed by CMake\r\nCMAKE_PROJECT_HOMEPAGE_URL:STATIC=\r\n\r\n//Value Computed by CMake\r\nCMAKE_PROJECT_NAME:STATIC=E01\r\n\r\n//Path to a program.\r\nCMAKE_RANLIB:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/ranlib.exe\r\n\r\n//RC compiler\r\nCMAKE_RC_COMPILER:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/windres.exe\r\n\r\n//Flags for Windows Resource Compiler during all build types.\r\nCMAKE_RC_FLAGS:STRING=\r\n\r\n//Flags for Windows Resource Compiler during DEBUG builds.\r\nCMAKE_RC_FLAGS_DEBUG:STRING=\r\n\r\n//Flags for Windows Resource Compiler during MINSIZEREL builds.\r\nCMAKE_RC_FLAGS_MINSIZEREL:STRING=\r\n\r\n//Flags for Windows Resource Compiler during RELEASE builds.\r\nCMAKE_RC_FLAGS_RELEASE:STRING=\r\n\r\n//Flags for Windows Resource Compiler during RELWITHDEBINFO builds.\r\nCMAKE_RC_FLAGS_RELWITHDEBINFO:STRING=\r\n\r\n//Path to a program.\r\nCMAKE_READELF:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/readelf.exe\r\n\r\n//Flags used by the linker during the creation of shared libraries\r\n// during all build types.\r\nCMAKE_SHARED_LINKER_FLAGS:STRING=\r\n\r\n//Flags used by the linker during the creation of shared libraries\r\n// during DEBUG builds.\r\nCMAKE_SHARED_LINKER_FLAGS_DEBUG:STRING=\r\n\r\n//Flags used by the linker during the creation of shared libraries\r\n// during MINSIZEREL builds.\r\nCMAKE_SHARED_LINKER_FLAGS_MINSIZEREL:STRING=\r\n\r\n//Flags used by the linker during the creation of shared libraries\r\n// during RELEASE builds.\r\nCMAKE_SHARED_LINKER_FLAGS_RELEASE:STRING=\r\n\r\n//Flags used by the linker during the creation of shared libraries\r\n// during RELWITHDEBINFO builds.\r\nCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO:STRING=\r\n\r\n//If set, runtime paths are not added when installing shared libraries,\r\n// but are added when building.\r\nCMAKE_SKIP_INSTALL_RPATH:BOOL=NO\r\n\r\n//If set, runtime paths are not added when using shared libraries.\r\nCMAKE_SKIP_RPATH:BOOL=NO\r\n\r\n//Flags used by the linker during the creation of static libraries\r\n// during all build types.\r\nCMAKE_STATIC_LINKER_FLAGS:STRING=\r\n\r\n//Flags used by the linker during the creation of static libraries\r\n// during DEBUG builds.\r\nCMAKE_STATIC_LINKER_FLAGS_DEBUG:STRING=\r\n\r\n//Flags used by the linker during the creation of static libraries\r\n// during MINSIZEREL builds.\r\nCMAKE_STATIC_LINKER_FLAGS_MINSIZEREL:STRING=\r\n\r\n//Flags used by the linker during the creation of static libraries\r\n// during RELEASE builds.\r\nCMAKE_STATIC_LINKER_FLAGS_RELEASE:STRING=\r\n\r\n//Flags used by the linker during the creation of static libraries\r\n// during RELWITHDEBINFO builds.\r\nCMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=\r\n\r\n//Path to a program.\r\nCMAKE_STRIP:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/strip.exe\r\n\r\n//If this value is on, makefiles will be generated without the\r\n// .SILENT directive, and all commands will be echoed to the console\r\n// during the make.  This is useful for debugging only. With Visual\r\n// Studio IDE projects all commands are done without /nologo.\r\nCMAKE_VERBOSE_MAKEFILE:BOOL=FALSE\r\n\r\n//Value Computed by CMake\r\nE01_BINARY_DIR:STATIC=C:/ASD/L05/E01/cmake-build-debug\r\n\r\n//Value Computed by CMake\r\nE01_IS_TOP_LEVEL:STATIC=ON\r\n\r\n//Value Computed by CMake\r\nE01_SOURCE_DIR:STATIC=C:/ASD/L05/E01\r\n\r\n\r\n########################\r\n# INTERNAL cache entries\r\n########################\r\n\r\n//ADVANCED property for variable: CMAKE_ADDR2LINE\r\nCMAKE_ADDR2LINE-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_AR\r\nCMAKE_AR-ADVANCED:INTERNAL=1\r\n//This is the directory where this CMakeCache.txt was created\r\nCMAKE_CACHEFILE_DIR:INTERNAL=c:/ASD/L05/E01/cmake-build-debug\r\n//Major version of cmake used to create the current loaded cache\r\nCMAKE_CACHE_MAJOR_VERSION:INTERNAL=3\r\n//Minor version of cmake used to create the current loaded cache\r\nCMAKE_CACHE_MINOR_VERSION:INTERNAL=26\r\n//Patch version of cmake used to create the current loaded cache\r\nCMAKE_CACHE_PATCH_VERSION:INTERNAL=4\r\n//Path to CMake executable.\r\nCMAKE_COMMAND:INTERNAL=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cmake.exe\r\n//Path to cpack program executable.\r\nCMAKE_CPACK_COMMAND:INTERNAL=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cpack.exe\r\n//Path to ctest program executable.\r\nCMAKE_CTEST_COMMAND:INTERNAL=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/ctest.exe\r\n//ADVANCED property for variable: CMAKE_C_COMPILER\r\nCMAKE_C_COMPILER-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_C_COMPILER_AR\r\nCMAKE_C_COMPILER_AR-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_C_COMPILER_RANLIB\r\nCMAKE_C_COMPILER_RANLIB-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_C_FLAGS\r\nCMAKE_C_FLAGS-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_C_FLAGS_DEBUG\r\nCMAKE_C_FLAGS_DEBUG-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_C_FLAGS_MINSIZEREL\r\nCMAKE_C_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_C_FLAGS_RELEASE\r\nCMAKE_C_FLAGS_RELEASE-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_C_FLAGS_RELWITHDEBINFO\r\nCMAKE_C_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_C_STANDARD_LIBRARIES\r\nCMAKE_C_STANDARD_LIBRARIES-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_DLLTOOL\r\nCMAKE_DLLTOOL-ADVANCED:INTERNAL=1\r\n//Executable file format\r\nCMAKE_EXECUTABLE_FORMAT:INTERNAL=Unknown\r\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS\r\nCMAKE_EXE_LINKER_FLAGS-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_DEBUG\r\nCMAKE_EXE_LINKER_FLAGS_DEBUG-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_MINSIZEREL\r\nCMAKE_EXE_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_RELEASE\r\nCMAKE_EXE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO\r\nCMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_EXPORT_COMPILE_COMMANDS\r\nCMAKE_EXPORT_COMPILE_COMMANDS-ADVANCED:INTERNAL=1\r\n//Name of external makefile project generator.\r\nCMAKE_EXTRA_GENERATOR:INTERNAL=\r\n//Name of generator.\r\nCMAKE_GENERATOR:INTERNAL=Ninja\r\n//Generator instance identifier.\r\nCMAKE_GENERATOR_INSTANCE:INTERNAL=\r\n//Name of generator platform.\r\nCMAKE_GENERATOR_PLATFORM:INTERNAL=\r\n//Name of generator toolset.\r\nCMAKE_GENERATOR_TOOLSET:INTERNAL=\r\n//Source directory with the top level CMakeLists.txt file for this\r\n// project\r\nCMAKE_HOME_DIRECTORY:INTERNAL=C:/ASD/L05/E01\r\n//ADVANCED property for variable: CMAKE_LINKER\r\nCMAKE_LINKER-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS\r\nCMAKE_MODULE_LINKER_FLAGS-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_DEBUG\r\nCMAKE_MODULE_LINKER_FLAGS_DEBUG-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_MINSIZEREL\r\nCMAKE_MODULE_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_RELEASE\r\nCMAKE_MODULE_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO\r\nCMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_NM\r\nCMAKE_NM-ADVANCED:INTERNAL=1\r\n//number of local generators\r\nCMAKE_NUMBER_OF_MAKEFILES:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_OBJCOPY\r\nCMAKE_OBJCOPY-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_OBJDUMP\r\nCMAKE_OBJDUMP-ADVANCED:INTERNAL=1\r\n//Platform information initialized\r\nCMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_RANLIB\r\nCMAKE_RANLIB-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_RC_COMPILER\r\nCMAKE_RC_COMPILER-ADVANCED:INTERNAL=1\r\nCMAKE_RC_COMPILER_WORKS:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_RC_FLAGS\r\nCMAKE_RC_FLAGS-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_RC_FLAGS_DEBUG\r\nCMAKE_RC_FLAGS_DEBUG-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_RC_FLAGS_MINSIZEREL\r\nCMAKE_RC_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_RC_FLAGS_RELEASE\r\nCMAKE_RC_FLAGS_RELEASE-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_RC_FLAGS_RELWITHDEBINFO\r\nCMAKE_RC_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_READELF\r\nCMAKE_READELF-ADVANCED:INTERNAL=1\r\n//Path to CMake installation.\r\nCMAKE_ROOT:INTERNAL=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26\r\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS\r\nCMAKE_SHARED_LINKER_FLAGS-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_DEBUG\r\nCMAKE_SHARED_LINKER_FLAGS_DEBUG-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_MINSIZEREL\r\nCMAKE_SHARED_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_RELEASE\r\nCMAKE_SHARED_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO\r\nCMAKE_SHARED_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_SKIP_INSTALL_RPATH\r\nCMAKE_SKIP_INSTALL_RPATH-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_SKIP_RPATH\r\nCMAKE_SKIP_RPATH-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS\r\nCMAKE_STATIC_LINKER_FLAGS-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_DEBUG\r\nCMAKE_STATIC_LINKER_FLAGS_DEBUG-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_MINSIZEREL\r\nCMAKE_STATIC_LINKER_FLAGS_MINSIZEREL-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_RELEASE\r\nCMAKE_STATIC_LINKER_FLAGS_RELEASE-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO\r\nCMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_STRIP\r\nCMAKE_STRIP-ADVANCED:INTERNAL=1\r\n//ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE\r\nCMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1\r\n//linker supports push/pop state\r\n_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED:INTERNAL=TRUE\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/cmake-build-debug/CMakeCache.txt b/cmake-build-debug/CMakeCache.txt
+--- a/cmake-build-debug/CMakeCache.txt	(revision 87ab14e7a0596e7c00e4def50a7b8bd6630bfca8)
++++ b/cmake-build-debug/CMakeCache.txt	(date 1699904168899)
+@@ -1,6 +1,6 @@
+ # This is the CMakeCache file.
+-# For build in directory: c:/ASD/L05/E01/cmake-build-debug
+-# It was generated by CMake: C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cmake.exe
++# For build in directory: c:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L05/E01/cmake-build-debug
++# It was generated by CMake: C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cmake.exe
+ # You can edit this file to change values found and used by cmake.
+ # If you do not want to change any of the values, simply exit the editor.
+ # If you do want to change a value, simply edit, save, and exit the editor.
+@@ -15,10 +15,10 @@
+ ########################
+ 
+ //Path to a program.
+-CMAKE_ADDR2LINE:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/addr2line.exe
++CMAKE_ADDR2LINE:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/addr2line.exe
+ 
+ //Path to a program.
+-CMAKE_AR:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/ar.exe
++CMAKE_AR:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/ar.exe
+ 
+ //Choose the type of build, options are: None Debug Release RelWithDebInfo
+ // MinSizeRel ...
+@@ -28,15 +28,15 @@
+ CMAKE_COLOR_DIAGNOSTICS:BOOL=ON
+ 
+ //C compiler
+-CMAKE_C_COMPILER:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc.exe
++CMAKE_C_COMPILER:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc.exe
+ 
+ //A wrapper around 'ar' adding the appropriate '--plugin' option
+ // for the GCC compiler
+-CMAKE_C_COMPILER_AR:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc-ar.exe
++CMAKE_C_COMPILER_AR:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc-ar.exe
+ 
+ //A wrapper around 'ranlib' adding the appropriate '--plugin' option
+ // for the GCC compiler
+-CMAKE_C_COMPILER_RANLIB:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc-ranlib.exe
++CMAKE_C_COMPILER_RANLIB:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc-ranlib.exe
+ 
+ //Flags used by the C compiler during all build types.
+ CMAKE_C_FLAGS:STRING=
+@@ -57,7 +57,7 @@
+ CMAKE_C_STANDARD_LIBRARIES:STRING=-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+ 
+ //Path to a program.
+-CMAKE_DLLTOOL:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/dlltool.exe
++CMAKE_DLLTOOL:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/dlltool.exe
+ 
+ //Flags used by the linker during all build types.
+ CMAKE_EXE_LINKER_FLAGS:STRING=
+@@ -78,7 +78,7 @@
+ CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=
+ 
+ //Value Computed by CMake.
+-CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/ASD/L05/E01/cmake-build-debug/CMakeFiles/pkgRedirects
++CMAKE_FIND_PACKAGE_REDIRECTS_DIR:STATIC=C:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L05/E01/cmake-build-debug/CMakeFiles/pkgRedirects
+ 
+ //Convert GNU import libraries to MS format (requires Visual Studio)
+ CMAKE_GNUtoMS:BOOL=OFF
+@@ -87,10 +87,10 @@
+ CMAKE_INSTALL_PREFIX:PATH=C:/Program Files (x86)/E01
+ 
+ //Path to a program.
+-CMAKE_LINKER:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/ld.exe
++CMAKE_LINKER:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/ld.exe
+ 
+ //make program
+-CMAKE_MAKE_PROGRAM:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe
++CMAKE_MAKE_PROGRAM:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/ninja/win/x64/ninja.exe
+ 
+ //Flags used by the linker during the creation of modules during
+ // all build types.
+@@ -113,13 +113,13 @@
+ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
+ 
+ //Path to a program.
+-CMAKE_NM:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/nm.exe
++CMAKE_NM:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/nm.exe
+ 
+ //Path to a program.
+-CMAKE_OBJCOPY:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/objcopy.exe
++CMAKE_OBJCOPY:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/objcopy.exe
+ 
+ //Path to a program.
+-CMAKE_OBJDUMP:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/objdump.exe
++CMAKE_OBJDUMP:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/objdump.exe
+ 
+ //Value Computed by CMake
+ CMAKE_PROJECT_DESCRIPTION:STATIC=
+@@ -131,10 +131,10 @@
+ CMAKE_PROJECT_NAME:STATIC=E01
+ 
+ //Path to a program.
+-CMAKE_RANLIB:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/ranlib.exe
++CMAKE_RANLIB:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/ranlib.exe
+ 
+ //RC compiler
+-CMAKE_RC_COMPILER:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/windres.exe
++CMAKE_RC_COMPILER:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/windres.exe
+ 
+ //Flags for Windows Resource Compiler during all build types.
+ CMAKE_RC_FLAGS:STRING=
+@@ -152,7 +152,7 @@
+ CMAKE_RC_FLAGS_RELWITHDEBINFO:STRING=
+ 
+ //Path to a program.
+-CMAKE_READELF:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/readelf.exe
++CMAKE_READELF:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/readelf.exe
+ 
+ //Flags used by the linker during the creation of shared libraries
+ // during all build types.
+@@ -202,7 +202,7 @@
+ CMAKE_STATIC_LINKER_FLAGS_RELWITHDEBINFO:STRING=
+ 
+ //Path to a program.
+-CMAKE_STRIP:FILEPATH=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/strip.exe
++CMAKE_STRIP:FILEPATH=C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/strip.exe
+ 
+ //If this value is on, makefiles will be generated without the
+ // .SILENT directive, and all commands will be echoed to the console
+@@ -211,13 +211,13 @@
+ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
+ 
+ //Value Computed by CMake
+-E01_BINARY_DIR:STATIC=C:/ASD/L05/E01/cmake-build-debug
++E01_BINARY_DIR:STATIC=C:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L05/E01/cmake-build-debug
+ 
+ //Value Computed by CMake
+ E01_IS_TOP_LEVEL:STATIC=ON
+ 
+ //Value Computed by CMake
+-E01_SOURCE_DIR:STATIC=C:/ASD/L05/E01
++E01_SOURCE_DIR:STATIC=C:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L05/E01
+ 
+ 
+ ########################
+@@ -229,7 +229,7 @@
+ //ADVANCED property for variable: CMAKE_AR
+ CMAKE_AR-ADVANCED:INTERNAL=1
+ //This is the directory where this CMakeCache.txt was created
+-CMAKE_CACHEFILE_DIR:INTERNAL=c:/ASD/L05/E01/cmake-build-debug
++CMAKE_CACHEFILE_DIR:INTERNAL=c:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L05/E01/cmake-build-debug
+ //Major version of cmake used to create the current loaded cache
+ CMAKE_CACHE_MAJOR_VERSION:INTERNAL=3
+ //Minor version of cmake used to create the current loaded cache
+@@ -237,11 +237,11 @@
+ //Patch version of cmake used to create the current loaded cache
+ CMAKE_CACHE_PATCH_VERSION:INTERNAL=4
+ //Path to CMake executable.
+-CMAKE_COMMAND:INTERNAL=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cmake.exe
++CMAKE_COMMAND:INTERNAL=C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cmake.exe
+ //Path to cpack program executable.
+-CMAKE_CPACK_COMMAND:INTERNAL=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cpack.exe
++CMAKE_CPACK_COMMAND:INTERNAL=C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/cpack.exe
+ //Path to ctest program executable.
+-CMAKE_CTEST_COMMAND:INTERNAL=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/ctest.exe
++CMAKE_CTEST_COMMAND:INTERNAL=C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/bin/ctest.exe
+ //ADVANCED property for variable: CMAKE_C_COMPILER
+ CMAKE_C_COMPILER-ADVANCED:INTERNAL=1
+ //ADVANCED property for variable: CMAKE_C_COMPILER_AR
+@@ -288,7 +288,7 @@
+ CMAKE_GENERATOR_TOOLSET:INTERNAL=
+ //Source directory with the top level CMakeLists.txt file for this
+ // project
+-CMAKE_HOME_DIRECTORY:INTERNAL=C:/ASD/L05/E01
++CMAKE_HOME_DIRECTORY:INTERNAL=C:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L05/E01
+ //ADVANCED property for variable: CMAKE_LINKER
+ CMAKE_LINKER-ADVANCED:INTERNAL=1
+ //ADVANCED property for variable: CMAKE_MODULE_LINKER_FLAGS
+@@ -329,7 +329,7 @@
+ //ADVANCED property for variable: CMAKE_READELF
+ CMAKE_READELF-ADVANCED:INTERNAL=1
+ //Path to CMake installation.
+-CMAKE_ROOT:INTERNAL=C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26
++CMAKE_ROOT:INTERNAL=C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26
+ //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS
+ CMAKE_SHARED_LINKER_FLAGS-ADVANCED:INTERNAL=1
+ //ADVANCED property for variable: CMAKE_SHARED_LINKER_FLAGS_DEBUG
