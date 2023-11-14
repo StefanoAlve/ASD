@@ -20,9 +20,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0000e456-220c-46f2-b230-353fab283a94" name="Changes" comment="">
+    <list default="true" id="0000e456-220c-46f2-b230-353fab283a94" name="Changes" comment="E01 L05 con Bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -91,22 +90,25 @@
       <workItem from="1699790113098" duration="10045000" />
       <workItem from="1699820890410" duration="2313000" />
       <workItem from="1699886742044" duration="5005000" />
-      <workItem from="1699915081746" duration="1839000" />
+      <workItem from="1699915081746" duration="2641000" />
+      <workItem from="1699953345333" duration="315000" />
     </task>
+    <task id="LOCAL-00001" summary="E01 L05 con Bug">
+      <option name="closed" value="true" />
+      <created>1699916956266</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699916956266</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.c</url>
-          <line>74</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="E01 L05 con Bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="E01 L05 con Bug" />
   </component>
 </project>

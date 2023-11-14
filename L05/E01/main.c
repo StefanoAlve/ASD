@@ -8,16 +8,16 @@ typedef struct{
 }s_att;
 
 typedef struct{
-    int *dimVet;
-    s_att **mat;
+    int dimVet;
+    s_att *vet;
+    int durata;
 }s_max;
 int leggiFile(s_att **pvettAtt);
 void attSel(int N, s_att *v);
 int verificaAtt(s_att *sol, int N);
-void powerset(s_att *vettAtt, int n, s_att *sol, s_att *max, int durataPrec, int dimSol, int pos, int start);
-void deallocaMax(s_max max, int N);
+void powerset(s_att *vettAtt, int n, s_att *sol, s_max *max, int dimSol, int pos, int start);
 int calcolaDurata(s_att *sol, int dimSol);
-int trovaSol(s_max max,int N);
+void stampa(s_max max);
 int main(void){
     //Inizializzazione variabili
     s_att *vettAtt;
@@ -61,58 +61,44 @@ int leggiFile(s_att **pvettAtt){
 void attSel(int N, s_att *v){
     s_att *sol;
     s_max max;
-    int durataPrec=0,pos=0,start=0,i,indiceSol;
+    int pos=0,start=0,i;
 
     //Allocazione dinamica
     sol = (s_att *)malloc(N*sizeof(s_att));
-    max.mat = (s_att **) malloc(N * sizeof(s_att *));
-    max.dimVet = (int*) malloc(N*sizeof(int));
-    for(i=0; i<N; i++){
-        max.dimVet[i] = i+1;
-        max.mat[i] = (s_att*) malloc((max.dimVet[i])*sizeof(s_att));
-    }
+    max.vet = (s_att *) malloc(N * sizeof(s_att));
+
+    //Inizializzazione di max
+    max.dimVet = 0;
+    max.durata = 0;
     for(i=1; i<=N; i++){
-        powerset(v, N, sol, max.mat[i-1], durataPrec, i, pos, start);
+        powerset(v, N, sol, &max, i, pos, start);
     }
 
-    indiceSol = trovaSol(max, N);
-
-    printf("L'attivita' che massimizza la somma e': ");
-    for(i=0;i<max.dimVet[indiceSol];i++){
-        printf("(%d,%d) ", (max.mat[indiceSol][i]).si, (max.mat[indiceSol][i]).fi);
-    }
-    printf("\n");
+    stampa(max);
 
     free(sol);
-    deallocaMax(max,N);
+    free(max.vet);
 }
 
-void powerset(s_att *vettAtt, int n, s_att *sol, s_att *max, int durataPrec, int dimSol, int pos, int start){
+void powerset(s_att *vettAtt, int n, s_att *sol, s_max *max, int dimSol, int pos, int start){
     int i, durataSol;
     if(pos >= dimSol){
         durataSol = calcolaDurata(sol, dimSol);
-        if(durataSol >= durataPrec){
+        if(durataSol >= max->durata){
             for(i=0; i<pos; i++){
-                max[i] = sol[i];
+                max->vet[i] = sol[i];
             }
+            max->dimVet = dimSol;
+            max->durata = durataSol;
         }
         return;
     }
     for(i=start; i<n; i++){
         sol[pos] = vettAtt[i];
         if(verificaAtt(sol, pos+1)){
-            powerset(vettAtt, n, sol, max, durataPrec, dimSol, pos+1, i+1);
+            powerset(vettAtt, n, sol, max, dimSol, pos+1, i+1);
         }
     }
-}
-
-void deallocaMax(s_max max, int N){
-    int i;
-    for(i=0; i<N;i++){
-        free(max.mat[i]);
-    }
-    free(max.mat);
-    free(max.dimVet);
 }
 
 int calcolaDurata(s_att *sol, int dimSol){
@@ -122,16 +108,6 @@ int calcolaDurata(s_att *sol, int dimSol){
         durataTot += sol[i].fi - sol[i].si;
     }
     return durataTot;
-}
-
-int trovaSol(s_max max,int N){
-    int indiceSol=0;
-    for(int i = 1; i<N; i++){
-        if(calcolaDurata(max.mat[i], N) > calcolaDurata(max.mat[i-1],N)){
-            indiceSol = i;
-        }
-    }
-    return indiceSol;
 }
 
 int verificaAtt(s_att *sol, int N){
@@ -147,6 +123,14 @@ int verificaAtt(s_att *sol, int N){
                 flag = 0;
             }
         }
-    return flag;
     }
+    return flag;
+}
+
+void stampa(s_max max){
+    printf("L'attivita' che massimizza la somma e': ");
+    for(int i=0;i<max.dimVet;i++){
+        printf("(%d,%d) ", (max.vet[i]).si, (max.vet[i]).fi);
+    }
+    printf("\n");
 }
