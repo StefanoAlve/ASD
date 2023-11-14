@@ -65,7 +65,7 @@ int main() {
         }
     }
     DeallocOrdinamenti(&Sorting);
-    for (int i = 0; i<num_righe; i++){
+    for (int i = 0; i<num_righe; i++){;
         DeallocVettTratte(v_tratte[i]);
     }
     free(v_tratte);
