@@ -27,7 +27,11 @@ typedef enum{
 
 //Funzioni
 comando_e LeggiComando();
+void LeggiAnag(Item *anagrafica);
 void EseguiComando(link *head, comando_e comando, int *p_fine);
+int ConfrontaDate(char data1[11], char data2[11]);
+link newNode(Item anagrafica, link next);
+link SortListIns(link h, Item anagrafica);
 
 int main() {
     int fine = 0, *p_fine = &fine;
@@ -42,6 +46,9 @@ int main() {
             printf("Comando non riconosciuto, Riprovare\n");
         }
     }
+
+    //Deallocazione lista
+
     return 0;
 }
 
@@ -60,6 +67,7 @@ comando_e LeggiComando(){
     printf("Fine: per terminare il programma\n\n");
     printf("Inserire il comando da eseguire:");
     scanf("\t%s",comando);
+    printf("\n");
 
     if (strcasecmp("InsertList1",comando) == 0){
         Comando = 0;
@@ -81,10 +89,26 @@ comando_e LeggiComando(){
 
 }
 
+
+
+// Legge da tastiera i dati della anagrafica
+void LeggiAnag(Item *anagrafica){
+    Item anag;
+    scanf("%s %s %s %s %s %s %d",
+          anag.codice, anag.nome, anag.cognome, anag.bornDate, anag.via, anag.citta, &anag.cap);
+    *anagrafica = anag;
+}
+
 void EseguiComando(link *head, comando_e comando, int *p_fine){
     link list_start = NULL;
+    Item anagrafica;
+
     switch (comando) {
         case InsertList1:
+            printf("Inserire i dati in questo ordine\n<codice> <nome> <cognome> <data_di_nascita> <via> <citta'> <cap>\n");
+            LeggiAnag(&anagrafica);
+            list_start = SortListIns(list_start,anagrafica);
+            printf("Inserimento eseguito correttamente\n");
             break;
         case InsertList2:
             break;
@@ -101,4 +125,49 @@ void EseguiComando(link *head, comando_e comando, int *p_fine){
             break;
     }
     *head = list_start;
+}
+
+//Funzione che torna vero se la prima data viene prima della seconda
+int ConfrontaDate(char data1[11], char data2[11]){
+    int i;
+    char gg1[3], mm1[3], anno1[5], gg2[3], mm2[3], anno2[5];
+
+    for (i=0; i<2; i++){
+        gg1[i] = data1[i];
+        gg2[i] = data2[i];
+    }
+    for (i=2; i<4; i++){
+        mm1[i-2] = data1[i];
+        mm2[i-2] = data2[i];
+    }
+    for (i=4; i<11; i++){
+        anno1[i-4] = data1[i];
+        anno1[i-4] = data1[i];
+    }
+
+    if (strcmp(anno1,anno2) < 0) return 1;
+    if (strcmp(mm1,mm2) < 0) return 1;
+    if (strcmp(gg1,gg2) < 0) return 1;
+    return 0;
+}
+
+link newNode(Item anagrafica, link next){
+    link x = malloc(sizeof(*x));
+    if (x==NULL) {printf("\nErrore allocazione memoria\n"); exit(1);}
+    x->anag = anagrafica;
+    x->next = next;
+    return x;
+}
+
+link SortListIns(link h, Item anagrafica){
+    link x, p;
+    char chiave[11];
+
+    strcpy(chiave,anagrafica.bornDate);
+    if (h == NULL || ConfrontaDate(chiave,h->anag.bornDate))
+        return newNode(anagrafica,h); //Inserimento in testa
+    for (x=h->next, p=h; x!=NULL && ConfrontaDate(x->anag.bornDate,chiave); p=x, x=x->next);
+    p->next = newNode(anagrafica,x);
+
+    return h;
 }
