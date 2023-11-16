@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "stdlib.h"
 #include "string.h"
+#include "ctype.h"
 
 typedef struct{ //struct per conservare le date di nascita
     int giorno;
@@ -9,19 +10,19 @@ typedef struct{ //struct per conservare le date di nascita
 } data_di_nascita;
 
 typedef struct { // struct Item in cui conservo le informazioni delle anagrafiche delle singole persone
-    char codice[5];
-    char nome[50];
-    char cognome[50];
+    char *codice;
+    char *nome;
+    char *cognome;
     data_di_nascita data;
-    char via[50];
-    char citta[50];
+    char *via;
+    char *citta;
     int cap;
 } Item;
 
 typedef struct node *link; //definisco una struct node e le assegno il tipo puntatore, ma la struct non è definita, la struct node è definita da link
 
 struct node{ // definisco la struct node, al cui interno ho il puntatore a un'altra struct node
-    Item *persona;
+    Item persona;
     link next;
 };
 //per dichiarare una struct node utilizzo il tipo link
@@ -38,8 +39,8 @@ void freeList(link h);
 link letturaAnagrafica(int scelta, int *terminazione, link h);
 link OperaSuLista(int scelta, int *terminazione, link h);
 link InserisciItem(link h, int flag_file); //funzione per leggere un nuovo elemento da inserire nella lista
-link newNode(Item *val, link next);//funzione per la creazione di un nuovo nodo della lista
-link SortListIns(link h, Item *persona); //funzione per inserimento in lista di un Item
+link newNode(Item val, link next);//funzione per la creazione di un nuovo nodo della lista
+link SortListIns(link h, Item persona); //funzione per inserimento in lista di un Item
 link EliminaCodice(link h, char *codice, Item **Pestratto);
 link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **Pestratto);
 FILE *apertura_file_lettura();
@@ -51,7 +52,8 @@ Item *RicercaCodice(link h, char *codice);
 
 int main() {
 
-    int terminazione1 = 0, terminazione2 = 0, scelta;//se desidero terminare l'inserimento di elementi nella lista inserisci assume valore 0
+    int terminazione1 = 0, terminazione2 = 0, scelta;
+    //se desidero terminare l'inserimento di elementi nella lista inserisci assume valore 0
 
     link h = NULL ;
 
@@ -72,8 +74,7 @@ int main() {
 
 int leggiComandoAcquisizione(){ //funzione che legge il comando da eseguire
     char option[10];
-    int flag_scelta = 1;
-    while(flag_scelta) {
+    while(1) {
         printf("\nScegli se leggere da file o da tastiera: ");
         scanf("%s", option);
 
@@ -84,8 +85,7 @@ int leggiComandoAcquisizione(){ //funzione che legge il comando da eseguire
 }
 int leggiComandoOperazione(){
     char option[50];
-    int flag_scelta = 1;
-    while(flag_scelta) {
+    while(1) {
         printf("\nScegli quale operazione effettuare:"
                "\n\t-RicercaCodice; \n\t-EliminaCodice;\n\t-EliminaDate;\n\t-StampaFile;\n");
         scanf("%s", option);
@@ -104,8 +104,7 @@ int leggiComandoOperazione(){
 
 int leggiTerminazione(){
     char option[3];
-    int  flag_scelta = 1;
-    while(flag_scelta) {
+    while(1) {
         printf("\nVuoi terminare questo processo? ");
         scanf("%s", option);
 
@@ -142,7 +141,7 @@ int VerificaData(data_di_nascita *data1, data_di_nascita *data2){ //se la prima 
 
 void StampaRisultato(Item *persona){
     if(persona != NULL){
-        printf("\n%s %s %s %d/%d/%d %s %s %d",persona->codice, persona->nome, persona->cognome, persona->data.giorno,
+        printf("\n%s - %s - %s - %d/%d/%d - %s - %s - %d",persona->codice, persona->nome, persona->cognome, persona->data.giorno,
                persona->data.mese, persona->data.anno,persona->via, persona->citta, persona->cap);
     }
     else{
@@ -156,8 +155,8 @@ void StampaFile(link h){
     link x;
     for(x = h; x!=NULL; x = x->next){
         if(x != NULL){
-            fprintf(fout,"\n%s %s %s %d/%d/%d %s %s %d",x->persona->codice, x->persona->nome, x->persona->cognome, x->persona->data.giorno,
-                    x->persona->data.mese, x->persona->data.anno, x->persona->via, x->persona->citta, x->persona->cap);
+            fprintf(fout,"\n%s %s %s %d/%d/%d %s %s %d",x->persona.codice, x->persona.nome, x->persona.cognome, x->persona.data.giorno,
+                    x->persona.data.mese, x->persona.data.anno, x->persona.via, x->persona.citta, x->persona.cap);
         }
         else{
             printf("\nNon e stato possibile effettuare la stampa su file");
@@ -171,7 +170,6 @@ void freeList(link h){
     link x,t;
     for(x = h; x!=NULL;x = t->next){
         t = x; //variabile necessaria per l'avanzamento del ciclo, altrimenti nell'aggiornamento di x dovrei prendere un valore da una variabile che non punta più
-        free(x->persona);
         free(x);
     }
 }
@@ -188,11 +186,15 @@ link letturaAnagrafica(int scelta, int *terminazione, link h){
             h = InserisciItem(h, 1);
             *terminazione = leggiTerminazione();
             return h;
+
+        default:
+            printf("\nOpzione non disponibile");
+            return h;
     }
 }
 
 link OperaSuLista(int scelta, int *terminazione, link h){
-    char codice[5];
+    char codice[6];
     Item *elemento_estratto = malloc(sizeof(Item));
     switch (scelta) {
         case r_ricercaCodice:
@@ -235,18 +237,20 @@ link OperaSuLista(int scelta, int *terminazione, link h){
             StampaFile(h);
             *terminazione = leggiTerminazione();
             return h;
+
+        default:
+            printf("\nOpzione non disponibile");
+            return h;
     }
 }
 
-link newNode(Item *val, link next) {//passo alla funzione newnode l'elemento di tipo item da aggiungere nella lista e un puntatore next
+link newNode(Item val, link next) {//passo alla funzione newnode l'elemento di tipo item da aggiungere nella lista e un puntatore next
     //in questo modo aggiungo in coda alla testa
     link x = malloc(sizeof(struct node)); //allocazione di un nodo
-    Item *persona = malloc(sizeof(Item));
-    persona = val;
     if(x == NULL){
         return NULL;
     }else{
-        x->persona = persona; //assegno al puntatore x->persona il puntatore alla struct persona
+        x->persona = val; //assegno al puntatore x->persona il puntatore alla struct persona
         x->next = next;
     }
     return x;
@@ -254,22 +258,31 @@ link newNode(Item *val, link next) {//passo alla funzione newnode l'elemento di 
 
 
 link InserisciItem(link h, int flag_file){
-    Item *persona;
+    Item persona;
+    char temp[50];
     int flag;
     if(flag_file) {
         FILE *fin = apertura_file_lettura();
         while (!feof(fin)) {
-            persona = (Item *) malloc(sizeof(Item));
-            fscanf(fin, "%s", persona->codice);
-            fscanf(fin, "%s", persona->nome);
-            fscanf(fin, "%s", persona->cognome);
-            fscanf(fin, "%d/%d/%d", &persona->data.giorno, &persona->data.mese, &persona->data.anno);
-            if((persona->data.giorno < 1|| persona->data.giorno > 31  ) || (persona->data.mese < 1|| persona->data.mese > 12 ) || (persona->data.anno < 1900 || persona->data.anno > 2023 )){
-                break; //nel caso in ui vengano letti dei valori non validi il ciclo viene interrotto e l'elemento non viene aggiunto alla lista
+
+            fscanf(fin, "%s", temp);
+            if(!isalpha(temp[0])){
+                break;
             }
-            fscanf(fin, "%s", persona->via);
-            fscanf(fin, "%s", persona->citta);
-            fscanf(fin, "%d", &persona->cap);
+            persona.codice = strdup(temp);
+            fscanf(fin, "%s", temp);
+            persona.nome = strdup(temp);
+            fscanf(fin, "%s", temp);
+            persona.cognome = strdup(temp);
+            fscanf(fin, "%d/%d/%d", &persona.data.giorno, &persona.data.mese, &persona.data.anno);
+            if((persona.data.giorno < 1|| persona.data.giorno > 31  ) || (persona.data.mese < 1|| persona.data.mese > 12 ) || (persona.data.anno < 1900 || persona.data.anno > 2023 )){
+                break; //nel caso in cui vengano letti dei valori non validi il ciclo viene interrotto e l'elemento non viene aggiunto alla lista
+            }
+            fscanf(fin, "%s", temp);
+            persona.via = strdup(temp);
+            fscanf(fin, "%s", temp);
+            persona.citta = strdup(temp);
+            fscanf(fin,"%d", &persona.cap);
 
             h = SortListIns(h, persona);
 
@@ -277,19 +290,22 @@ link InserisciItem(link h, int flag_file){
         fclose(fin);
     }
     else if (!flag_file){
-        persona =(Item*) malloc(sizeof (Item));
+
         printf("\nInserisci il codice nella forma AXXXX (dove X rappresenta una cifra nell'intervallo 0-9):  ");
-        scanf("%s", persona->codice);
+        scanf("%s", temp);
+        persona.codice = strdup(temp);
         printf("\nInserisci nome: ");
-        scanf("%s", persona->nome);
+        scanf("%s", temp);
+        persona.nome = strdup(temp);
         printf("\nInserisci cognome: ");
-        scanf("%s", persona->cognome);
+        scanf("%s", temp);
+        persona.cognome = strdup(temp);
         printf("\nInserisci la data di nascita nel formato gg/mm/aaaa: ");
-        scanf("%d/%d/%d", &persona->data.giorno, &persona->data.mese, &persona->data.anno);
+        scanf("%d/%d/%d", &persona.data.giorno, &persona.data.mese, &persona.data.anno);
         while(flag){//controllo inserimento dati validi
-            if((persona->data.giorno < 1|| persona->data.giorno > 31  ) || (persona->data.mese < 1|| persona->data.giorno > 12 ) || (persona->data.anno < 1900 || persona->data.giorno > 2023 )){
+            if((persona.data.giorno < 1|| persona.data.giorno > 31  ) || (persona.data.mese < 1|| persona.data.giorno > 12 ) || (persona.data.anno < 1900 || persona.data.giorno > 2023 )){
                 printf("\nData di nascita non valida\n Inserisci dei valori validi: ");
-                scanf("%d/%d/%d", &persona->data.giorno, &persona->data.mese, &persona->data.anno);
+                scanf("%d/%d/%d", &persona.data.giorno, &persona.data.mese, &persona.data.anno);
             }
             else{
                 flag = 0;
@@ -297,11 +313,13 @@ link InserisciItem(link h, int flag_file){
 
         }
         printf("\nInserisci la via di residenza (es:ViaMarcoPolo) : ");
-        scanf("%s", persona->via);
+        scanf("%s", temp);
+        persona.via = strdup(temp);
         printf("\nInserisci la città di residenza: ");
-        scanf("%s", persona->citta);
+        scanf("%s", temp);
+        persona.citta = strdup(temp);
         printf("\nInserisci il cap: ");
-        scanf("%d", &persona->cap);
+        scanf("%d", &persona.cap);
 
         h = SortListIns(h, persona);
 
@@ -309,17 +327,17 @@ link InserisciItem(link h, int flag_file){
     return h;
 }
 
-link SortListIns(link h, Item *persona){
+link SortListIns(link h, Item persona){
     link x, p; //x elemento successivo, p predecessore (sono entrambi puntatori a struct node
 
-    if(h == NULL || VerificaData(&h->persona->data, &persona->data)){
+    if(h == NULL || VerificaData(&h->persona.data, &persona.data)){
         return newNode(persona, h);//non ho una testa della lista quindi ritorno direttamente un nuovo nodo che sarà la mia nuova testa
     }
-    for (x = h->next, p = h; x!=NULL && !VerificaData(&persona->data, &x->persona->data); x = x->next);  //ciclo che mi permette di avanzare nella lista finchè persona.data è maggiore di h->persona->data
-                                                                                                                  //cioè finchè non trovo un elemento maggiore di quello che voglio inserire
+    for (x = h->next, p = h; x!=NULL && !VerificaData(&persona.data, &x->persona.data) && (strcasecmp(persona.codice, x->persona.codice)) != 0; x = x->next);  //ciclo che mi permette di avanzare nella lista finchè persona.data è maggiore di h->persona->data
+    //cioè finchè non trovo un elemento maggiore di quello che voglio inserire
     p->next = newNode(persona, x);//quando termino il ciclo di avanzamento nella lista significa che l'elemento trovato nella lista risulta maggiore di quello che voglio inserire
-                                        //in questo caso ci inserisco sopra l'elemento minore
-                                        //poiche ricerco un ordinamento crescente
+    //in questo caso ci inserisco sopra l'elemento minore
+    //poiche ricerco un ordinamento crescente
     return h;//ritorno la testa della lista
 }
 
@@ -331,14 +349,14 @@ link EliminaCodice(link h, char *codice, Item **Pestratto){
         return NULL;
     }
     for(x = h, p = NULL; x!=NULL; p = x, x = x->next){
-        if(strcasecmp(codice, h->persona->codice) == 0){
+        if(strcasecmp(codice, x->persona.codice) == 0){
             if(x == h){
                 h = x->next;//se la chiave di ricerca è nel primo nodo della lista, escludo il nodo assegnando alla testa il puntatore al nodo successivo
-                temp = x->persona;
+                temp = &x->persona;
             }
             else{
                 p->next = x->next; //bypass di x; collego al precedente di x il successivo di x così da non rendere visibile x nella lista
-                temp = x->persona;
+                temp = &x->persona;
             }
             free(x);//libero il puntatore a x
             break;
@@ -348,7 +366,7 @@ link EliminaCodice(link h, char *codice, Item **Pestratto){
     return h;
 }
 
-link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **Pestratto){
+link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **Pestratto){ //debuggare, ritorna segmentation fault
     link x, p, t;
     int primo_elemento = 1;
     Item *temp = NULL;
@@ -358,22 +376,22 @@ link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **
         return NULL;
     }
     for(x = h, p = NULL; x!=NULL; p = t, x = t->next){
-        if(VerificaData(data1,&x->persona->data) && VerificaData(&x->persona->data, data2)){
+        if(VerificaData(data1,&x->persona.data) && VerificaData(&x->persona.data, data2)){
             if(x==h){
                 h= x->next;
                 if(primo_elemento){
-                    temp = x->persona;
+                    temp = &x->persona;
                     primo_elemento = 0;
                 }
-                StampaRisultato(x->persona);
+                StampaRisultato(&x->persona);
             }
             else{
                 if(primo_elemento){
-                    temp = x->persona;
+                    temp = &x->persona;
                     primo_elemento = 0;
                 }
                 p->next = x->next;
-                StampaRisultato(x->persona);
+                StampaRisultato(&x->persona);
             }
             t = x;
             free(x);
@@ -387,8 +405,8 @@ Item *RicercaCodice(link h, char *codice){ //funzione che ritorna il puntatore a
     link x;
 
     for(x = h; x!=NULL; x = x->next){
-        if(strcasecmp(codice, x->persona->codice) == 0){
-            return x->persona;
+        if(strcasecmp(codice, x->persona.codice) == 0){
+            return &x->persona;
         }
     }
     return NULL;
@@ -420,3 +438,4 @@ FILE *apertura_file_scrittura(){
     }
     return fout;
 }
+
