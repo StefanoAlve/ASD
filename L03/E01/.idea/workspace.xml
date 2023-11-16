@@ -11,7 +11,7 @@
   </component>
   <component name="CMakeRunConfigurationManager">
     <generated>
-      <config projectName="E02" targetName="E02" />
+      <config projectName="E01" targetName="E01" />
     </generated>
   </component>
   <component name="CMakeSettings">
@@ -20,13 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77c22b2c-de00-483f-afe2-396be755db0b" name="Changes" comment="Aggiunta Lab05">
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-11-12T11-46-14-0788.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.26.4/CMakeDetermineCompilerABI_C.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.26.4/CMakeDetermineCompilerABI_C.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeConfigureLog.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeConfigureLog.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
-    </list>
+    <list default="true" id="15c8b959-198d-462d-8e7f-b1ee9e3fba97" name="Changes" comment="Aggiunta L03 E01" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -37,11 +31,6 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$/../.." value="Stefano" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
   </component>
   <component name="ProjectApplicationVersion">
@@ -50,9 +39,9 @@
     <option name="minorVersion" value="2.2" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 6
+  "associatedIndex": 2
 }]]></component>
-  <component name="ProjectId" id="2Y4f2st5kgB1rqUmmRKUzKdb8x5" />
+  <component name="ProjectId" id="2WyOpjbPE2sv0rxIXenmiHIF5lt" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -65,7 +54,7 @@
     "WebServerToolWindowFactoryState": "false",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Stefano",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -75,7 +64,7 @@
         <option name="CLION.EXTERNAL.BUILD" enabled="true" />
       </method>
     </configuration>
-    <configuration name="E02" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="E02" TARGET_NAME="E02" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="E02" RUN_TARGET_NAME="E02">
+    <configuration name="E01" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="E01" TARGET_NAME="E01" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="E01" RUN_TARGET_NAME="E01">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
       </method>
@@ -84,28 +73,28 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="77c22b2c-de00-483f-afe2-396be755db0b" name="Changes" comment="" />
-      <created>1699789568165</created>
+      <changelist id="15c8b959-198d-462d-8e7f-b1ee9e3fba97" name="Changes" comment="" />
+      <created>1697701537801</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1699789568165</updated>
-      <workItem from="1699789569578" duration="273000" />
+      <updated>1697701537801</updated>
+      <workItem from="1697701541520" duration="59000" />
     </task>
-    <task id="LOCAL-00001" summary="Aggiunta Lab05">
+    <task id="LOCAL-00001" summary="Aggiunta L03 E01">
       <option name="closed" value="true" />
-      <created>1699789626051</created>
+      <created>1697701573927</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1699789626051</updated>
+      <updated>1697701573927</updated>
     </task>
-    <task id="LOCAL-00002" summary="Aggiunta Lab05">
+    <task id="LOCAL-00002" summary="Aggiunta L03 E01">
       <option name="closed" value="true" />
-      <created>1699789828014</created>
+      <created>1697701577923</created>
       <option name="number" value="00002" />
       <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
-      <updated>1699789828014</updated>
+      <updated>1697701577923</updated>
     </task>
     <option name="localTasksCounter" value="3" />
     <servers />
@@ -113,14 +102,8 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
-  <component name="VCPKGProject">
-    <isAutomaticEditVcpkgJson value="false" />
-    <isAutomaticCheckingOnLaunch value="false" />
-    <isAutomaticFoundErrors value="true" />
-    <isAutomaticFoundErrors value="true" />
-  </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Aggiunta Lab05" />
-    <option name="LAST_COMMIT_MESSAGE" value="Aggiunta Lab05" />
+    <MESSAGE value="Aggiunta L03 E01" />
+    <option name="LAST_COMMIT_MESSAGE" value="Aggiunta L03 E01" />
   </component>
 </project>
