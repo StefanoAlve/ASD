@@ -76,7 +76,7 @@ int attSelR(int d, int N, att *v, int max, int *index, int *tmp, int l, int pos)
     for(i=l; i<=N; i++){
         ///CONDIZIONE DI FINE
         if(i==N) {
-            if (d > max) {
+            if (d >= max) {
                 max = d;
                 for (i = 0; i < N; i++) {
                     index[i] = tmp[i];
