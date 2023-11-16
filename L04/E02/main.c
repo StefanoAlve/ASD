@@ -266,7 +266,7 @@ link InserisciItem(link h, int flag_file){
         while (!feof(fin)) {
 
             fscanf(fin, "%s", temp);
-            if(!isalpha(temp[0])){
+            if(!isalpha(temp[0]) || isdigit(temp[1]) == 0 ){
                 break;
             }
             persona.codice = strdup(temp);
@@ -275,7 +275,7 @@ link InserisciItem(link h, int flag_file){
             fscanf(fin, "%s", temp);
             persona.cognome = strdup(temp);
             fscanf(fin, "%d/%d/%d", &persona.data.giorno, &persona.data.mese, &persona.data.anno);
-            if((persona.data.giorno < 1|| persona.data.giorno > 31  ) || (persona.data.mese < 1|| persona.data.mese > 12 ) || (persona.data.anno < 1900 || persona.data.anno > 2023 )){
+            if((persona.data.giorno < 1|| persona.data.giorno > 31  ) || (persona.data.mese < 1|| persona.data.mese > 12 ) ){
                 break; //nel caso in cui vengano letti dei valori non validi il ciclo viene interrotto e l'elemento non viene aggiunto alla lista
             }
             fscanf(fin, "%s", temp);
@@ -333,7 +333,7 @@ link SortListIns(link h, Item persona){
     if(h == NULL || VerificaData(&h->persona.data, &persona.data)){
         return newNode(persona, h);//non ho una testa della lista quindi ritorno direttamente un nuovo nodo che sarà la mia nuova testa
     }
-    for (x = h->next, p = h; x!=NULL && !VerificaData(&persona.data, &x->persona.data) && (strcasecmp(persona.codice, x->persona.codice)) != 0; x = x->next);  //ciclo che mi permette di avanzare nella lista finchè persona.data è maggiore di h->persona->data
+    for (x = h->next, p = h; x!=NULL && !VerificaData(&persona.data, &x->persona.data) && (strcasecmp(persona.codice, x->persona.codice)) != 0; x = x->next, p =x);  //ciclo che mi permette di avanzare nella lista finchè persona.data è maggiore di h->persona->data
     //cioè finchè non trovo un elemento maggiore di quello che voglio inserire
     p->next = newNode(persona, x);//quando termino il ciclo di avanzamento nella lista significa che l'elemento trovato nella lista risulta maggiore di quello che voglio inserire
     //in questo caso ci inserisco sopra l'elemento minore
