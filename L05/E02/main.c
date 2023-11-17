@@ -25,16 +25,16 @@ typedef struct{
 
 void leggiFile(tessera **tessere, board ***tavolo, int *ntes, int *r, int *c);
 void dealloca(tessera *tessere, board **tavolo, int r);
-void wrap(tessera *tessere, board **tavolo, int ntes, int r, int c);
+int wrap(tessera *tessere, board **tavolo, int ntes, int r, int c);
 matrix **inizMatrix(tessera *tessere, board **tavolo, int ***mark, int r, int c, int ntes);
-int casiR(matrix **matrice, tessera *tessere, int **mark, int r, int c, int ntes, matrix **definitiva, int sommaMax, int somma, int posR, int posC, int posT);
+int casiR(matrix **matrice, tessera *tessere, int **mark, int r, int c, int ntes, matrix **definitiva, int sommaMax, int somma, int posR, int posC, int *proibite);
 int sommaR(int somma, matrix **matrice, int r, int c);
 int sommaC(int somma, matrix **matrice, int r, int c);
 
 int main() {
     tessera *tessere;
     board **tavolo;
-    int ntes, r, c, ntav, i, j;
+    int ntes, r, c, ntav, i, j, max;
 
     leggiFile(&tessere, &tavolo, &ntes, &r, &c);
 
@@ -51,13 +51,13 @@ int main() {
         printf("\n");
     }*/
 
-    wrap(tessere, tavolo, ntes, r, c);
+    max = wrap(tessere, tavolo, ntes, r, c);
 
 
     dealloca(tessere, tavolo, r);
     return 0;
 }
-
+///FUNZIONE CHE DEALLOCA LE TESSERE E IL TAVOLO
 void dealloca(tessera *tessere, board **tavolo, int r){
     int i;
 
@@ -65,9 +65,10 @@ void dealloca(tessera *tessere, board **tavolo, int r){
     for (i = 0; i < r; i++) {
         free(tavolo[i]);
     }
+
     free(tavolo);
 }
-
+///FUNZIONE LEGGIFILE
 void leggiFile(tessera **tessere, board ***tavolo, int *ntes, int *r, int *c) {
     FILE *fp;
     char nomeFile[MAXL];
@@ -131,18 +132,17 @@ void leggiFile(tessera **tessere, board ***tavolo, int *ntes, int *r, int *c) {
     }
     fclose(fp);
 }
-
-
-void wrap(tessera *tessere, board **tavolo, int ntes, int r, int c) {
-    int **mark, j, i, somma;
+///FUNZIONE WRAP
+int wrap(tessera *tessere, board **tavolo, int ntes, int r, int c) {
+    int **mark, j, i, somma, proibite[ntes];
     matrix **matrice, **definitiva;
 
-    ///INIZIALIZZO LA MATRICE DEI MARK
-    mark = (int **)malloc(r*sizeof(int*));
-    for(j=0; j<r; j++){
-        mark[j] = (int *)malloc(c*sizeof(int ));
-    }
+
+    ///matrice contenente i dati della tessere nella posizione
     matrice = inizMatrix(tessere, tavolo, &mark, r, c, ntes);
+
+
+
 
     ///INIZIALIZZO LA MATRICE DEFINITIVA
     definitiva = (matrix **)malloc(r*sizeof(matrix *));
@@ -150,34 +150,48 @@ void wrap(tessera *tessere, board **tavolo, int ntes, int r, int c) {
         definitiva[j] = (matrix *)malloc(c*sizeof(matrix));
     }
 
-
-    somma = casiR(matrice, tessere, mark, r, c, ntes, definitiva, 0, 0, 0, 0, 0);
-    printf("%d", somma);
-    /*for (i=0; i<r; i++){
+    ///inizializzo un vettore con i tasselli da non spostare
+    for (i=0 ;i<ntes; i++){
+        proibite[i] = 1;
+    }
+    for (i=0; i<r; i++){
         for(j=0; j<c; j++) {
-            printf("%c\n", matrice[i][j].riga);
+            if(tavolo[i][j].indiceTessera != -1){
+                proibite[tavolo[i][j].indiceTessera] = 0;
+            }
         }
     }
-    for (i=0; i<ntes; i++)
-        printf("%d\t", mark[i]);*/
 
-    for (i = 0; i < r; i++) {
+    somma = casiR(matrice, tessere, mark, r, c, ntes, definitiva, 0, 0, 0, 0, proibite);
+
+
+    printf("%d\n", somma);
+
+    for (i=0; i<r; i++){
+        for(j=0; j<c; j++){
+            printf("%c ", definitiva[i][j].riga);
+        }
+        printf("\n");
+    }
+
+
+            for (i = 0; i < r; i++) {
         free(definitiva[i]);
         free(mark[i]);
+        free(matrice[i]);
     }
     free(definitiva);
     free(mark);
+    free(matrice);
 
 
+    return somma;
 }
 ///INIZIALIZZO LA MATRICE CON DENTRO I VALORI DA INSERIRE E INSERITI PER FACILITARE I CALCOLI
 matrix **inizMatrix(tessera *tessere, board **tavolo, int ***mark, int r, int c, int ntes) {
     matrix **matrice;
     int i, j;
-    ///alloco le mark
-    for (i = 0; i < ntes; i++){
-        mark[i] = 0;
-    }
+
     ///ALLOCO LE RIGHE DELLA MATRICE
     matrice = (matrix **) malloc(r * sizeof(matrix *));
     if (matrice == NULL) {
@@ -192,6 +206,26 @@ matrix **inizMatrix(tessera *tessere, board **tavolo, int ***mark, int r, int c,
             exit(1);
         }
     }
+
+    ///INIZIALIZZO LA MATRICE DEI MARK
+    *mark = (int **)malloc(r*sizeof(int*));
+    if (*mark == NULL) {
+        printf("errore in allocazione");
+        exit(1);
+    }
+    for (j = 0; j < r; j++) {
+        (*mark)[j] = (int *)malloc(c * sizeof(int));
+        if ((*mark)[j] == NULL) {
+            printf("errore in allocazione");
+            exit(1);
+        }
+    }
+    for(i=0; i<r; i++){
+        for(j=0; j<c; j++){
+            (*mark)[i][j] = 0;
+        }
+    }
+
 
     for (i = 0; i < r; i++) {
         for (j = 0; j < c; j++) {
@@ -217,14 +251,15 @@ matrix **inizMatrix(tessera *tessere, board **tavolo, int ***mark, int r, int c,
     return matrice;
 }
 ///funzione ricorsiva per provare tutte le combinazioni
-int casiR(matrix **matrice, tessera *tessere, int **mark, int r, int c, int ntes, matrix **definitiva, int sommaMax, int somma, int posR, int posC, int posT) {
-    int i, j;
+int casiR(matrix **matrice, tessera *tessere, int **mark, int r, int c, int ntes, matrix **definitiva, int sommaMax, int somma, int posR, int posC, int *proibite) {
+    int i, j, posT;
 
     if (posR >= r) {
+        somma = 0;
         ///fa la somma degli elementi sulla riga
-        somma = sommaR(somma, matrice, r, c);
+        somma = somma + sommaR(somma, matrice, r, c);
         ///somma colonne
-        somma = sommaC(somma, matrice, r, c);
+        somma = somma + sommaC(somma, matrice, r, c);
         ///CONDIZIONE DI COPIA
         if (somma > sommaMax) {
             sommaMax = somma;
@@ -242,36 +277,46 @@ int casiR(matrix **matrice, tessera *tessere, int **mark, int r, int c, int ntes
     }
     ///CASO IN CUI IL MARK E' DIVERSO DA -1 OVVERO CHE IL VALORE NON E' A PRIORI NELLA MATRICE
     if(mark[posR][posC] != -1) {
-        ///IN MANIERA RICORSIVA PONGO IL VALORE NELLA MATRICE
-        matrice[posR][posC].riga = tessere[posT].riga;
-        matrice[posR][posC].colonna = tessere[posT].colonna;
-        matrice[posR][posC].valoreR = tessere[posT].valoreR;
-        matrice[posR][posC].valoreC = tessere[posT].valoreC;
-        if(posC < c-1){
-            sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR, posC+1, posT+1);
-        }
-        else if(posC == c-1){
-            sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR+1, 0, posT+1);
-        }
-        ///BACKTRACK E METTO IL VALORE RUOTATO
-        matrice[posR][posC].riga = tessere[posT].colonna;
-        matrice[posR][posC].colonna = tessere[posT].riga;
-        matrice[posR][posC].valoreR = tessere[posT].valoreC;
-        matrice[posR][posC].valoreC = tessere[posT].valoreR;
-        if(posC < c-1){
-            sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR, posC+1, posT+1);
-        }
-        else if(posC == c-1){
-            sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR+1, 0, posT+1);
+        for (posT = 0; posT < ntes; posT++) {
+            if(mark[posR][posC] != 1 && proibite[posT]) {
+                ///IN MANIERA RICORSIVA PONGO IL VALORE NELLA MATRICE
+                matrice[posR][posC].riga = tessere[posT].riga;
+                matrice[posR][posC].colonna = tessere[posT].colonna;
+                matrice[posR][posC].valoreR = tessere[posT].valoreR;
+                matrice[posR][posC].valoreC = tessere[posT].valoreC;
+                if (posC < c - 1) {
+                    mark[posR][posC] = mark[posR][posC] + 1;
+                    sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR, posC + 1, proibite);
+                    mark[posR][posC] = mark[posR][posC] - 1;
+                } else if (posC == c - 1) {
+                    mark[posR][posC] = mark[posR][posC] + 1;
+                    sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR + 1, 0, proibite);
+                    mark[posR][posC] = mark[posR][posC] - 1;
+                }
+                ///BACKTRACK E METTO IL VALORE RUOTATO
+                matrice[posR][posC].riga = tessere[posT].colonna;
+                matrice[posR][posC].colonna = tessere[posT].riga;
+                matrice[posR][posC].valoreR = tessere[posT].valoreC;
+                matrice[posR][posC].valoreC = tessere[posT].valoreR;
+                if (posC < c - 1) {
+                    mark[posR][posC] = mark[posR][posC] + 1;
+                    sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR, posC + 1, proibite);
+                    mark[posR][posC] = mark[posR][posC] - 1;
+                } else if (posC == c - 1) {
+                    mark[posR][posC] = mark[posR][posC] + 1;
+                    sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR + 1, 0, proibite);
+                    mark[posR][posC] = mark[posR][posC] - 1;
+                }
+            }
         }
     }
     ///CASO IN CUI IL VALORE E' GIA NELLA MATRICE
     else{
         if(posC < c-1){
-            sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR, posC+1, posT+1);
+            sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR, posC+1, proibite);
         }
         else if(posC == c-1){
-            sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR+1, 0, posT+1);
+            sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR+1, 0, proibite);
         }
     }
 
@@ -297,7 +342,7 @@ int sommaR(int somma, matrix **matrice, int r, int c) {
     }
     return somma;
 }
-
+///FUNZIONE CHE FA LA SOMMA DEGLI ELEMENTI SULLE COLONNE
 int sommaC(int somma, matrix **matrice, int r, int c) {
     int i, j, flag = 1;
 
