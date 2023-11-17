@@ -32,7 +32,7 @@ enum comando_e {r_ricercaCodice, r_cancellazioneCodice, r_cancellazioneDate, r_S
 int leggiComandoAcquisizione();
 int leggiComandoOperazione();
 int leggiTerminazione();
-int VerificaData(data_di_nascita *data1, data_di_nascita *data2); //funzione per effettuare un confronto fra date, se la prima data risulta minore della seconda ritorna 1, altrimenti ritorna 0
+int ComparaDate(data_di_nascita data1, data_di_nascita data2); //funzione per effettuare un confronto fra date, se la prima data risulta minore della seconda ritorna 1, altrimenti ritorna 0
 void StampaRisultato(Item *persona);
 void StampaFile(link h);
 void freeList(link h);
@@ -42,7 +42,7 @@ link InserisciItem(link h, int flag_file); //funzione per leggere un nuovo eleme
 link newNode(Item val, link next);//funzione per la creazione di un nuovo nodo della lista
 link SortListIns(link h, Item persona); //funzione per inserimento in lista di un Item
 link EliminaCodice(link h, char *codice, Item **Pestratto);
-link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **Pestratto);
+link EliminaDate(link h, data_di_nascita data1, data_di_nascita data2, Item **Pestratto);
 FILE *apertura_file_lettura();
 FILE *apertura_file_scrittura();
 Item *RicercaCodice(link h, char *codice);
@@ -75,7 +75,7 @@ int main() {
 int leggiComandoAcquisizione(){ //funzione che legge il comando da eseguire
     char option[10];
     while(1) {
-        printf("\nScegli se leggere da file o da tastiera: ");
+-        printf("\nScegli se leggere da file o da tastiera: ");
         scanf("%s", option);
 
         if(strcasecmp(option,"tastiera") == 0)     { return 0;}
@@ -117,24 +117,24 @@ int leggiTerminazione(){
 
 
 
-int VerificaData(data_di_nascita *data1, data_di_nascita *data2){ //se la prima data risulta minore della seconda ritorna 1, altrimenti ritorna 0
+int ComparaDate(data_di_nascita data1, data_di_nascita data2){ //se la prima data risulta minore della seconda ritorna 1, altrimenti ritorna 0
 
-    if(data1->anno < data2->anno){
+    if(data1.anno < data2.anno){
         return 1;
     }
-    else if(data1->anno > data2->anno){
+    else if(data1.anno > data2.anno){
         return 0;
     }
-    else if(data1->mese < data2->mese){
+    else if(data1.mese < data2.mese){
         return 1;
     }
-    else if(data1->mese > data2->mese){
+    else if(data1.mese > data2.mese){
         return 0;
     }
-    else if(data1->giorno < data2->giorno){
+    else if(data1.giorno < data2.giorno){
         return 1;
     }
-    else if(data1->giorno > data2->giorno){
+    else if(data1.giorno > data2.giorno){
         return 0;
     }
 }
@@ -225,7 +225,7 @@ link OperaSuLista(int scelta, int *terminazione, link h){
             printf("Inserisci la seconda delle due date dell'intervallo per cui eliminare gli elementi nel formato gg/mm/aaaa: ");
             scanf("%d/%d/%d",&data2->giorno, &data2->mese, &data2->anno );
 
-            h =  EliminaDate(h, data1, data2, &elemento_estratto);
+            h =  EliminaDate(h, *data1, *data2, &elemento_estratto);
 
             free(data1);
             free(data2);
@@ -330,11 +330,17 @@ link InserisciItem(link h, int flag_file){
 link SortListIns(link h, Item persona){
     link x, p; //x elemento successivo, p predecessore (sono entrambi puntatori a struct node
 
-    if(h == NULL || VerificaData(&h->persona.data, &persona.data)){
+    if(h == NULL || ComparaDate(h->persona.data, persona.data)){
         return newNode(persona, h);//non ho una testa della lista quindi ritorno direttamente un nuovo nodo che sarà la mia nuova testa
     }
-    for (x = h->next, p = h; x!=NULL && !VerificaData(&persona.data, &x->persona.data) && (strcasecmp(persona.codice, x->persona.codice)) != 0; x = x->next, p =x);  //ciclo che mi permette di avanzare nella lista finchè persona.data è maggiore di h->persona->data
+    x = h->next;
+    p = h;
+    for ( ; (x!=NULL || ComparaDate(p->persona.data,persona.data)) ; p= x, x = x->next);  //ciclo che mi permette di avanzare nella lista finchè persona.data è maggiore di h->persona->data
     //cioè finchè non trovo un elemento maggiore di quello che voglio inserire
+    if((strcasecmp(persona.codice, p->persona.codice)) == 0){ //nel caso in cui trovo una corrispondenza fra codici esco senza inserire in lista
+        printf("\nQuesto codice è già presente nella lista;");
+        return h;
+    }
     p->next = newNode(persona, x);//quando termino il ciclo di avanzamento nella lista significa che l'elemento trovato nella lista risulta maggiore di quello che voglio inserire
     //in questo caso ci inserisco sopra l'elemento minore
     //poiche ricerco un ordinamento crescente
@@ -366,7 +372,7 @@ link EliminaCodice(link h, char *codice, Item **Pestratto){
     return h;
 }
 
-link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **Pestratto){ //debuggare, ritorna segmentation fault
+link EliminaDate(link h, data_di_nascita data1, data_di_nascita data2, Item **Pestratto){ //debuggare, ritorna segmentation fault
     link x, p, t;
     int primo_elemento = 1;
     Item *temp = NULL;
@@ -376,7 +382,7 @@ link EliminaDate(link h, data_di_nascita *data1, data_di_nascita *data2, Item **
         return NULL;
     }
     for(x = h, p = NULL; x!=NULL; p = t, x = t->next){
-        if(VerificaData(data1,&x->persona.data) && VerificaData(&x->persona.data, data2)){
+        if(ComparaDate(data1,x->persona.data) && ComparaDate(x->persona.data, data2)){
             if(x==h){
                 h= x->next;
                 if(primo_elemento){
