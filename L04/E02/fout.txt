@@ -1,0 +1,5 @@
+A0002 Lucia Verdi 07/11/1989 ViaTorino Milano 20123
+A0001 Mario Rossi 01/02/1990 ViaMarcoPolo Torino 10129
+A0005 Marco Bianchi 03/07/1993 PiazzaMazzini Napoli 80135
+A0004 Anna Gialli 04/09/1995 FratelliAlinari Firenze 50123
+A0003 Antonio Neri 19/04/1999 GalleriaTermini Roma 185

@@ -29,9 +29,12 @@ typedef enum{
 comando_e LeggiComando();
 void LeggiAnag(Item *anagrafica);
 void EseguiComando(link *head, comando_e comando, int *p_fine);
+void StampaListaF(link h);
+void CodSearchList(link h);
 int ConfrontaDate(char data1[11], char data2[11]);
 link newNode(Item anagrafica, link next);
 link SortListIns(link h, Item anagrafica);
+link SortListInsF(link h);
 
 int main() {
     int fine = 0, *p_fine = &fine;
@@ -66,7 +69,7 @@ comando_e LeggiComando(){
     printf("ListPrintFile: stampa della lista su file\n");
     printf("Fine: per terminare il programma\n\n");
     printf("Inserire il comando da eseguire:");
-    scanf("\t%s",comando);
+    scanf("%s",comando);
     printf("\n");
 
     if (strcasecmp("InsertList1",comando) == 0){
@@ -89,8 +92,6 @@ comando_e LeggiComando(){
 
 }
 
-
-
 // Legge da tastiera i dati della anagrafica
 void LeggiAnag(Item *anagrafica){
     Item anag;
@@ -100,31 +101,69 @@ void LeggiAnag(Item *anagrafica){
 }
 
 void EseguiComando(link *head, comando_e comando, int *p_fine){
-    link list_start = NULL;
+    link list_start = *head;
     Item anagrafica;
 
     switch (comando) {
         case InsertList1:
-            printf("Inserire i dati in questo ordine\n<codice> <nome> <cognome> <data_di_nascita> <via> <citta'> <cap>\n");
+            printf("\nInserire i dati in questo ordine\n<codice> <nome> <cognome> <data_di_nascita> <via> <citta'> <cap>\n");
             LeggiAnag(&anagrafica);
             list_start = SortListIns(list_start,anagrafica);
-            printf("Inserimento eseguito correttamente\n");
+            printf("\nInserimento eseguito correttamente\n");
             break;
         case InsertList2:
+            list_start = SortListInsF(list_start);
+            printf("\nInserimento eseguito correttamente\n");
             break;
         case cod_search:
+            CodSearchList(list_start);
             break;
         case ExtrListCod:
             break;
         case ExtrListDates:
             break;
         case ListPrintFile:
+            StampaListaF(list_start);
+            printf("\nStampa avvenuta con successo\n");
             break;
         case end:
             *p_fine = 1;
             break;
     }
     *head = list_start;
+}
+
+void StampaListaF(link h){
+    FILE *fp;
+    link x;
+    char NomeFile[MAXN];
+
+    printf("\nInserire il nome del file:\n");
+    scanf("%s", NomeFile);
+
+    fp = fopen(NomeFile,"w");
+    if (fp != NULL){
+        //Stampa della lista su file
+        for (x=h; x!=NULL; x=x->next){
+            fprintf(fp,"%s %s %s %s %s %s %d\n",
+                    x->anag.codice,x->anag.nome,x->anag.cognome,x->anag.bornDate,x->anag.via,x->anag.citta,x->anag.cap);
+        }
+
+    } else printf("\nImpossibile aprire il file\n");
+    fclose(fp);
+}
+
+void CodSearchList(link h){
+    link x;
+    char codice[6];
+
+    printf("Inserire il codice da cercare:");
+    scanf("%s", codice);
+
+    for (x=h; x!=NULL || strcmp(codice,x->anag.codice) == 0; x=x->next);
+    if (x!=NULL){
+        printf("\n%s %s %s %s %s %s %d\n", x->anag.codice, x->anag.nome, x->anag.cognome, x->anag.bornDate, x->anag.via, x->anag.citta, x->anag.cap);
+    } else printf("Nessun risultato trovato\n");
 }
 
 //Funzione che torna vero se la prima data viene prima della seconda
@@ -136,19 +175,25 @@ int ConfrontaDate(char data1[11], char data2[11]){
         gg1[i] = data1[i];
         gg2[i] = data2[i];
     }
-    for (i=2; i<4; i++){
-        mm1[i-2] = data1[i];
-        mm2[i-2] = data2[i];
+    for (i=3; i<5; i++){
+        mm1[i-3] = data1[i];
+        mm2[i-3] = data2[i];
     }
-    for (i=4; i<11; i++){
-        anno1[i-4] = data1[i];
-        anno1[i-4] = data1[i];
+    for (i=6; i<10; i++){
+        anno1[i-6] = data1[i];
+        anno2[i-6] = data2[i];
     }
 
     if (strcmp(anno1,anno2) < 0) return 1;
-    if (strcmp(mm1,mm2) < 0) return 1;
-    if (strcmp(gg1,gg2) < 0) return 1;
-    return 0;
+    else if (strcmp(anno1,anno2) > 0) return 0;
+    else {
+        if (strcmp(mm1,mm2) < 0) return 1;
+        else if (strcmp(mm1,mm2) > 0) return 0;
+        else {
+            if (strcmp(gg1,gg2) < 0) return 1;
+            else return 0;
+        }
+    }
 }
 
 link newNode(Item anagrafica, link next){
@@ -161,13 +206,31 @@ link newNode(Item anagrafica, link next){
 
 link SortListIns(link h, Item anagrafica){
     link x, p;
-    char chiave[11];
 
-    strcpy(chiave,anagrafica.bornDate);
-    if (h == NULL || ConfrontaDate(chiave,h->anag.bornDate))
+    if (h == NULL || ConfrontaDate(anagrafica.bornDate,h->anag.bornDate))
         return newNode(anagrafica,h); //Inserimento in testa
-    for (x=h->next, p=h; x!=NULL && ConfrontaDate(x->anag.bornDate,chiave); p=x, x=x->next);
+    for (x=h->next, p=h; x!=NULL && ConfrontaDate(x->anag.bornDate,anagrafica.bornDate); p=x, x=x->next);
     p->next = newNode(anagrafica,x);
+
+    return h;
+}
+
+link SortListInsF(link h){
+    FILE *fp;
+    char NomeFile[MAXN];
+    Item anagrafica;
+
+    printf("\nInserire il nome del file:\n");
+    scanf("%s", NomeFile);
+
+    fp = fopen(NomeFile,"r");
+    if (fp != NULL){
+        while (fscanf(fp,"%s %s %s %s %s %s %d",
+                      anagrafica.codice, anagrafica.nome, anagrafica.cognome, anagrafica.bornDate, anagrafica.via, anagrafica.citta, &anagrafica.cap) == 7){
+            h = SortListIns(h,anagrafica);
+        }
+    } else printf("\nImpossibile aprire il file\n");
+    fclose(fp);
 
     return h;
 }
