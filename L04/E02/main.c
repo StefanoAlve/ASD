@@ -160,7 +160,7 @@ void CodSearchList(link h){
     printf("Inserire il codice da cercare:");
     scanf("%s", codice);
 
-    for (x=h; x!=NULL || strcmp(codice,x->anag.codice) == 0; x=x->next);
+    for (x=h; x!=NULL && strcmp(codice,x->anag.codice) != 0; x=x->next);
     if (x!=NULL){
         printf("\n%s %s %s %s %s %s %d\n", x->anag.codice, x->anag.nome, x->anag.cognome, x->anag.bornDate, x->anag.via, x->anag.citta, x->anag.cap);
     } else printf("Nessun risultato trovato\n");
