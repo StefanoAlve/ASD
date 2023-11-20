@@ -13,6 +13,7 @@ typedef struct{
     char via[MAXN];
     char citta[MAXN];
     int cap;
+    int SetVoid; //Usato da ItemSetVoid: impostato a 1 se una funzione di ricerca deve tornare un Item vuoto
 } Item;
 
 typedef struct node node_t, *link;
@@ -30,16 +31,22 @@ comando_e LeggiComando();
 void LeggiAnag(Item *anagrafica);
 void EseguiComando(link *head, comando_e comando, int *p_fine);
 void StampaListaF(link h);
-void CodSearchList(link h);
 int ConfrontaDate(char data1[11], char data2[11]);
+int DateBetween(char ref[11], char data1[11], char data2[11]);
+Item CodSearchList(link h);
+Item ExtrList_Cod(link *head);
+Item CercaPrimo(link *head, char data1[11], char data2[11]);
+Item ItemSetVoid();
 link newNode(Item anagrafica, link next);
 link SortListIns(link h, Item anagrafica);
 link SortListInsF(link h);
 
+
+
 int main() {
     int fine = 0, *p_fine = &fine;
     comando_e comando;
-    link head = NULL; //Inizializzazione lista vuota
+    link head = NULL, x, t; //Inizializzazione lista vuota
 
     while(!fine){
         comando = LeggiComando();
@@ -51,6 +58,12 @@ int main() {
     }
 
     //Deallocazione lista
+    x = head;
+    while (x!=NULL){
+        t = x->next;
+        free(x);
+        x = t;
+    }
 
     return 0;
 }
@@ -103,6 +116,8 @@ void LeggiAnag(Item *anagrafica){
 void EseguiComando(link *head, comando_e comando, int *p_fine){
     link list_start = *head;
     Item anagrafica;
+    char data1[11], data2[11];
+    int presente = 1;
 
     switch (comando) {
         case InsertList1:
@@ -116,15 +131,49 @@ void EseguiComando(link *head, comando_e comando, int *p_fine){
             printf("\nInserimento eseguito correttamente\n");
             break;
         case cod_search:
-            CodSearchList(list_start);
+            anagrafica = CodSearchList(list_start);
+            if (anagrafica.SetVoid == 1){
+                printf("Nessun elemento trovato\n");
+            } else printf("%s %s %s %s %s %s %d\n", anagrafica.codice, anagrafica.nome, anagrafica.cognome, anagrafica.bornDate, anagrafica.via, anagrafica.citta, anagrafica.cap);
             break;
         case ExtrListCod:
+            anagrafica = ExtrList_Cod(&list_start);
+            if (anagrafica.SetVoid == 1){
+                printf("Nessun elemento trovato\n");
+            } else {
+                printf("%s %s %s %s %s %s %d\n", anagrafica.codice, anagrafica.nome, anagrafica.cognome, anagrafica.bornDate, anagrafica.via, anagrafica.citta, anagrafica.cap);
+                printf("Anagrafica eliminata correttamente\n");
+            }
             break;
         case ExtrListDates:
+            printf("Inserire le date nel formato gg/mm/aaaa separate da uno spazio:\n");
+            scanf("%s %s", data1, data2);
+
+            anagrafica = CercaPrimo(&list_start,data1,data2);
+            if (anagrafica.SetVoid == 1) {
+                printf("Nessun elemento trovato\n");
+                presente = 0;
+            } else {
+                printf("%s %s %s %s %s %s %d\n", anagrafica.codice, anagrafica.nome, anagrafica.cognome, anagrafica.bornDate, anagrafica.via, anagrafica.citta, anagrafica.cap);
+                printf("Anagrafica eliminata correttamente\n");
+            }
+            //Se presente = 1, allora ci potrebbero essere altre anagrafiche da eliminare
+            while (presente){
+                anagrafica = CercaPrimo(&list_start,data1,data2);
+                if (anagrafica.SetVoid == 1)
+                    presente = 0;
+                else {
+                    printf("%s %s %s %s %s %s %d\n", anagrafica.codice, anagrafica.nome, anagrafica.cognome, anagrafica.bornDate, anagrafica.via, anagrafica.citta, anagrafica.cap);
+                    printf("Anagrafica eliminata correttamente\n");
+                }
+            }
             break;
         case ListPrintFile:
-            StampaListaF(list_start);
-            printf("\nStampa avvenuta con successo\n");
+            if (list_start == NULL) printf("La lista e' vuota, necessario riempirla\n");
+            else {
+                StampaListaF(list_start);
+                printf("\nStampa avvenuta con successo\n");
+            }
             break;
         case end:
             *p_fine = 1;
@@ -138,7 +187,7 @@ void StampaListaF(link h){
     link x;
     char NomeFile[MAXN];
 
-    printf("\nInserire il nome del file:\n");
+    printf("Inserire il nome del file:\n");
     scanf("%s", NomeFile);
 
     fp = fopen(NomeFile,"w");
@@ -148,12 +197,19 @@ void StampaListaF(link h){
             fprintf(fp,"%s %s %s %s %s %s %d\n",
                     x->anag.codice,x->anag.nome,x->anag.cognome,x->anag.bornDate,x->anag.via,x->anag.citta,x->anag.cap);
         }
-
     } else printf("\nImpossibile aprire il file\n");
     fclose(fp);
 }
 
-void CodSearchList(link h){
+//Funzione che ritorna un Item vuoto: imposta ad 1 il campo SetVoid della struct e
+//la funzione chiamante controllerà attraverso questo campo se in una ricerca non è stata trovata alcuna corrispondenza
+Item ItemSetVoid(){
+    Item Void;
+    Void.SetVoid = 1;
+    return Void;
+}
+
+Item CodSearchList(link h){
     link x;
     char codice[6];
 
@@ -162,8 +218,47 @@ void CodSearchList(link h){
 
     for (x=h; x!=NULL && strcmp(codice,x->anag.codice) != 0; x=x->next);
     if (x!=NULL){
-        printf("\n%s %s %s %s %s %s %d\n", x->anag.codice, x->anag.nome, x->anag.cognome, x->anag.bornDate, x->anag.via, x->anag.citta, x->anag.cap);
-    } else printf("Nessun risultato trovato\n");
+        x->anag.SetVoid = 0;
+        return x->anag;
+    } else {
+        return ItemSetVoid();
+    }
+}
+
+Item ExtrList_Cod(link *head){
+    Item anagrafica = ItemSetVoid();
+    link *xp, t;
+    char codice[6];
+
+    printf("Inserire il codice da cercare:");
+    scanf("%s", codice);
+
+    for (xp=head; (*xp)!=NULL; xp = &((*xp)->next)){
+        if (strcasecmp(codice,(*xp)->anag.codice) == 0){
+            t = *xp;
+            *xp = (*xp)->next;
+            anagrafica = t->anag;
+            free(t);
+            break;
+        }
+    }
+    return anagrafica;
+}
+
+//Funzione che cerca la prima anagrafica con data compresa fra le due date
+//Cancella il nodo e restituisce la anagrafica corrispondente
+Item CercaPrimo(link *head, char data1[11], char data2[11]){
+    Item anagrafica = ItemSetVoid();
+    link *xp, t;
+
+    for(xp=head; (*xp)!=NULL && DateBetween((*xp)->anag.bornDate,data1,data2) == 0; xp = &((*xp)->next));
+    if ((*xp)!=NULL){
+        t = *xp;
+        *xp = (*xp)->next;
+        anagrafica = t->anag;
+        free(t);
+    }
+    return anagrafica;
 }
 
 //Funzione che torna vero se la prima data viene prima della seconda
@@ -190,10 +285,18 @@ int ConfrontaDate(char data1[11], char data2[11]){
         if (strcmp(mm1,mm2) < 0) return 1;
         else if (strcmp(mm1,mm2) > 0) return 0;
         else {
-            if (strcmp(gg1,gg2) < 0) return 1;
-            else return 0;
+            if (strcmp(gg1,gg2) > 0) return 0;
+            else return 1;
         }
     }
+}
+
+//Funzione che torna vero = 1 se la data di riferimento è compresa tra le 2 date
+int DateBetween(char ref[11], char data1[11], char data2[11]){
+    int vero = 0;
+
+    if (ConfrontaDate(data1,ref) && ConfrontaDate(ref,data2)) vero = 1;
+    return vero;
 }
 
 link newNode(Item anagrafica, link next){
@@ -234,3 +337,5 @@ link SortListInsF(link h){
 
     return h;
 }
+
+
