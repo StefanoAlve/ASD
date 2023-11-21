@@ -8,7 +8,7 @@ typedef struct{
 att *leggi_file(FILE *file, int n);// funzione che legge file e riempie il vettore di struct
 void attSel(int N, att *v);// Funzione wrapper
 void powerset(int pos, att *v, int n,int *sol, int *sol_best,int diff,int *diff_max);// funzione ricorsiva che ricerca il sotto_insieme di durata massima
-int verificaAtt(int pos,att *v,int *sol, int n);// funzione che verica la compatibilità di due sotto_insiemi
+int verificaAtt(int pos,att *v,int *sol);// funzione che verica la compatibilità di due sotto_insiemi
 int main(){
     att *p_att;
     FILE *fin;
@@ -68,7 +68,7 @@ void powerset(int pos, att *v, int n,int *sol, int *sol_best, int diff, int *dif
             sol[pos]= 0;
             powerset(pos+1, v, n,sol, sol_best,diff, diff_max);
 
-    if(!verificaAtt(pos,v,sol,n)){
+    if(!verificaAtt(pos,v,sol)){
 
         sol[pos] = 1;
         diff+=v[pos].Fi-v[pos].Si;
@@ -77,7 +77,7 @@ void powerset(int pos, att *v, int n,int *sol, int *sol_best, int diff, int *dif
     return;
 }
 // funzione che verifica tutte le attività se sono compatibili
-int verificaAtt(int pos,att *v,int *sol, int n){
+int verificaAtt(int pos,att *v,int *sol){
     for(int i = 0;i<pos;i++){
         if (sol[i]!=0){
             if(v[i].Si<v[pos].Fi && v[pos].Si<v[i].Fi)
