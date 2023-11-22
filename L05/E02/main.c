@@ -34,25 +34,11 @@ int sommaC(int somma, matrix **matrice, int r, int c);
 int main() {
     tessera *tessere;
     board **tavolo;
-    int ntes, r, c, ntav, i, j, max;
+    int ntes, r, c, max;
 
     leggiFile(&tessere, &tavolo, &ntes, &r, &c);
 
-    /*printf("tessere: \n");
-    for (i=0; i<ntes; i++) {
-        printf("%c, %d %c, %d\n", tessere[i].riga, tessere[i].valoreR
-                , tessere[i].colonna, tessere[i].valoreC);
-    }
-    printf("\ntavola\n");
-    for (i=0; i<r; i++){
-        for(j=0; j<c; j++){
-            printf("%d/%d ", tavolo[i][j].indiceTessera, tavolo[i][j].rotazione);
-        }
-        printf("\n");
-    }*/
-
     max = wrap(tessere, tavolo, ntes, r, c);
-
 
     dealloca(tessere, tavolo, r);
     return 0;
@@ -138,44 +124,42 @@ int wrap(tessera *tessere, board **tavolo, int ntes, int r, int c) {
     matrix **matrice, **definitiva;
 
 
-    ///matrice contenente i dati della tessere nella posizione
+    ///matrice contenente i dati della tessere nella posizione sarà utilizzata come matrice temporanea nella ricorsiva
     matrice = inizMatrix(tessere, tavolo, &mark, r, c, ntes);
 
-
-
-
-    ///INIZIALIZZO LA MATRICE DEFINITIVA
+    ///INIZIALIZZO LA MATRICE DEFINITIVA CHE CONTERRA I VALORI DELLA MATRICE CON SOMMA MASSIMA
     definitiva = (matrix **)malloc(r*sizeof(matrix *));
     for(j=0; j<r; j++){
         definitiva[j] = (matrix *)malloc(c*sizeof(matrix));
     }
 
-    ///inizializzo un vettore con i tasselli da non spostare
+    ///inizializzo un vettore con i tasselli da non usare
     for (i=0 ;i<ntes; i++){
         proibite[i] = 1;
     }
     for (i=0; i<r; i++){
         for(j=0; j<c; j++) {
+            ///inserisco i tasselli che a priori sono nella matrice
             if(tavolo[i][j].indiceTessera != -1){
                 proibite[tavolo[i][j].indiceTessera] = 0;
             }
         }
     }
-
+    ///FUNZIONE RICORSIVA CHE TROVA LA SOMMA MASSIMA E LA MATRICE DEFINITIVA
     somma = casiR(matrice, tessere, mark, r, c, ntes, definitiva, 0, 0, 0, 0, proibite);
 
-
-    printf("%d\n", somma);
-
+    ///VARI PRINT
+    printf("la somma di tutti gli elementi validi: %d\nmatrice:\n", somma);
     for (i=0; i<r; i++){
         for(j=0; j<c; j++){
-            printf("%c ", definitiva[i][j].riga);
+            printf("%c%d %c%d |", definitiva[i][j].riga,definitiva[i][j].valoreR, definitiva[i][j].colonna, definitiva[i][j].valoreC);
         }
         printf("\n");
     }
 
 
-            for (i = 0; i < r; i++) {
+    ///DEALLICAZIONE DI VARIE MATRICI USATE
+    for (i = 0; i < r; i++) {
         free(definitiva[i]);
         free(mark[i]);
         free(matrice[i]);
@@ -207,7 +191,7 @@ matrix **inizMatrix(tessera *tessere, board **tavolo, int ***mark, int r, int c,
         }
     }
 
-    ///INIZIALIZZO LA MATRICE DEI MARK
+    ///INIZIALIZZO LA MATRICE DEI MARK CHE SERVE PER VEDERE LE POSIZIONI DELLA MATRICE IN CUI è GIA PRESENTE UN TASSELLO
     *mark = (int **)malloc(r*sizeof(int*));
     if (*mark == NULL) {
         printf("errore in allocazione");
@@ -220,13 +204,14 @@ matrix **inizMatrix(tessera *tessere, board **tavolo, int ***mark, int r, int c,
             exit(1);
         }
     }
+    ///LO INIZIALIZZO A 0
     for(i=0; i<r; i++){
         for(j=0; j<c; j++){
             (*mark)[i][j] = 0;
         }
     }
 
-
+    ///COPIO NELLA MATRICE TEMPORANEA I VALORI CHE NON DEVONO ESSERE TOCCATI
     for (i = 0; i < r; i++) {
         for (j = 0; j < c; j++) {
             if (tavolo[i][j].indiceTessera != -1) {
@@ -244,6 +229,7 @@ matrix **inizMatrix(tessera *tessere, board **tavolo, int ***mark, int r, int c,
                     matrice[i][j].valoreC = tessere[tavolo[i][j].indiceTessera].valoreR;
                     matrice[i][j].rotazione = 1;
                 }
+                ///POSIZIONI DELLA MATRICE CHE NON DEVONO ESSERE USATE CORRISPONDENTI AI TASSELLI FISSI
                 (*mark)[i][j] = -1;
             }
         }
@@ -254,12 +240,13 @@ matrix **inizMatrix(tessera *tessere, board **tavolo, int ***mark, int r, int c,
 int casiR(matrix **matrice, tessera *tessere, int **mark, int r, int c, int ntes, matrix **definitiva, int sommaMax, int somma, int posR, int posC, int *proibite) {
     int i, j, posT;
 
+    ///TERMINAZIONE
     if (posR >= r) {
         somma = 0;
         ///fa la somma degli elementi sulla riga
-        somma = somma + sommaR(somma, matrice, r, c);
+        somma = sommaR(somma, matrice, r, c);
         ///somma colonne
-        somma = somma + sommaC(somma, matrice, r, c);
+        somma = sommaC(somma, matrice, r, c);
         ///CONDIZIONE DI COPIA
         if (somma > sommaMax) {
             sommaMax = somma;
@@ -277,35 +264,52 @@ int casiR(matrix **matrice, tessera *tessere, int **mark, int r, int c, int ntes
     }
     ///CASO IN CUI IL MARK E' DIVERSO DA -1 OVVERO CHE IL VALORE NON E' A PRIORI NELLA MATRICE
     if(mark[posR][posC] != -1) {
+        ///ITERO OGNI VOLTA SU TUTTI I TASSELLI
         for (posT = 0; posT < ntes; posT++) {
-            if(mark[posR][posC] != 1 && proibite[posT]) {
+            ///CONTROLLO SE IL TASSELLO è UTILIZZABILE (NON USATO GIA')
+            if(proibite[posT]) {
                 ///IN MANIERA RICORSIVA PONGO IL VALORE NELLA MATRICE
                 matrice[posR][posC].riga = tessere[posT].riga;
                 matrice[posR][posC].colonna = tessere[posT].colonna;
                 matrice[posR][posC].valoreR = tessere[posT].valoreR;
                 matrice[posR][posC].valoreC = tessere[posT].valoreC;
+                ///CASO IN CUI MI TROVO NON ALLA FINE DELLA COLONNA (AUMENTO LA COLONNA)
                 if (posC < c - 1) {
-                    mark[posR][posC] = mark[posR][posC] + 1;
+                    ///PROIBISCO L'UTILIZZO DELLA TESSERA ALLE PROSSIME ITERAZIONI RICORSIVE
+                    proibite[posT] = 0;
                     sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR, posC + 1, proibite);
-                    mark[posR][posC] = mark[posR][posC] - 1;
-                } else if (posC == c - 1) {
-                    mark[posR][posC] = mark[posR][posC] + 1;
+                    ///LA RENDO RIUTILIZZABILE
+                    proibite[posT] = 1;
+
+                }
+                ///CASO IN CUI MI TROVO ALLA FINE DELLA COLONNA (AUMENTO LA RIGA E AZZERO LA COLONNA)
+                else if (posC == c - 1) {
+
+                    proibite[posT] = 0;
                     sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR + 1, 0, proibite);
-                    mark[posR][posC] = mark[posR][posC] - 1;
+                    proibite[posT] = 1;
+
                 }
                 ///BACKTRACK E METTO IL VALORE RUOTATO
                 matrice[posR][posC].riga = tessere[posT].colonna;
                 matrice[posR][posC].colonna = tessere[posT].riga;
                 matrice[posR][posC].valoreR = tessere[posT].valoreC;
                 matrice[posR][posC].valoreC = tessere[posT].valoreR;
+                ///CASO IN CUI MI TROVO NON ALLA FINE DELLA COLONNA (AUMENTO LA COLONNA)
                 if (posC < c - 1) {
-                    mark[posR][posC] = mark[posR][posC] + 1;
+
+                    proibite[posT] = 0;
                     sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR, posC + 1, proibite);
-                    mark[posR][posC] = mark[posR][posC] - 1;
-                } else if (posC == c - 1) {
-                    mark[posR][posC] = mark[posR][posC] + 1;
+                    proibite[posT] = 1;
+
+                }
+                ///CASO IN CUI MI TROVO ALLA FINE DELLA COLONNA (AUMENTO LA RIGA E AZZERO LA COLONNA)
+                else if (posC == c - 1) {
+
+                    proibite[posT] = 0;
                     sommaMax = casiR(matrice, tessere, mark, r, c, ntes, definitiva, sommaMax, somma, posR + 1, 0, proibite);
-                    mark[posR][posC] = mark[posR][posC] - 1;
+                    proibite[posT] = 1;
+
                 }
             }
         }
@@ -320,7 +324,6 @@ int casiR(matrix **matrice, tessera *tessere, int **mark, int r, int c, int ntes
         }
     }
 
-
     return sommaMax;
 }
 ///funzione che fa la somma degli elementi sulla riga
@@ -329,8 +332,10 @@ int sommaR(int somma, matrix **matrice, int r, int c) {
 
     for (i = 0; i < r; i++) {
         for (j = 0; j < c; j++) {
+            ///CONIDZIONE PER VEDERE CHE I CARATTERI SONO UGUALI E CONSECUTIVI
             if (j != c-1 && matrice[i][j].riga != matrice[i][j+1].riga){
                 flag = 0;
+                break;
             }
         }
         if (flag){
@@ -348,13 +353,15 @@ int sommaC(int somma, matrix **matrice, int r, int c) {
 
     for (i = 0; i < c; i++) {
         for (j = 0; j < r; j++) {
-            if (j != r-1 && matrice[i][j].colonna != matrice[i][j+1].colonna){
+            ///CONIDZIONE PER VEDERE CHE I CARATTERI SONO UGUALI E CONSECUTIVI
+            if (j != r-1 && matrice[j][i].colonna != matrice[j+1][i].colonna){
                 flag = 0;
+                break;
             }
         }
         if (flag){
             for (j = 0; j < r; j++) {
-                somma = somma + matrice[i][j].valoreC;
+                somma = somma + matrice[j][i].valoreC;
             }
         }
         flag = 1;
