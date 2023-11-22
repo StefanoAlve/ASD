@@ -351,17 +351,17 @@ int sommaR(int somma, matrix **matrice, int r, int c) {
 int sommaC(int somma, matrix **matrice, int r, int c) {
     int i, j, flag = 1;
 
-    for (i = 0; i < c; i++) {
-        for (j = 0; j < r; j++) {
+    for (j = 0; j < c; j++) {
+        for (i = 0; i < r; i++) {
             ///CONIDZIONE PER VEDERE CHE I CARATTERI SONO UGUALI E CONSECUTIVI
-            if (j != r-1 && matrice[j][i].colonna != matrice[j+1][i].colonna){
+            if (i != r-1 && matrice[i][j].colonna != matrice[i+1][j].colonna){
                 flag = 0;
                 break;
             }
         }
         if (flag){
-            for (j = 0; j < r; j++) {
-                somma = somma + matrice[j][i].valoreC;
+            for (i = 0; i < r; i++) {
+                somma = somma + matrice[i][j].valoreC;
             }
         }
         flag = 1;
