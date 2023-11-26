@@ -5,9 +5,9 @@
 
 typedef struct{
     int z;
-    int s;
     int r;
     int t;
+    int s;
     int len_max;
 } pietre;
 
@@ -22,7 +22,7 @@ int main(){
     pietre *collane;
     int num_collane, mark[num_pietre_distinte], n_dist = num_pietre_distinte, fine = 0, n, k ;
     char *val = (char*) malloc(sizeof(char)*num_pietre_distinte), *sol;
-    val [0] = 'z'; val [1] = 's'; val[2] = 'r'; val[3] = 't';
+    val [0] = 'z'; val [1] = 'r'; val[2] = 't'; val[3] = 's';
 
     leggi_file(&num_collane, &collane);//acquisizione dei dati su cui operare
 
@@ -38,7 +38,7 @@ int main(){
 
             fine  = disp_rip(0, val, sol, mark, n_dist, n, k, fine, 0);
             if(fine){
-                printf("\nfine");
+
             }
             k--;
             free(sol);
@@ -67,17 +67,13 @@ int disp_rip(int pos, char *val, char *sol, int *mark, int n_dist, int n, int k,
     }
 
     for (int i = 0; i < n_dist && !flag; ++i) {
-        if(mark[i] > 0 ) {
+        if(mark[i] > 0 && verifica_valori(pos, k, sol[pos - 1], val[i])) {
             mark[i]--;
-
-            if (verifica_valori(pos, k, sol[pos - 1], val[i])){
-                sol[pos] = val[i];
-                flag = disp_rip(pos + 1, val, sol, mark, n_dist, n, k, flag, 0);
-            }
-
+            sol[pos] = val[i];
+            flag = disp_rip(pos + 1, val, sol, mark, n_dist, n, k, flag, 0);
             mark[i]++;
         }
-        if(flag){
+        if(flag) {
             return flag;
         }
     }
@@ -122,8 +118,8 @@ void leggi_file(int *num_collane, pietre **collane){ //leggo dal file le i dati 
     int i = 0;
 
     while(i < *num_collane){ //leggo dal file in input tutte le varie possibili per creare collane
-        fscanf(fin, "%d %d %d %d", &collane_temp[i].z , &collane_temp[i].s, &collane_temp[i].r, &collane_temp[i].t );
-        collane_temp[i].len_max = collane_temp[i].z + collane_temp[i].s + collane_temp[i].r + collane_temp[i].t;
+        fscanf(fin, "%d %d %d %d", &collane_temp[i].z , &collane_temp[i].r, &collane_temp[i].t, &collane_temp[i].s );
+        collane_temp[i].len_max = collane_temp[i].z + collane_temp[i].r + collane_temp[i].t + collane_temp[i].s;
         i++;
     }
     *collane = collane_temp;
@@ -139,8 +135,8 @@ void stampa_test(pietre collana, int i){
 
 void riempi_mark(int *mark, pietre collana){
     mark[0] = collana.z;
-    mark[1] = collana.s;
-    mark[2] = collana.r;
-    mark[3] = collana.t;
+    mark[1] = collana.r;
+    mark[2] = collana.t;
+    mark[3] = collana.s;
 
 }
