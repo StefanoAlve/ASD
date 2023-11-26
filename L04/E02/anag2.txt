@@ -1,0 +1,4 @@
+A0004 Anna Gialli 04/09/1995 FratelliAlinari Firenze 50123
+A0005 Marco Bianchi 03/07/1993 PiazzaMazzini Napoli 80135
+A0006 Marta Buratti 02/09/2003 ViaMazzini Malnate 21046
+A0007 Mariagiulia Nicotra 04/05/2003 ViaMazzini Torino 10128
