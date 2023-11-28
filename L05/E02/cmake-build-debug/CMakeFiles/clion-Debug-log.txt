@@ -5,6 +5,6 @@
 -- Check for working C compiler: C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc.exe - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- Configuring done (2.6s)
+-- Configuring done (4.9s)
 -- Generating done (0.0s)
 -- Build files have been written to: C:/ASD/L05/E02/cmake-build-debug
