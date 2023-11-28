@@ -1,6 +1,6 @@
 #include <stdio.h>
 
 int main() {
-    printf("Esercizio 1 L06!\n");
+    printf("Ciao luisa");
     return 0;
 }

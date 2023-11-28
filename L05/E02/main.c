@@ -214,8 +214,7 @@ int sommaC(Casella_s **matrix, int R, int C){
 
 //Funziona che ritorna la somma delle righe e delle colonne
 int contaSomme(Casella_s **matrix, int R, int C, int cnt){
-    int flag, orizz = 0, vert = 0, totVert = 0, totOrizz = 0;
-    char colore;
+    int totVert = 0, totOrizz = 0;
 
     totOrizz = sommaR(matrix, R, C);
 
