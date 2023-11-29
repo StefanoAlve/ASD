@@ -20,7 +20,10 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0000e456-220c-46f2-b230-353fab283a94" name="Changes" comment="E01 L05 bug fix" />
+    <list default="true" id="0000e456-220c-46f2-b230-353fab283a94" name="Changes" comment="E01 L05 bug fix">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../L06/E01/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/../../L06/E01/main.c" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -89,6 +92,10 @@
       <workItem from="1699886742044" duration="5005000" />
       <workItem from="1699915081746" duration="2641000" />
       <workItem from="1699953345333" duration="2221000" />
+      <workItem from="1701168186212" duration="1495000" />
+      <workItem from="1701256750226" duration="830000" />
+      <workItem from="1701278702436" duration="31000" />
+      <workItem from="1701278807610" duration="25000" />
     </task>
     <task id="LOCAL-00001" summary="E01 L05 con Bug">
       <option name="closed" value="true" />
