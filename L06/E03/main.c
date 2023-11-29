@@ -1,5 +1,4 @@
-#include <stdio.h>
-
+#include "pg.h"
 int main() {
     printf("Esercizio 3 L06!\n");
     return 0;
