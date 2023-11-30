@@ -14,6 +14,7 @@ struct pg_t{
 };
 typedef struct tabPg_t *ptabPg;
 ptabPg leggiPersonaggi(char *nomeFile);
+struct pg_t creaPersonaggio();
 pnodoPg_t newNode(pnodoPg_t next, struct pg_t personaggio);
 ptabPg inserisciPg(ptabPg tabPg, struct pg_t personaggio);
 pnodoPg_t ricercaCodice(ptabPg tabPg, char codice[]);
@@ -26,6 +27,7 @@ void stampaPgEquip(pnodoPg_t personaggio, ptabInv inventario);
 void stampaPgStat(pnodoPg_t personaggio);
 void aggiungiObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]);
 void rimuoviObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]);
+void aggiornaStats(pnodoPg_t personaggio, ptabInv inventario);
 void scegliInUso(pnodoPg_t personaggio, ptabInv inventario, char obj[]);
 void distruggiListaPersonaggi(ptabPg listaPers);
 #endif //E03_PG_H

@@ -46,12 +46,18 @@ void stampaObj(ptabInv tabInv, int index){
 }
 void stampaObjStats(ptabInv tabInv, int index){
     printf("Le statistiche dell'oggetto sono:\n");
-    printf("hp:%d\n",tabInv->vettInv[index].stat.hp);
-    printf("mp:%d\n",tabInv->vettInv[index].stat.mp);
-    printf("atk:%d\n",tabInv->vettInv[index].stat.atk);
-    printf("def:%d\n",tabInv->vettInv[index].stat.def);
-    printf("mag:%d\n",tabInv->vettInv[index].stat.mag);
-    printf("spr:%d\n",tabInv->vettInv[index].stat.spr);
+    printf("HP:%d ",tabInv->vettInv[index].stat.hp);
+    printf("MP:%d ",tabInv->vettInv[index].stat.mp);
+    printf("ATK:%d ",tabInv->vettInv[index].stat.atk);
+    printf("DEF:%d ",tabInv->vettInv[index].stat.def);
+    printf("MAG:%d ",tabInv->vettInv[index].stat.mag);
+    printf("SPR:%d\n",tabInv->vettInv[index].stat.spr);
+}
+
+stat_t fornisciStats(ptabInv tabInv, int index){
+    stat_t stats;
+    stats = tabInv->vettInv[index].stat;
+    return stats;
 }
 void stampaObjNome(ptabInv tabInv, int index){
     printf("Il nome dell'oggetto è: %s\n", tabInv->vettInv[index].nome);

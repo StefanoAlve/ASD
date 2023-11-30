@@ -17,6 +17,8 @@ ptabPg leggiPersonaggi(char *nomeFile){
     FILE *fin;
     ptabPg listaPg = (ptabPg)malloc(sizeof(*listaPg));
     struct pg_t tmpPg;
+    listaPg->headPg = NULL;
+    listaPg->tailPg = NULL;
     //Apertura file
     fin = fopen(nomeFile, "r");
     if(fin == NULL){
@@ -31,6 +33,33 @@ ptabPg leggiPersonaggi(char *nomeFile){
     fclose(fin);
     return listaPg;
 }
+
+struct pg_t creaPersonaggio(){
+    struct pg_t personaggio;
+    printf("Creazione del nuovo personaggio\n");
+    printf("Inserisci il codice (formato PGXXXX):");
+    scanf("%s", personaggio.codice);
+    printf("Inserisci il nome:");
+    scanf("%s", personaggio.nome);
+    printf("Inserisci la classe:");
+    scanf("%s", personaggio.classe);
+    printf("L'equipaggiamento sarà inizializzato a vuoto\n");
+    printf("Decidi le statistiche del tuo personaggio:\n");
+    printf("HP:");
+    scanf("%d", &personaggio.stat.hp);
+    printf("MP:");
+    scanf("%d", &personaggio.stat.mp);
+    printf("ATK:");
+    scanf("%d", &personaggio.stat.atk);
+    printf("DEF:");
+    scanf("%d", &personaggio.stat.def);
+    printf("MAG:");
+    scanf("%d", &personaggio.stat.mag);
+    printf("SPR:");
+    scanf("%d", &personaggio.stat.spr);
+    printf("Personaggio creato con successo!\n");
+    return personaggio;
+}
 pnodoPg_t newNode(pnodoPg_t next, struct pg_t personaggio){
     pnodoPg_t nodoPg = (pnodoPg_t)malloc(sizeof(struct pg_t));
     strcpy(nodoPg->codice, personaggio.codice);
@@ -38,6 +67,7 @@ pnodoPg_t newNode(pnodoPg_t next, struct pg_t personaggio){
     strcpy(nodoPg->classe, personaggio.classe);
     nodoPg->stat = personaggio.stat;
     nodoPg->next = next;
+    nodoPg->equip = (ptabEquip_t)malloc(sizeof(*(nodoPg->equip)));
     for(int i=0; i<MAXOBJ; i++){
         nodoPg->equip->vettEq[i] = -1;
     }
@@ -58,7 +88,6 @@ ptabPg inserisciPg(ptabPg tabPg, struct pg_t personaggio){
 }
 pnodoPg_t ricercaCodice(ptabPg tabPg, char codice[]){
     pnodoPg_t attuale;
-    int i;
     for(attuale = tabPg->headPg; attuale != NULL; attuale = attuale->next){
         if(strcasecmp(attuale->codice, codice) == 0){
             return attuale;
@@ -114,6 +143,7 @@ void stampaPgClasse(pnodoPg_t personaggio){
     printf("Il classe del personaggio e': %s\n", personaggio->classe);
 }
 void stampaPgEquip(pnodoPg_t personaggio, ptabInv inventario){
+    printf("L'equipaggiamento del personaggio:\n");
     for(int i=0; i<MAXOBJ; i++){
         if(personaggio->equip->vettEq[i] != -1){
             stampaObj(inventario, personaggio->equip->vettEq[i]);
@@ -122,12 +152,12 @@ void stampaPgEquip(pnodoPg_t personaggio, ptabInv inventario){
 }
 void stampaPgStat(pnodoPg_t personaggio){
     printf("Le statistiche del personaggio sono:\n");
-    printf("hp:%d\n",personaggio->stat.hp);
-    printf("mp:%d\n",personaggio->stat.mp);
-    printf("atk:%d\n",personaggio->stat.atk);
-    printf("def:%d\n",personaggio->stat.def);
-    printf("mag:%d\n",personaggio->stat.mag);
-    printf("spr:%d\n",personaggio->stat.spr);
+    printf("HP:%d ",personaggio->stat.hp);
+    printf("MP:%d ",personaggio->stat.mp);
+    printf("ATK:%d ",personaggio->stat.atk);
+    printf("DEF:%d ",personaggio->stat.def);
+    printf("MAG:%d ",personaggio->stat.mag);
+    printf("SPR:%d ",personaggio->stat.spr);
 }
 
 void aggiungiObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
@@ -168,6 +198,19 @@ void rimuoviObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
         printf("Il personaggio non ha oggetti equipaggiati\n");
     }
 }
+
+void aggiornaStats(pnodoPg_t personaggio, ptabInv inventario){
+    //TODO inserire limite inferiore a 0
+    stat_t statsObj;
+    statsObj = fornisciStats(inventario, personaggio->equip->inUso);
+    personaggio->stat.hp += statsObj.hp;
+    personaggio->stat.mp += statsObj.mp;
+    personaggio->stat.atk += statsObj.atk;
+    personaggio->stat.def += statsObj.def;
+    personaggio->stat.mag += statsObj.mag;
+    personaggio->stat.spr += statsObj.spr;
+}
+
 void scegliInUso(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
     int index, i;
     if(personaggio->equip->usati != 0){
@@ -176,6 +219,8 @@ void scegliInUso(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
         if(i!=MAXOBJ-1){
             personaggio->equip->inUso = index;
             printf("L'oggetto è ora in uso!\n");
+            aggiornaStats(personaggio, inventario);
+            printf("Le statistiche del personaggio sono variate!\n");
         }
         else{
             printf("L'oggetto richiesto non è presente nell'equipaggiamento!\n");
@@ -185,13 +230,9 @@ void scegliInUso(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
 
 void distruggiListaPersonaggi(ptabPg listaPers){
     pnodoPg_t corrente = listaPers->headPg, successivo;
-    struct pg_t personaggio;
     while(corrente!=NULL){
         successivo = corrente->next;
-        free(personaggio.codice);
-        free(personaggio.nome);
-        free(personaggio.classe);
-        free(personaggio.equip);
+        free(corrente->equip);
         free(corrente);
         corrente = successivo;
     }

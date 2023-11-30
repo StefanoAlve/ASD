@@ -23,6 +23,7 @@ ptabInv leggiInventario(char *nomeFile);
 int ricercaObjN(ptabInv tabInv, char *nome);
 void stampaObj(ptabInv tabInv, int index);
 void stampaObjStats(ptabInv tabInv, int index);
+stat_t fornisciStats(ptabInv tabInv, int index);
 void stampaObjNome(ptabInv tabInv, int index);
 void stampaObjTipo(ptabInv tabInv, int index);
 void distruggiInventario(ptabInv tabInv);
