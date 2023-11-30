@@ -19,6 +19,9 @@ ptabPg leggiPersonaggi(char *nomeFile) {
     struct pg_t personaggio;
 
     tabPg->nPg = 0;
+    tabPg->headPg = NULL;
+    tabPg->tailPg = NULL;
+
     //Apertura file
     fin = fopen(nomeFile, "r");
     if(fin == NULL){
@@ -29,9 +32,9 @@ ptabPg leggiPersonaggi(char *nomeFile) {
         fscanf(fin, "%s %s %s", personaggio.codice, personaggio.nome, personaggio.classe);
         fscanf(fin, "%d %d %d %d %d %d", &personaggio.stat.hp, &personaggio.stat.mp, &personaggio.stat.atk, &personaggio.stat.def, &personaggio.stat.mag, &personaggio.stat.spr);
         personaggio.next = NULL;
-        newNode(tabPg->headPg, personaggio);
+        tabPg->headPg = newNode(tabPg->headPg, personaggio);
         tabPg->nPg += 1;
-        *tabPg->tailPg = personaggio;
+        tabPg->tailPg = &personaggio;
     }
 
     //Chiusura file
@@ -40,13 +43,17 @@ ptabPg leggiPersonaggi(char *nomeFile) {
 }
 
 pnodoPg_t newNode(pnodoPg_t head, struct pg_t personaggio) {
-    pnodoPg_t x;
+    pnodoPg_t x, newNode = malloc(sizeof( *newNode));
+
+    *newNode = personaggio;
+    newNode->next = NULL;
 
     if(head == NULL){
-        *head = personaggio;
+        head = newNode;
     }
-    for(x = head; x->next!=NULL; x = x->next){}
-    *x->next = personaggio;
-
+    else {
+        for (x = head; x->next != NULL; x = x->next) {}
+        x->next = newNode;
+    }
     return head;
 }
