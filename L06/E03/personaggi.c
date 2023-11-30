@@ -17,6 +17,7 @@ ptabPg leggiPersonaggi(char *nomeFile) {
     FILE *fin;
     ptabPg tabPg = (ptabPg)malloc(sizeof(*tabPg));
     struct pg_t personaggio;
+    int i;
 
     tabPg->nPg = 0;
     tabPg->headPg = NULL;
@@ -29,15 +30,18 @@ ptabPg leggiPersonaggi(char *nomeFile) {
         exit(1);
     }
     //continua per tutto il file
+    personaggio.equip = malloc(sizeof(*personaggio.equip));
     while(!feof(fin)) {
         fscanf(fin, "%s %s %s", personaggio.codice, personaggio.nome, personaggio.classe);
         fscanf(fin, "%d %d %d %d %d %d", &personaggio.stat.hp, &personaggio.stat.mp, &personaggio.stat.atk, &personaggio.stat.def, &personaggio.stat.mag, &personaggio.stat.spr);
         personaggio.next = NULL;
+        for(i=0; i<MAXOBJ; i++){
+            personaggio.equip->vettEq[i] = -1;
+        }
         tabPg->headPg = newNode(tabPg->headPg, personaggio);
         tabPg->nPg += 1;        //aumenta il numero di personaggi
         tabPg->tailPg = &personaggio;
     }
-
     //Chiusura file
     fclose(fin);
     return tabPg;
@@ -140,10 +144,10 @@ void modificaEquip(pnodoPg_t personaggio, ptabInv tabInv){
                 bool = 0;
             }
         }
-        if(bool) {
+        if(!bool) {
             printf("scegli l'indice dell'oggetto che vuoi aggiungere:");
             for (i = 0; i < tabInv->nInv; i++) {
-                printf("numero %d, %s\n", i, tabInv->vettInv[i].nome);
+                stampaObj(tabInv, i);
             }
             scanf("%d", &nObj);
             strcpy(obj,tabInv->vettInv[nObj].nome);
@@ -152,19 +156,84 @@ void modificaEquip(pnodoPg_t personaggio, ptabInv tabInv){
         else
             printf("il personaggio ha gia' %d oggetti equipaggiati\n", MAXOBJ);
     }
-}
-void aggiungiObj(ptabEquip_t equip, ptabInv tabInv, char obj[]){
-    int i, j, bool=1;
-    //CERCO PRIMA UN POSTO LIBERO NELL EQUIP E POI L'INDICE DELL OGGETTO CORISPONDENTE A QUELLO CERCATO
-    for(i=0; i<MAXOBJ && bool; i++){
-        if(equip->vettEq[i]==-1){
-            for (j=0; j<tabInv->nInv; j++){
-                if(strcmp(tabInv->vettInv[j].nome, obj)==0){
-                    equip->vettEq[i]=j;
-                    bool = 0;
-                    break;
-                }
+    else if(strcasecmp(scelta, "rimuovere")==0){
+        for(i=0; i<MAXOBJ; i++){
+            if(personaggio->equip->vettEq[i]!=-1){
+                bool = 0;
             }
         }
+        if(!bool){
+            printf("scegli l'indice dell'oggetto che vuoi rimuovere tra i seguenti:");
+            for (i = 0; i < MAXOBJ && personaggio->equip->vettEq[i]!=-1; i++) {
+                printf("numero %d, %s\n", i, tabInv->vettInv[personaggio->equip->vettEq[i]].nome);
+            }
+            scanf("%d", &nObj);
+            strcpy(obj,tabInv->vettInv[nObj].nome);
+            rimuoviObj(personaggio->equip, tabInv, obj);
+        }
+        else
+            printf("il personaggio non ha oggetti equipaggiati");
     }
+}
+void aggiungiObj(ptabEquip_t equip, ptabInv tabInv, char obj[]){
+    int i, j;
+    //CERCO PRIMA UN POSTO LIBERO NELL EQUIP E POI L'INDICE DELL OGGETTO CORISPONDENTE A QUELLO CERCATO
+    for(i=0; i<MAXOBJ; i++){
+        if(equip->vettEq[i]==-1){
+
+            j = ricercaObjN(tabInv, obj);
+            equip->vettEq[i]=j;
+            break;
+
+
+        }
+    }
+}
+
+void rimuoviObj(ptabEquip_t equip, ptabInv tabInv, char obj[]) {
+    int j, index = ricercaObjN(tabInv, obj);
+
+    for(j=0; j<MAXOBJ; j++) {
+        if(index == equip->vettEq[j]){
+            equip->vettEq[j] = -1;
+            break;
+        }
+    }
+}
+
+void calcoloStat(pnodoPg_t personaggio, ptabInv tabInv) {
+    int i, a=personaggio->stat.hp, b=personaggio->stat.mp, c=personaggio->stat.atk,
+            d=personaggio->stat.def, f=personaggio->stat.mag, g=personaggio->stat.spr;
+
+    for (i=0; i<MAXOBJ && personaggio->equip->vettEq[i]!=-1; i++){
+        a = a + tabInv->vettInv[personaggio->equip->vettEq[i]].stat.hp;
+        b = b + tabInv->vettInv[personaggio->equip->vettEq[i]].stat.mp;
+        c = c + tabInv->vettInv[personaggio->equip->vettEq[i]].stat.atk;
+        d = d + tabInv->vettInv[personaggio->equip->vettEq[i]].stat.def;
+        f = f + tabInv->vettInv[personaggio->equip->vettEq[i]].stat.mag;
+        g = g + tabInv->vettInv[personaggio->equip->vettEq[i]].stat.spr;
+    }
+    if (a<0)
+        a=0;
+    if (b<0)
+        b=0;
+    if (c<0)
+        c=0;
+    if (d<0)
+        d=0;
+    if (f<0)
+        f=0;
+    if (g<0)
+        g=0;
+    printf("le statistiche sono: %d %d %d %d %d %d\n", a, b, c, d, f, g);
+}
+
+void distruggiPersonaggi(ptabPg tabPg){
+    pnodoPg_t x, p;
+    for (x = tabPg->headPg, p = x->next; p != NULL ; x = p, p = x->next){
+        free(x->equip);
+        free(x);
+    }
+    free(p);
+    free(tabPg->headPg);
 }
