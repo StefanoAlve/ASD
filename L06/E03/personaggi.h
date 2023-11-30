@@ -34,7 +34,6 @@ void stampaPgStat(pnodoPg_t personaggio);
 void modificaEquip(pnodoPg_t personaggio, ptabInv tabInv);
 void aggiungiObj(ptabEquip_t equip, ptabInv tabInv, char obj[]);
 void rimuoviObj(ptabEquip_t equip, ptabInv tabInv, char obj[]);
-void scegliInUso(pnodoPg_t personaggio, char obj[]);
 void calcoloStat(pnodoPg_t personaggio, ptabInv tabInv);
 void distruggiPersonaggi(ptabPg tabPg);
 

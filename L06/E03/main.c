@@ -1,7 +1,7 @@
 #include "personaggi.h"
 #include "inventario.h"
 #include "personaggi.c"
-
+//ENUM PER SCELTE
 typedef enum {
     carica_personaggi,
     carica_oggetti,
@@ -13,33 +13,36 @@ typedef enum {
 }comando_e;
 
 comando_e scelta();
-ptabPg filtroDati(comando_e comando);
+ptabPg filtroDati(comando_e comando, ptabPg tabPg, ptabInv tabInv);
 
 int main() {
     char nomeFile[MAXC];
     ptabPg tabPg = (ptabPg)malloc(sizeof(*tabPg));
     ptabInv tabInv = (ptabInv)malloc(sizeof(*tabInv));
     comando_e comando = -1;
-
-    while (comando != 6) {
-
+    //CICLO IN CUI SI PRENDE UNA SCELTA E SI AGISCE DI CONSEGUENZA
+    while (comando != fine) {
+        //FACCIO LA SCELTA
         comando = scelta();
-        if (comando != 6) {
-            if (comando == 1) {
+        if (comando != fine) {
+            if (comando == carica_oggetti) {
+                //CASO IN CUI DEVO APRIRE IL FILE OGGETTI
                 printf("inserisci il nome del file degli oggetti:\n");
                 scanf("%s", nomeFile);
                 tabInv = leggiInventario(nomeFile);
             } else {
-                tabPg = filtroDati(comando);
+                //TUTTI GLI ALTRI CASI
+                tabPg = filtroDati(comando, tabPg, tabInv);
             }
         }
     }
-
+    //DEALLOCAZIONE DI MEMORIA
     distruggiInventario(tabInv);
     distruggiPersonaggi(tabPg);
     return 0;
 }
 
+//GESTIONE DEL ENUM DI SCELTA
 comando_e scelta(){
     char comando[MAXC];
     comando_e comandoE;
@@ -87,11 +90,9 @@ comando_e scelta(){
 
     return comandoE;
 }
-
-ptabPg filtroDati(comando_e comando){
+//FILTRO DI COSA FARE IN BASE ALLA SCELTA
+ptabPg filtroDati(comando_e comando, ptabPg tabPg, ptabInv tabInv){
     char nomeFile[MAXC], tmp[MAXC];
-    ptabPg tabPg = (ptabPg)malloc(sizeof(*tabPg));
-    ptabInv tabInv = (ptabInv)malloc(sizeof(*tabInv));
     pnodoPg_t x;
     struct pg_t personaggio;
     int i;
@@ -105,7 +106,7 @@ ptabPg filtroDati(comando_e comando){
             scanf("%s", nomeFile);
             tabPg = leggiPersonaggi(nomeFile);
             break;
-
+        //AGGIUNTA PERSONAGGIO DA TASTIERA
         case aggiungi_personaggio:
             personaggio.equip = malloc(sizeof(*personaggio.equip));
 
@@ -122,11 +123,13 @@ ptabPg filtroDati(comando_e comando){
             printf("inserisci le stat del personaggio(6)\n");
             scanf("%d %d %d %d %d %d", &personaggio.stat.hp, &personaggio.stat.mp, &personaggio.stat.atk, &personaggio.stat.def, &personaggio.stat.mag, &personaggio.stat.spr);
 
+            //LO INSERISCO IN LISTA
             tabPg = inserisciPg(tabPg, personaggio);
 
             break;
 
         case elimina_personaggio:
+            //MOSTRO A VIDEO TUTTI I PERSONAGGI
             printf("scegli il codice del personaggio da eliminare tra questi:\n");
             x = tabPg->headPg;
             while(x != NULL) {
@@ -134,11 +137,13 @@ ptabPg filtroDati(comando_e comando){
                 x = x->next;
             }
             scanf("%s", tmp);
+            //RICERCO IL CODICE E CANCELLO IL PERSONAGGIO
             x = ricercaCodice(tabPg, tmp);
             tabPg = cancellaPg(tabPg, x);
             break;
 
         case aggiungi_rimuovi_obj:
+            //MOSTRO A VIDEO TUTTI I PERSONAGGI
             printf("scegli il codice del personaggio dal quale aggiungere o eliminare l'oggetto:\n");
             x = tabPg->headPg;
             while(x != NULL) {
@@ -146,11 +151,13 @@ ptabPg filtroDati(comando_e comando){
                 x = x->next;
             }
             scanf("%s", tmp);
+            //CERCO IL CODICE E MODIFICO L'EQUIP DEL PERSONAGGIO
             x = ricercaCodice(tabPg, tmp);
             modificaEquip(x, tabInv);
             break;
 
         case calcola_stat:
+            //FA LA SOMMA DELLE STAT DEL PG DOPO AVERLI FATTI VEDERE TUTTI E SCELTO 1
             printf("scegli il codice del personaggio al quale calcolare le stat:\n");
             x = tabPg->headPg;
             while(x != NULL) {

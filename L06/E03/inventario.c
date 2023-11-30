@@ -18,6 +18,7 @@ ptabInv leggiInventario(char *nomeFile){
         exit(1);
     }
     fscanf(fin, "%d", &nObj);
+    //AGGIUNTA DEGLI OGGETTI NELLA LISTA ALLOCATA
     if(nObj != 0){
         tabInv->maxInv = MAXOBJ;
         tabInv->nInv = nObj;
@@ -30,6 +31,7 @@ ptabInv leggiInventario(char *nomeFile){
     fclose(fin);
     return tabInv;
 }
+//FUNZIONE DI RICERCA INDICE DATO IL NOME
 int ricercaObjN(ptabInv tabInv, char *nome){
     int i;
     for(i=0;i<tabInv->nInv;i++){
@@ -39,6 +41,7 @@ int ricercaObjN(ptabInv tabInv, char *nome){
     }
     return -1;
 }
+//FUNIZIONI DI STAMPA
 void stampaObj(ptabInv tabInv, int index){
     stampaObjNome(tabInv, index);
     stampaObjTipo(tabInv, index);
@@ -54,11 +57,12 @@ void stampaObjStats(ptabInv tabInv, int index){
     printf("spr:%d\n",tabInv->vettInv[index].stat.spr);
 }
 void stampaObjNome(ptabInv tabInv, int index){
-    printf("Il nome dell'oggetto è: %s\n", tabInv->vettInv[index].nome);
+    printf("Il nome dell'oggetto e': %s\n", tabInv->vettInv[index].nome);
 }
 void stampaObjTipo(ptabInv tabInv, int index){
-    printf("Il tipo dell'oggetto è: %s\n", tabInv->vettInv[index].tipo);
+    printf("Il tipo dell'oggetto e': %s\n", tabInv->vettInv[index].tipo);
 }
+//DEALLOCAZIONE
 void distruggiInventario(ptabInv tabInv){
     free(tabInv->vettInv);
     free(tabInv);
