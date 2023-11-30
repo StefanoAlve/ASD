@@ -1,6 +1,9 @@
-#include <stdio.h>
+#include "personaggi.h"
+#include "inventario.h"
 
 int main() {
-    printf("Esercizio 3 L06!\n");
+    char filePg[MAXC] = "pg.txt";
+
+    leggiPersonaggi(filePg);
     return 0;
 }
