@@ -1,5 +1,5 @@
 #include "personaggi.h"
-
+#include "inventario.c"
 struct tabEquip_t{
     int inUso;
     int vettEq[MAXOBJ];
@@ -93,6 +93,7 @@ pnodoPg_t ricercaCodice(ptabPg tabPg, char nome[]) {
     }
     return NULL;
 }
+//FIUNZIONI DI STAMPA SPECIFICA PER IL PERSONAGGIO
 void stampaPgCode(pnodoPg_t personaggio){
     printf("%s\t", personaggio->codice);
 }
@@ -119,5 +120,51 @@ void stampaPgStat(pnodoPg_t personaggio) {
 }
 //stampa personaggio
 void stampaPg(pnodoPg_t personaggio, ptabInv tabInv){
+    stampaPgCode(personaggio);
+    stampaPgNome(personaggio);
+    stampaPgClasse(personaggio);
+    stampaPgEquip(personaggio, tabInv);
+    stampaPgStat(personaggio);
+}
 
+//FUNZIONI PER LA MODIFICA DELL'EQUIPAGGIAMENTO
+void modificaEquip(pnodoPg_t personaggio, ptabInv tabInv){
+    char scelta[MAXC], obj[MAXC];
+    int i, bool=1, nObj;
+    printf("vuoi 'aggiungere' o 'rimuovere' un oggetto?\n");
+    scanf("%s", scelta);
+
+    if(strcasecmp(scelta, "aggiungere")==0){
+        for(i=0; i<MAXOBJ; i++){
+            if(personaggio->equip->vettEq[i]==-1){
+                bool = 0;
+            }
+        }
+        if(bool) {
+            printf("scegli l'indice dell'oggetto che vuoi aggiungere:");
+            for (i = 0; i < tabInv->nInv; i++) {
+                printf("numero %d, %s\n", i, tabInv->vettInv[i].nome);
+            }
+            scanf("%d", &nObj);
+            strcpy(obj,tabInv->vettInv[nObj].nome);
+            aggiungiObj(personaggio->equip, tabInv, obj);
+        }
+        else
+            printf("il personaggio ha gia' %d oggetti equipaggiati\n", MAXOBJ);
+    }
+}
+void aggiungiObj(ptabEquip_t equip, ptabInv tabInv, char obj[]){
+    int i, j, bool=1;
+    //CERCO PRIMA UN POSTO LIBERO NELL EQUIP E POI L'INDICE DELL OGGETTO CORISPONDENTE A QUELLO CERCATO
+    for(i=0; i<MAXOBJ && bool; i++){
+        if(equip->vettEq[i]==-1){
+            for (j=0; j<tabInv->nInv; j++){
+                if(strcmp(tabInv->vettInv[j].nome, obj)==0){
+                    equip->vettEq[i]=j;
+                    bool = 0;
+                    break;
+                }
+            }
+        }
+    }
 }

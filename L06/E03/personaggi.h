@@ -31,9 +31,9 @@ void stampaPgNome(pnodoPg_t personaggio);
 void stampaPgClasse(pnodoPg_t personaggio);
 void stampaPgEquip(pnodoPg_t personaggio, ptabInv tabInv);
 void stampaPgStat(pnodoPg_t personaggio);
-void modificaEquip(pnodoPg_t personaggio, ptabInv inventario);
-void aggiungiObj(ptabEquip_t equip, ptabInv inventario, char obj[]);
-void rimuoviObj(ptabEquip_t equip, ptabInv inventario, char obj[]);
+void modificaEquip(pnodoPg_t personaggio, ptabInv tabInv);
+void aggiungiObj(ptabEquip_t equip, ptabInv tabInv, char obj[]);
+void rimuoviObj(ptabEquip_t equip, ptabInv tabInv, char obj[]);
 void scegliInUso(pnodoPg_t personaggio, char obj[]);
 
 
