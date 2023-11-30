@@ -1,5 +1,8 @@
 #include "pg.h"
+#define nomeFile "inventario.txt"
 int main() {
-    printf("Esercizio 3 L06!\n");
+    ptabInv inventario;
+    inventario = leggiInventario(nomeFile);
+
     return 0;
 }
