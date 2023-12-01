@@ -1,0 +1,52 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"CMakePresetLoader\">{\r\n  &quot;useNewFormat&quot;: true\r\n}</component>\r\n  <component name=\"CMakeReloadState\">\r\n    <option name=\"reloaded\" value=\"true\" />\r\n  </component>\r\n  <component name=\"CMakeRunConfigurationManager\">\r\n    <generated>\r\n      <config projectName=\"E02\" targetName=\"E02\" />\r\n    </generated>\r\n  </component>\r\n  <component name=\"CMakeSettings\">\r\n    <configurations>\r\n      <configuration PROFILE_NAME=\"Debug\" ENABLED=\"true\" CONFIG_NAME=\"Debug\" />\r\n    </configurations>\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"77c22b2c-de00-483f-afe2-396be755db0b\" name=\"Changes\" comment=\"Aggiunta Lab05\">\r\n      <change beforePath=\"$PROJECT_DIR$/../../L06/E00/cmake-build-debug/Testing/Temporary/LastTest.log\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../../L06/E00/cmake-build-debug/Testing/Temporary/LastTest.log\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/../../L06/E01/cmake-build-debug/Testing/Temporary/LastTest.log\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/../../L06/E01/cmake-build-debug/Testing/Temporary/LastTest.log\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ClangdSettings\">\r\n    <option name=\"formatViaClangd\" value=\"false\" />\r\n  </component>\r\n  <component name=\"ExecutionTargetManager\" SELECTED_TARGET=\"CMakeBuildProfile:Debug\" />\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$/../..\" value=\"Stefano\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/../..\" />\r\n  </component>\r\n  <component name=\"ProjectApplicationVersion\">\r\n    <option name=\"ide\" value=\"CLion\" />\r\n    <option name=\"majorVersion\" value=\"2023\" />\r\n    <option name=\"minorVersion\" value=\"2.2\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 6\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2Y4f2st5kgB1rqUmmRKUzKdb8x5\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,\r\n    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;main&quot;,\r\n    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RunManager\">\r\n    <configuration name=\"E02\" type=\"CMakeRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"E02\" TARGET_NAME=\"E02\" CONFIG_NAME=\"Debug\" RUN_TARGET_PROJECT_NAME=\"E02\" RUN_TARGET_NAME=\"E02\">\r\n      <method v=\"2\">\r\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"77c22b2c-de00-483f-afe2-396be755db0b\" name=\"Changes\" comment=\"\" />\r\n      <created>1699789568165</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1699789568165</updated>\r\n      <workItem from=\"1699789569578\" duration=\"273000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Aggiunta Lab05\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1699789626051</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699789626051</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Aggiunta Lab05\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1699789828014</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699789828014</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VCPKGProject\">\r\n    <isAutomaticEditVcpkgJson value=\"false\" />\r\n    <isAutomaticCheckingOnLaunch value=\"false\" />\r\n    <isAutomaticFoundErrors value=\"true\" />\r\n    <isAutomaticFoundErrors value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Aggiunta Lab05\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Aggiunta Lab05\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 79a84ed3f14369d11798ef37b970eccae50e9f29)
++++ b/.idea/workspace.xml	(date 1701442468451)
+@@ -21,8 +21,7 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="77c22b2c-de00-483f-afe2-396be755db0b" name="Changes" comment="Aggiunta Lab05">
+-      <change beforePath="$PROJECT_DIR$/../../L06/E00/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../../L06/E00/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/../../L06/E01/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/../../L06/E01/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -66,12 +65,22 @@
+     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   }
+ }</component>
+-  <component name="RunManager">
++  <component name="RunManager" selected="C/C++ File.main.c">
+     <configuration name="E02" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="E02" TARGET_NAME="E02" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="E02" RUN_TARGET_NAME="E02">
+       <method v="2">
+         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+       </method>
+     </configuration>
++    <configuration name="main.c" type="CppFileRunConfiguration" factoryName="CppFileRunConfiguration" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="E02" TARGET_NAME="main.c" CONFIG_NAME="main.c">
++      <option name="sourceFile" value="main.c" />
++      <method v="2">
++        <option name="com.jetbrains.cidr.cpp.runfile.CppFileBuildBeforeRunTaskProvider$BasicBuildBeforeRunTask" enabled="true" />
++      </method>
++    </configuration>
++    <list>
++      <item itemvalue="C/C++ File.main.c" />
++      <item itemvalue="CMake Application.E02" />
++    </list>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+@@ -82,6 +91,7 @@
+       <option name="presentableId" value="Default" />
+       <updated>1699789568165</updated>
+       <workItem from="1699789569578" duration="273000" />
++      <workItem from="1699904319130" duration="16000" />
+     </task>
+     <task id="LOCAL-00001" summary="Aggiunta Lab05">
+       <option name="closed" value="true" />
