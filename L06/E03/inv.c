@@ -43,6 +43,7 @@ void stampaObj(ptabInv tabInv, int index){
     stampaObjNome(tabInv, index);
     stampaObjTipo(tabInv, index);
     stampaObjStats(tabInv, index);
+    printf("\n");
 }
 void stampaObjStats(ptabInv tabInv, int index){
     printf("Le statistiche dell'oggetto sono:\n");
@@ -60,10 +61,17 @@ stat_t fornisciStats(ptabInv tabInv, int index){
     return stats;
 }
 void stampaObjNome(ptabInv tabInv, int index){
-    printf("Il nome dell'oggetto è: %s\n", tabInv->vettInv[index].nome);
+    printf("Il nome dell'oggetto e': %s\n", tabInv->vettInv[index].nome);
 }
 void stampaObjTipo(ptabInv tabInv, int index){
-    printf("Il tipo dell'oggetto è: %s\n", tabInv->vettInv[index].tipo);
+    printf("Il tipo dell'oggetto e': %s\n", tabInv->vettInv[index].tipo);
+}
+void stampaInv(ptabInv tabInv){
+    printf("Inventario:\n");
+    for(int i=0; i<tabInv->nInv; i++){
+        stampaObj(tabInv, i);
+    }
+    printf("\n");
 }
 void distruggiInventario(ptabInv tabInv){
     free(tabInv->vettInv);

@@ -26,5 +26,6 @@ void stampaObjStats(ptabInv tabInv, int index);
 stat_t fornisciStats(ptabInv tabInv, int index);
 void stampaObjNome(ptabInv tabInv, int index);
 void stampaObjTipo(ptabInv tabInv, int index);
+void stampaInv(ptabInv tabInv);
 void distruggiInventario(ptabInv tabInv);
 #endif //E03_INV_H

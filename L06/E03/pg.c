@@ -22,7 +22,7 @@ ptabPg leggiPersonaggi(char *nomeFile){
     //Apertura file
     fin = fopen(nomeFile, "r");
     if(fin == NULL){
-        printf("Errore nell'apertura del file inventario!\n");
+        printf("Errore nell'apertura del file personaggi!\n");
         exit(1);
     }
     while(fscanf(fin, "%s %s %s %d %d %d %d %d %d", tmpPg.codice, tmpPg.nome, tmpPg.classe, &tmpPg.stat.hp, &tmpPg.stat.mp, &tmpPg.stat.atk, &tmpPg.stat.def, &tmpPg.stat.mag, &tmpPg.stat.spr) == 9){
@@ -43,7 +43,7 @@ struct pg_t creaPersonaggio(){
     scanf("%s", personaggio.nome);
     printf("Inserisci la classe:");
     scanf("%s", personaggio.classe);
-    printf("L'equipaggiamento sarà inizializzato a vuoto\n");
+    printf("L'equipaggiamento sara' inizializzato a vuoto\n");
     printf("Decidi le statistiche del tuo personaggio:\n");
     printf("HP:");
     scanf("%d", &personaggio.stat.hp);
@@ -115,14 +115,14 @@ ptabPg cancellaPg(ptabPg tabPg, pnodoPg_t personaggio){
             }
         }
         if(trovato){
-            printf("\nPersonaggio %s eliminato con successo!\n", personaggio->codice);
+            printf("\nPersonaggio eliminato con successo!\n");
         }
         else{
-            printf("\nIl personaggio %s non è stato trovato nella lista dei personaggi!\n", personaggio->codice);
+            printf("\nIl personaggio non e' stato trovato nella lista dei personaggi!\n");
         }
     }
     else{
-        printf("Il personaggio inserito non è esistente!\n");
+        printf("Il personaggio inserito non e' esistente!\n");
     }
     return tabPg;
 }
@@ -131,7 +131,9 @@ void stampaPg(pnodoPg_t personaggio, ptabInv inventario){
     stampaPgNome(personaggio);
     stampaPgClasse(personaggio);
     stampaPgEquip(personaggio, inventario);
-    stampaPgStat(personaggio);
+    stampaInUso(personaggio,inventario);
+    stampaPgStat(personaggio, inventario);
+    printf("\n");
 }
 void stampaPgCode(pnodoPg_t personaggio){
     printf("Il codice del personaggio e': %s\n", personaggio->codice);
@@ -143,53 +145,110 @@ void stampaPgClasse(pnodoPg_t personaggio){
     printf("Il classe del personaggio e': %s\n", personaggio->classe);
 }
 void stampaPgEquip(pnodoPg_t personaggio, ptabInv inventario){
-    printf("L'equipaggiamento del personaggio:\n");
+    printf("L'equipaggiamento del personaggio:\n\n");
+    if(personaggio->equip->usati == 0){
+        printf("VUOTO\n\n");
+        return;
+    }
     for(int i=0; i<MAXOBJ; i++){
         if(personaggio->equip->vettEq[i] != -1){
             stampaObj(inventario, personaggio->equip->vettEq[i]);
+            break;
         }
     }
 }
-void stampaPgStat(pnodoPg_t personaggio){
+void stampaInUso(pnodoPg_t personaggio, ptabInv inventario){
+    if(personaggio->equip->inUso == -1){
+        printf("Nessun oggetto in uso\n");
+        return;
+    }
+    printf("Oggetto in uso:\n");
+    stampaObjNome(inventario, personaggio->equip->inUso);
+}
+void stampaPgStat(pnodoPg_t personaggio, ptabInv inventario) {
+    stat_t statsObj;
+    int newStats[6];
     printf("Le statistiche del personaggio sono:\n");
-    printf("HP:%d ",personaggio->stat.hp);
-    printf("MP:%d ",personaggio->stat.mp);
-    printf("ATK:%d ",personaggio->stat.atk);
-    printf("DEF:%d ",personaggio->stat.def);
-    printf("MAG:%d ",personaggio->stat.mag);
-    printf("SPR:%d ",personaggio->stat.spr);
+    if (personaggio->equip->inUso == -1) {
+        printf("HP:%d ", personaggio->stat.hp);
+        printf("MP:%d ", personaggio->stat.mp);
+        printf("ATK:%d ", personaggio->stat.atk);
+        printf("DEF:%d ", personaggio->stat.def);
+        printf("MAG:%d ", personaggio->stat.mag);
+        printf("SPR:%d\n", personaggio->stat.spr);
+    } else {
+        statsObj = fornisciStats(inventario, personaggio->equip->inUso);
+        newStats[0] = personaggio->stat.hp + statsObj.hp;
+        newStats[1] = personaggio->stat.mp + statsObj.mp;
+        newStats[2] = personaggio->stat.atk + statsObj.atk;
+        newStats[3] = personaggio->stat.def + statsObj.def;
+        newStats[4] = personaggio->stat.mag + statsObj.mag;
+        newStats[5] = personaggio->stat.spr + statsObj.spr;
+
+        for (int i = 0; i < 6; i++) {
+            if (newStats[i] < 0) {
+                newStats[i] = 0;
+            }
+        }
+        printf("HP:%d ", newStats[0]);
+        printf("MP:%d ", newStats[1]);
+        printf("ATK:%d ", newStats[2]);
+        printf("DEF:%d ", newStats[3]);
+        printf("MAG:%d ", newStats[4]);
+        printf("SPR:%d\n", newStats[5]);
+    }
+}
+
+void stampaListaPg(ptabPg listaPg, ptabInv inventario){
+    pnodoPg_t x;
+    printf("Lista dei personaggi:\n");
+    for(x = listaPg->headPg; x!=NULL; x=x->next){
+        stampaPg(x, inventario);
+    }
+    printf("\n");
 }
 
 void aggiungiObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
     int index,i;
     if(personaggio->equip->usati != MAXOBJ) {
         index = ricercaObjN(inventario, obj);
-        for(i=0;i<MAXOBJ && i!= index; i++);
-        if(i!=MAXOBJ-1){
-            printf("L'oggetto è gia' presente nell'inventario!\n");
+        if(index == -1){
+            printf("L'oggetto non esiste!\n");
+            return;
+        }
+        for(i=0;i<MAXOBJ && (personaggio->equip->vettEq[i] != index); i++);
+        if(i!=MAXOBJ){
+            printf("L'oggetto e' gia' presente nell'equipaggiamento!\n");
             return;
         }
         for(i=0;i<MAXOBJ;i++){
             if(personaggio->equip->vettEq[i] == -1){
                 personaggio->equip->vettEq[i] = index;
-                personaggio->equip->vettEq[i]++;
+                personaggio->equip->usati++;
             }
         }
         printf("Oggetto inserito nell'equipaggiamento!\n");
     }
     else{
-        printf("Il personaggio ha già raggiunto la capienza massima per l'equipaggiamento\n");
-        printf("Cancella uno o più oggetti per inserirne altri\n");
+        printf("Il personaggio ha gia' raggiunto la capienza massima per l'equipaggiamento\n");
+        printf("Cancella uno o piu' oggetti per inserirne altri\n");
     }
 }
 void rimuoviObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
     int index,i;
     if(personaggio->equip->usati != 0){
         index = ricercaObjN(inventario, obj);
+        if(index == -1){
+            printf("L'oggetto non esiste!\n");
+            return;
+        }
+        if(personaggio->equip->inUso == index){
+            personaggio->equip->inUso = -1;
+        }
         for(i=0;i<MAXOBJ;i++){
             if(personaggio->equip->vettEq[i] == index){
                 personaggio->equip->vettEq[i] = -1;
-                personaggio->equip->vettEq[i]--;
+                personaggio->equip->usati--;
             }
         }
         printf("Oggetto rimosso dall'equipaggiamento!\n");
@@ -199,18 +258,6 @@ void rimuoviObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
     }
 }
 
-void aggiornaStats(pnodoPg_t personaggio, ptabInv inventario){
-    //TODO inserire limite inferiore a 0
-    stat_t statsObj;
-    statsObj = fornisciStats(inventario, personaggio->equip->inUso);
-    personaggio->stat.hp += statsObj.hp;
-    personaggio->stat.mp += statsObj.mp;
-    personaggio->stat.atk += statsObj.atk;
-    personaggio->stat.def += statsObj.def;
-    personaggio->stat.mag += statsObj.mag;
-    personaggio->stat.spr += statsObj.spr;
-}
-
 void scegliInUso(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
     int index, i;
     if(personaggio->equip->usati != 0){
@@ -218,13 +265,15 @@ void scegliInUso(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
         for(i=0;i<MAXOBJ && i!=index; i++);
         if(i!=MAXOBJ-1){
             personaggio->equip->inUso = index;
-            printf("L'oggetto è ora in uso!\n");
-            aggiornaStats(personaggio, inventario);
+            printf("L'oggetto e' ora in uso!\n");
             printf("Le statistiche del personaggio sono variate!\n");
         }
         else{
-            printf("L'oggetto richiesto non è presente nell'equipaggiamento!\n");
+            printf("L'oggetto richiesto non e' presente nell'equipaggiamento!\n");
         }
+    }
+    else{
+        printf("Il personaggio ha l'equipaggiamento vuoto!\n");
     }
 }
 

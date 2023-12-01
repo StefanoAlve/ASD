@@ -24,10 +24,11 @@ void stampaPgCode(pnodoPg_t personaggio);
 void stampaPgNome(pnodoPg_t personaggio);
 void stampaPgClasse(pnodoPg_t personaggio);
 void stampaPgEquip(pnodoPg_t personaggio, ptabInv inventario);
-void stampaPgStat(pnodoPg_t personaggio);
+void stampaInUso(pnodoPg_t personaggio, ptabInv inventario);
+void stampaPgStat(pnodoPg_t personaggio, ptabInv inventario);
+void stampaListaPg(ptabPg tabPg, ptabInv inventario);
 void aggiungiObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]);
 void rimuoviObj(pnodoPg_t personaggio, ptabInv inventario, char obj[]);
-void aggiornaStats(pnodoPg_t personaggio, ptabInv inventario);
 void scegliInUso(pnodoPg_t personaggio, ptabInv inventario, char obj[]);
 void distruggiListaPersonaggi(ptabPg listaPers);
 #endif //E03_PG_H
