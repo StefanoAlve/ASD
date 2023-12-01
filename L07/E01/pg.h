@@ -6,6 +6,8 @@
 #include <stdio.h>
 
 #include "equipArray.h"
+#include "invArray.h"
+#include "inv.h"
 
 /* quasi ADT personaggio; si noti che si tratta di un composto con riferimento 
 a un equipArray di proprieta' */
