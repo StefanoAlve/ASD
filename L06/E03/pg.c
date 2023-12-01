@@ -97,6 +97,7 @@ void stampa_tutti_pg(ptabPg personaggi)
 {
     int n_pg = 1;
     nodoPg_t tmp = NULL;
+    printf("\nEcco tutti i personaggi attualmente disponibili");
     for(tmp = personaggi->headPg; tmp != NULL; tmp = tmp->next) {
         printf("\n\nPG #%d:\nCodice:%s\nNome:%s\nClasse:%s\nSTATS:\nHP:%d MP:%d ATK:%d DEF:%d MAG:%d SPR:%d", n_pg,
                tmp->codice, tmp->nome, tmp->classe, tmp->stats.hp, tmp->stats.mp, tmp->stats.atk, tmp->stats.def,
@@ -151,17 +152,14 @@ void stampa_pg_compreso_stats_oggetti(ptabInv inventario, nodoPg_t nodoPg)
     stampa_pg_nome(nodoPg);
     stampa_pg_classe(nodoPg);
     if(nodoPg->equip->inUso==-1)
-        stampa_pg_stats(nodoPg);
-    else{
+        stampa_pg_stats(nodoPg); // stats base
+    else{ // mi salvo temporaneamente le stats del pg (base) + i bonus/malus dell'oggetto in uso.
         tmp = restituisci_stats_oggetto(inventario, nodoPg->equip->inUso);
-        stats[0] = nodoPg->stats.hp + tmp.hp;
-        stats[1] = nodoPg->stats.mp + tmp.mp;
-        stats[2] = nodoPg->stats.atk + tmp.atk;
-        stats[3] = nodoPg->stats.def + tmp.def;
-        stats[4] = nodoPg->stats.mag + tmp.mag;
-        stats[5]= nodoPg->stats.spr + tmp.spr;
+        stats[0] = nodoPg->stats.hp + tmp.hp; stats[1] = nodoPg->stats.mp + tmp.mp;
+        stats[2] = nodoPg->stats.atk + tmp.atk; stats[3] = nodoPg->stats.def + tmp.def;
+        stats[4] = nodoPg->stats.mag + tmp.mag; stats[5]= nodoPg->stats.spr + tmp.spr;
         for(int i = 0; i< 6; i++){
-            if(stats[i]<0)
+            if(stats[i]<0) // se una stats va sotto zero allora la maschero come da richiesta
                 stats[i] = 0;
         }
         printf("\nHP: %d", stats[0]); printf("\nMP: %d", stats[1]); printf("\nATK: %d", stats[2]); printf("\nDEF: %d", stats[3]); printf("\nMAG: %d", stats[4]); printf("\nSPR: %d", stats[5]);
@@ -248,14 +246,16 @@ void rimuovi_equip(nodoPg_t nodoPg, ptabInv inventario, char nome_equip[max_code
 {
     int index, trovato = 0;
     index = trova_oggetto(inventario, nome_equip);
-    for(int i = 0; i < max_oggetti; i++)
-    {
-        if(nodoPg->equip->vettEq[i] == index) // allora significa che avevo già nell'equipaggiamento disponibile per il personaggio l'oggetto e posso metterlo in uso.
-        {
-            nodoPg->equip->vettEq[i] = -1;
-            nodoPg->equip->usati = nodoPg->equip->usati -1;
-            trovato = 1;
-            printf("\nL'oggetto e' stato correttamente rimosso.");
+    if(index != -1) {
+        for (int i = 0; i < max_oggetti; i++) {
+            if (nodoPg->equip->vettEq[i] ==
+                index) // allora significa che avevo già nell'equipaggiamento disponibile per il personaggio l'oggetto e posso metterlo in uso.
+            {
+                nodoPg->equip->vettEq[i] = -1;
+                nodoPg->equip->usati = nodoPg->equip->usati - 1;
+                trovato = 1;
+                printf("\nL'oggetto e' stato correttamente rimosso.");
+            }
         }
     }
     if(!trovato)

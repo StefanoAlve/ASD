@@ -1,6 +1,5 @@
 #include "pg.h"
 
-
 typedef enum{
     r_exit,
     r_stampa_tutti_pg,
@@ -14,16 +13,13 @@ typedef enum{
 
 comandi_menu stampa_menu(void);
 
-
-
 int main() {
     ptabInv inventario;
     ptabPg personaggi = inizializza_personaggi();
     comandi_menu comando;
-    int finito = 0;
-    char file_name[max_strlen];
-    char ausiliario[max_strlen];
-    char code[max_code_lenght];
+    int finito = 0, cmd;
+    char file_name[max_strlen], ausiliario[max_strlen], code[max_code_lenght];
+    char y_or_no;
     nodoPg_t pg;
     printf("\n\t\t\t\t\t\t\t\t\t\tBENVENUTO");
     printf("\nInserisci il nome del file da cui leggere l'inventario:");
@@ -37,6 +33,7 @@ int main() {
         comando = stampa_menu();
         switch(comando)
         {
+
             case r_stampa_inv:
             {
                 stampa_inv(inventario);
@@ -64,43 +61,44 @@ int main() {
             }
             case r_modifica_equip:
             {
-                printf("\nEcco tutti i personaggi disponibili:");
                 stampa_tutti_pg(personaggi);
-                printf("\nInserisci il codice del personaggio cui vuoi modificare dell'equipaggiamento:");
-                scanf("%s", code);
+                printf("\n\nInserisci il codice del personaggio cui vuoi modificare dell'equipaggiamento:");
+                scanf(" %s", code);
                 pg = ricerca_x_code(personaggi, code);
                 if(pg != NULL)
                 {
                     printf("\n\t\t\t\t\t\t\t\t\tEQUIPAGGIAMENTO ATTUALE:");
                     stampa_equip(inventario, pg);
-                    printf("\nVuoi *aggiungere*, *eliminare*, *selezionare* un oggetto da usare presente nell'equipaggiamento oppure *visualizzare* l'equipaggiamento?");
-                    scanf("%s", ausiliario);
-
-                    if(!strcasecmp(ausiliario, "aggiungere")){
+                    printf("\n0)Uscire da questo menu\n1)Aggiungere un oggetto all'equipaggiamento\n2)Eliminare un oggetto dall'equipaggiamento\n3)Equipaggiare un oggetto");
+                    printf("\nComando:");
+                    scanf(" %d", &cmd);
+                    if(!cmd)
+                        printf("\n");
+                    if(cmd == 1){
                         printf("\nEcco tutti gli oggetti disponibili:");
                         stampa_inv(inventario);
                         printf("\nChe oggetto vorresti aggiungere all'equipaggiamento del personaggio da te scelto?");
-                        scanf("%s", ausiliario);
+                        scanf(" %s", ausiliario);
                         aggiungi_equip(pg, inventario, ausiliario);
+                        printf("\nVorresti equipaggiare l'oggetto che hai appena aggiunto all'equipaggiamento?(y/n)");
+                        scanf(" %c", &y_or_no);
+                        if(y_or_no == 'y' || y_or_no == 'Y')
+                            scegli_equip_in_uso(pg, inventario, ausiliario);
                     }
-                    else if(!strcasecmp(ausiliario, "eliminare")){
+                    else if(cmd == 2){
                         printf("\n\t\t\t\t\t\t\t\t\tEQUIPAGGIAMENTO ATTUALE:");
                         stampa_equip(inventario, pg);
                         printf("\nChe oggetto vorresti eliminare dall'equipaggiamento del personaggio da te scelto?");
                         scanf("%s", ausiliario);
                         rimuovi_equip(pg, inventario, ausiliario);
                     }
-                    else if(!strcasecmp(ausiliario, "selezionare"))
+                    else if(cmd == 3)
                     {
                         printf("\n\t\t\t\t\t\t\t\t\tEQUIPAGGIAMENTO ATTUALE:");
                         stampa_equip(inventario, pg);
                         printf("\nQuale tra gli oggetti sopra-citati vuoi equipaggiare?");
                         scanf("%s", ausiliario);
                         scegli_equip_in_uso(pg, inventario, ausiliario);
-                    }
-                    else if(!strcasecmp(ausiliario, "visualizzare")){
-                        printf("\n\t\t\t\t\t\t\t\t\tEQUIPAGGIAMENTO ATTUALE:");
-                        stampa_equip(inventario, pg);
                     }
                     else
                         printf("\nNon ho compreso il tuo comando, riprova.");
@@ -149,8 +147,8 @@ comandi_menu stampa_menu(void){
     printf("\n3)Stampare tutti i personaggi presenti");
     printf("\n4)Stampare tutti gli oggetti disponibili");
     printf("\n5)Gestisci l'equipaggiamento di un personaggio.");
-    printf("\n6)Stampare le statistiche di un personaggio");
-    printf("\nInserisci il comando:");
+    printf("\n6)Stampare un personaggio con le sue statistiche");
+    printf("\n\nInserisci il comando:");
     scanf("%d", &cmd);
     if(cmd == 0)
         menu = r_exit;
