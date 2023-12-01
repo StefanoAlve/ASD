@@ -121,5 +121,4 @@ void powerset(int pos, int n, Att *v, int *sol, int *solBest, int diff, int *dif
         diff += v[pos].F - v[pos].S; //aumento la distanza
         powerset(pos + 1, n, v, sol, solBest, diff, diffMax);
     }
-    return;
 }
