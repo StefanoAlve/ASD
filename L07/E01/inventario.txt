@@ -1,7 +1,7 @@
 15
 Excalibur Spada2M 0 0 120 0 0 50
 Filatterio Accessorio -100 20 -30 -30 25 25
-ArmillaDiDiamante Accessorio 0 0 25 0 25
+ArmillaDiDiamante Accessorio 0 0 25 0 25 0
 Escutcheon Scudo 1000 50 0 75 0 0
 MantoElfico Vesti 0 50 0 10 10 10
 Pendragon Scudo 250 0 0 45 0 30

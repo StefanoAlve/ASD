@@ -26,6 +26,7 @@ void equipArray_update(equipArray_t equipArray, invArray_t invArray);
 /* torna indice (nel vettore inventario) dell'oggetto in posizione index (0..EQUIP_SLOT-1) di equipArray */
 int equipArray_getEquipByIndex(equipArray_t equipArray, int index);
 
+stat_t equipArray_value(invArray_t invArray, equipArray_t equipArray);
 /* Si possono aggiungere altre funzioni se ritenute necessarie */
 
 #endif

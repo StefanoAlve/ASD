@@ -24,8 +24,6 @@ ptabInv leggi_inventario(char *file_name)
                 for(i = 0; i < n_oggetti; i++) {
                     fscanf(fp, " %s %s", tabInv->vettInv[i].nome, tabInv->vettInv[i].tipo);
                     fscanf(fp, "%d %d %d %d %d %d", &(tabInv->vettInv[i].stats.hp), &(tabInv->vettInv[i].stats.mp), &(tabInv->vettInv[i].stats.atk), &(tabInv->vettInv[i].stats.def), &(tabInv->vettInv[i].stats.mag), &(tabInv->vettInv[i].stats.spr));
-                    //stampa_oggetto(tabInv, i);
-                    //printf("\n\n");
                 }
             else{
                 printf("\nErrore nell'allocazione della memoria per l'inventario.");

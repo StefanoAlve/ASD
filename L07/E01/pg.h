@@ -26,7 +26,7 @@ void pg_print(FILE *fp, pg_t *pgp, invArray_t invArray);
 /* modifica personaggio aggiungendo/togliendo un equipaggiamento selezionato da inventario:
 di fatto e' sufficiente chiamare l'opportuna funzione dal modulo equipArray */
 void pg_updateEquip(pg_t *pgp, invArray_t invArray);
-
+void pg_updateStats(invArray_t invArray, pg_t *pgp);
 /* Si possono aggiungere altre funzioni se ritenute necessarie */
 
 #endif
