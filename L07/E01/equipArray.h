@@ -10,7 +10,7 @@
 #include "invArray.h"
 
 /* ADT di prima classe collezione di oggetti di equipaggiamento */
-typedef struct equipArray_s *equipArray_t; 
+typedef struct equipArray_s *equipArray_t;
 
 /* creatore e disruttore */
 equipArray_t equipArray_init();
@@ -27,5 +27,7 @@ void equipArray_update(equipArray_t equipArray, invArray_t invArray);
 int equipArray_getEquipByIndex(equipArray_t equipArray, int index);
 
 /* Si possono aggiungere altre funzioni se ritenute necessarie */
+void ritornoStat(int *hp, int *mp, int *atk, int *def, int *mag, int *spr, equipArray_t equipArray, invArray_t invArray);
+
 
 #endif

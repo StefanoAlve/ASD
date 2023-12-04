@@ -10,14 +10,14 @@
 
 /* quasi ADT statistiche */
 typedef struct stat_s {
-  int hp, mp, atk, def, mag, spr;
+    int hp, mp, atk, def, mag, spr;
 } stat_t;
 
 /* quasi ADT oggetto di inventario */
 typedef struct inv_s {
-  char nome[LEN];
-  char tipo[LEN];
-  stat_t stat;
+    char nome[LEN];
+    char tipo[LEN];
+    stat_t stat;
 } inv_t;
 
 /* funzioni di input/output delle statistiche */
@@ -33,4 +33,9 @@ stat_t inv_getStat(inv_t *invp);
 
 /* Si possono aggiungere altre funzioni se ritenute necessarie */
 
+//funzione che creca corrispondenza tra nome e oggetto
+int inv_compareName(inv_t *invp, char *name);
+
+//funzione che stampa a video
+void inv_printVideo(inv_t *invp);
 #endif

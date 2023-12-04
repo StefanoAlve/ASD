@@ -3,4 +3,4 @@ project(E01 C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(E01 gdr.c)
+add_executable(E01 gdr.c pgList.c invArray.c pg.c inv.c equipArray.c)

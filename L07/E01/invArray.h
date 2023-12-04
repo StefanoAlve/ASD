@@ -7,6 +7,8 @@
 
 #include "inv.h"
 
+#define MAXOBJ 8
+
 /* ADT di prima classe collezione di oggetti di inventario */
 typedef struct invArray_s *invArray_t;
 
@@ -25,5 +27,9 @@ inv_t *invArray_getByIndex(invArray_t invArray, int index);
 int invArray_searchByName(invArray_t invArray, char *name);
 
 /* Si possono aggiungere altre funzioni se ritenute necessarie */
+//funzione che stampa tutto l'inventario a video
+void invArray_printVideo(invArray_t invArray);
+
+void invArray_stat(int *hp, int *mp, int *atk, int *def, int *mag, int *spr, int index, invArray_t invArray);
 
 #endif
