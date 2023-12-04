@@ -8,4 +8,6 @@ add_executable(E03 main.c
         pg.h
         inv.c
         inv.h
+        client.c
+        client.h
 )

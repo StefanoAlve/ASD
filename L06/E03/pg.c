@@ -262,8 +262,8 @@ void scegliInUso(pnodoPg_t personaggio, ptabInv inventario, char obj[]){
     int index, i;
     if(personaggio->equip->usati != 0){
         index = ricercaObjN(inventario, obj);
-        for(i=0;i<MAXOBJ && i!=index; i++);
-        if(i!=MAXOBJ-1){
+        for(i=0;i<MAXOBJ && (personaggio->equip->vettEq[i] != index); i++);
+        if(i!=MAXOBJ){
             personaggio->equip->inUso = index;
             printf("L'oggetto e' ora in uso!\n");
             printf("Le statistiche del personaggio sono variate!\n");
