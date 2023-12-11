@@ -425,22 +425,3 @@ link cancellaData(link head, Item *val, int *finito, int datai[3], int dataf[3])
 }
 
 
-
-//deallocaNodi (devo deallocare anche tutte le persone)
-//acquisizione
-        //file:
-            //leggiFile
-            //for
-            //acquisisci
-        //tastiera:
-            //acquisisci
-    //ricerca:
-        //ricerca
-    //cancella:
-        //per codice:
-            //elimina elemento
-        //per date:
-            //for
-            //elimina elemento
-    //stampa:
-        //stampa
