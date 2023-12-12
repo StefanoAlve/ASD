@@ -9,11 +9,11 @@
 
 /* ADT di prima classe collezione di personaggi */
 typedef struct pgList_s *pgList_t;
-
+typedef struct node *link;
 /* creatore e distruttore */
 pgList_t pgList_init();
 void pgList_free(pgList_t pgList);
-
+link new_node(pg_t pg, link next);
 /* lettura e scrittura su file */
 void pgList_read(FILE *fp, pgList_t pgList);
 void pgList_print(FILE *fp, pgList_t pgList, invArray_t invArray);

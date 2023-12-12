@@ -7,7 +7,7 @@ void stat_read(FILE *fp, stat_t *statp){
 void stat_print(FILE *fp, stat_t *statp, int soglia){
     int i;
     int stats[6];
-    stats[0] = statp->hp; stats[1] = statp->mp; stats[2] = statp->atk; stats[3] = statp->def; stats[4] = statp->mag; stats[5] = spr;
+    stats[0] = statp->hp; stats[1] = statp->mp; stats[2] = statp->atk; stats[3] = statp->def; stats[4] = statp->mag; stats[5] = statp->spr;
     for(i = 0; i< 6; i++){
         if(stats[i]<soglia){
             stats[i] = soglia;

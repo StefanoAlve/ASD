@@ -28,5 +28,6 @@ di fatto e' sufficiente chiamare l'opportuna funzione dal modulo equipArray */
 void pg_updateEquip(pg_t *pgp, invArray_t invArray);
 
 /* Si possono aggiungere altre funzioni se ritenute necessarie */
-
+//Somma le statistiche di base del personaggio con quelle
+stat_t pg_stat_tot(pg_t *pgp);
 #endif

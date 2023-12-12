@@ -8,4 +8,5 @@ add_executable(E01 main.c
         inv.c
         invArray.c
         pg.c
-        pgList.c)
+        pgList.c
+        main.c)

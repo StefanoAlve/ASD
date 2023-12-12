@@ -79,3 +79,22 @@ void equipArray_update(equipArray_t equipArray, invArray_t invArray){
 int equipArray_getEquipByIndex(equipArray_t equipArray, int index){
     return equipArray->vettEq[index];
 }
+
+stat_t equip_value(equipArray_t equipArray, invArray_t invArray){
+    stat_t totStat, tmpStat;
+    int tmp;
+    totStat.hp=totStat.mag=totStat.atk=totStat.spr=totStat.def=totStat.mp=0;
+    for(int i=0; i<EQUIP_SLOT; i++){
+        if(equipArray->vettEq[i] != -1){
+            tmp=equipArray->vettEq[i];
+            tmpStat = inv_getStat(invArray_getByIndex(invArray,tmp));
+            totStat.hp+=tmpStat.hp;
+            totStat.mp+=tmpStat.mp;
+            totStat.atk+=tmpStat.atk;
+            totStat.def+=tmpStat.def;
+            totStat.mag+=tmpStat.mag;
+            totStat.spr+=tmpStat.spr;
+        }
+    }
+    return totStat;
+}
