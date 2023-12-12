@@ -19,7 +19,7 @@ void stampaMenu(char *scelte[], int *selezione){
         printf("%2d > %s\n",i,scelte[i]);
     scanf(" %d",selezione);
 }
-
+//TODO DEBUGGARE
 int main(int argc, char **argv) {
     char *scelte[] = {
             "Uscita",

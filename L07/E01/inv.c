@@ -8,12 +8,12 @@ void stat_print(FILE *fp, stat_t *statp, int soglia){
     int i;
     int stats[6];
     stats[0] = statp->hp; stats[1] = statp->mp; stats[2] = statp->atk; stats[3] = statp->def; stats[4] = statp->mag; stats[5] = statp->spr;
-    for(i = 0; i< 6; i++){
-        if(stats[i]<soglia){
+    for(i = 0; i< 6; i++) {
+        if (stats[i] < soglia) {
             stats[i] = soglia;
         }
-        fprintf(fp, "HP = %d ; MP = %d ; ATK = %d ; DEF = %d ; MAG = %d ; SPR = %d", stats[0], stats[1], stats[2], stats[3], stats[4], stats[5]);
     }
+    fprintf(fp, "HP = %d ; MP = %d ; ATK = %d ; DEF = %d ; MAG = %d ; SPR = %d", stats[0], stats[1], stats[2], stats[3], stats[4], stats[5]);
 }
 
 /* funzioni di input/output di un oggetto dell'inventario */
