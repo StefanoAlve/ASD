@@ -79,6 +79,9 @@ int main(int argc, char **argv) {
                 if (pgp!=NULL) {
                     pg_print(stdout, pgp, invArray);
                 }
+                else{
+                    printf("Personaggio inesistente!\n");
+                }
             } break;
 
             case 4: {

@@ -65,6 +65,7 @@ void equipArray_update(equipArray_t equipArray, invArray_t invArray){
             if(index != -1){
                 equipArray->vettEq[index] = -1;
                 equipArray->usati--;
+                printf("Oggetto rimosso!\n");
             }
         }
         else{

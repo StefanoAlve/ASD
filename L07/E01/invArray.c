@@ -57,7 +57,7 @@ inv_t *invArray_getByIndex(invArray_t invArray, int index){
 int invArray_searchByName(invArray_t invArray, char *name){
     int index = -1, trovato = 0;
     for(int i=0; i<invArray->nInv && !trovato; i++){
-        if(strcasecmp(name, invArray->vettInv[i].nome)){
+        if(strcasecmp(name, invArray->vettInv[i].nome)==0){
             index = i;
             trovato = 1;
         }

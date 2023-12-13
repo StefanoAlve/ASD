@@ -1,5 +1,3 @@
-//TODO implementare pgList.c
-
 #include "pgList.h"
 
 struct node{
@@ -48,8 +46,11 @@ void pgList_read(FILE *fp, pgList_t pgList){
         }
     }
 }
-void pgList_print(FILE *fp, pgList_t pgList, invArray_t invArray){ //TODO
-
+void pgList_print(FILE *fp, pgList_t pgList, invArray_t invArray){
+    link x;
+    for(x=pgList->head; x!=NULL; x=x->next){
+        pg_print(fp, &x->pg, invArray);
+    }
 }
 
 /* inserimento di un nuovo personaggio */
@@ -69,8 +70,26 @@ void pgList_insert(pgList_t pgList, pg_t pg){
     pgList->nPg++;
 }
 /* cancellazione con rimozione */
-void pgList_remove(pgList_t pgList, char* cod){ //TODO
-
+void pgList_remove(pgList_t pgList, char* cod){
+    link corrente, precedente;
+    if(pgList->head == NULL){
+        printf("Lista vuota!\n");
+        return;
+    }
+    for(precedente = NULL, corrente = pgList->head; corrente!=NULL; precedente=corrente, corrente = corrente->next) {
+        if (strcmp(corrente->pg.cod, cod) == 0) {
+            if(corrente == pgList->head){ //Se sono sulla head
+                pgList->head = corrente->next;
+            }
+            else{
+                precedente->next = corrente->next;
+            }
+            pg_clean(&corrente->pg);
+            free(corrente);
+            return;
+        }
+    }
+    printf("Codice inesistente!\n");
 }
 /* ricerca per codice, ritornando il puntatore */
 pg_t *pgList_searchByCode(pgList_t pgList, char* cod){

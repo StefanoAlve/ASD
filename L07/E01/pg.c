@@ -6,6 +6,7 @@ int pg_read(FILE *fp, pg_t *pgp){
         if (!feof(fp)) {
             fscanf(fp, "%s %s %s ", pgp->cod, pgp->nome, pgp->classe);
             stat_read(fp, &pgp->b_stat);
+            pgp->eq_stat = statInitVoid();
             pgp->equip = equipArray_init();
             return 1;
         }
@@ -26,7 +27,9 @@ void pg_print(FILE *fp, pg_t *pgp, invArray_t invArray){
         stat_print(fp, &tmpStat,1);
         for(int i=0; i<EQUIP_SLOT; i++){
             tmp = equipArray_getEquipByIndex(pgp->equip,i);
-            invArray_printByIndex(fp, invArray, tmp);
+            if(tmp!=-1){
+                invArray_printByIndex(fp, invArray, tmp);
+            }
         }
     }
 }
