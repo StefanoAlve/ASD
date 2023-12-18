@@ -10,24 +10,25 @@ typedef struct{
     int dir_ing;
     int dir_usc;
     int req_prec;
-    int rec_fin;
+    int req_fin;
     float valore;
     int difficolta;
 }elemento_s;
 typedef struct{
-    elemento_s *elementi;
+    char nomiElementi[5][100];
     int difDiag;
     int nElementi;
     int acrobatici[3]; //Vett di int, indica in pos 0 quanti elementi acrobatici sono presenti, in 1 quanti in avanti e in 2 quanti indietro
     int sequenza; //1 se è presente una sequenza di almeno due elementi acrobatici
     float valoreDiag;
+    int bonus;
 }diagonale_s;
 
 typedef struct{
-    diagonale_s *diagonali[3];
+    diagonale_s diagonali[3];
     int difProg;
-    int accettabile;
     int bonus;
+    float punteggioProg;
 }programma_s;
 
 typedef struct node *link;
@@ -46,12 +47,21 @@ int leggiElementi(elemento_s** pVettElementi);
 void sequenzaMax(elemento_s *vettElementi, int nElem);
 listaDiag_s diagonaliPossibili(elemento_s *vettElementi, int nElem);
 void deallocaAll(programma_s programma);
-void nodeInsert(listaDiag_s listaDiag, diagonale_s diagonale);
+void nodeInsert(listaDiag_s *plistaDiag, diagonale_s diagonale);
 void deallocaLista(listaDiag_s listaDiag);
 listaDiag_s listaInit();
-int diagPos_r(elemento_s sol[], elemento_s *vettElementi, int k, int n, int pos, listaDiag_s listaDiag, int cnt);
-diagonale_s creaDiag(elemento_s *vettElementi, int nElementi);
-
+int diagPos_r(elemento_s sol[], elemento_s *vettElementi, int k, int n, int pos, listaDiag_s *plistaDiag, int cnt, diagonale_s diagonale);
+diagonale_s creaDiag(elemento_s *vettElementi, int nElementi, diagonale_s diagonale);
+int verificaElem(elemento_s *sol, elemento_s elementoIns, int dimSol, int dimMax);
+programma_s trovaMigliore(listaDiag_s listaDiag);
+void trovaMigliore_r(listaDiag_s listaDiag,link sol[],programma_s *pmigliore, int k,int pos);
+int confrontaMax(link sol[], programma_s migliore);
+void aggiornaMigliore(link sol[], programma_s *pmigliore);
+int accettabile(link sol[]);
+float calcolaPunteggioSol(link sol[]);
+programma_s programmaInit();
+diagonale_s diagonaleInit();
+void stampaMigliore(programma_s migliore);
 
 int main() {
     elemento_s *vettElementi;
@@ -78,7 +88,7 @@ int leggiElementi(elemento_s** pVettElementi){
     //Alloco vettElementi
     vettElementi = (elemento_s*)malloc(nElem*sizeof(*vettElementi));
     while(!feof(fp)) {
-        if(fscanf(fp,"%s %d %d %d %d %d %f %d", vettElementi[cnt].nome, &vettElementi[cnt].tipologia, &vettElementi[cnt].dir_ing, &vettElementi[cnt].dir_usc, &vettElementi[cnt].req_prec, &vettElementi[cnt].rec_fin, &vettElementi[cnt].valore, &vettElementi[cnt].difficolta)!=8){
+        if(fscanf(fp,"%s %d %d %d %d %d %f %d", vettElementi[cnt].nome, &vettElementi[cnt].tipologia, &vettElementi[cnt].dir_ing, &vettElementi[cnt].dir_usc, &vettElementi[cnt].req_prec, &vettElementi[cnt].req_fin, &vettElementi[cnt].valore, &vettElementi[cnt].difficolta)!=8){
             printf("Errore nell'acquisizione degli elementi!\n");
             exit(1);
         }
@@ -89,9 +99,11 @@ int leggiElementi(elemento_s** pVettElementi){
 }
 
 void sequenzaMax(elemento_s *vettElementi, int nElem){
-    //tutte le diagonali possibili (disp_rep) //TODO
-    diagonaliPossibili(vettElementi,nElem);
-    //trova programma massimo accettabile (comb_rep) //TODO
+    programma_s migliore;
+    listaDiag_s listaDiag;
+    listaDiag = diagonaliPossibili(vettElementi,nElem);
+    migliore = trovaMigliore(listaDiag);
+    stampaMigliore(migliore);
 }
 
 void deallocaAll(programma_s programma){ //TODO
@@ -101,9 +113,11 @@ void deallocaAll(programma_s programma){ //TODO
 listaDiag_s diagonaliPossibili(elemento_s *vettElementi, int nElem){
     listaDiag_s listaDiag = listaInit();
     elemento_s sol[5];
-    for(int i = 1; i <= 5; i++){
-        listaDiag.nDiag += diagPos_r(sol, vettElementi, i, nElem, 0, listaDiag, 0);
+    diagonale_s diagonale = diagonaleInit();
+    for (int i = 5; i >= 1; i--) {
+        listaDiag.nDiag += diagPos_r(sol, vettElementi, i, nElem, 0, &listaDiag, 0, diagonale);
     }
+    printf("\n%d\n", listaDiag.nDiag);
     return listaDiag;
 }
 
@@ -115,13 +129,14 @@ listaDiag_s listaInit(){
     return listaDiag;
 }
 
-diagonale_s creaDiag(elemento_s *vettElementi, int nElementi){
-    int count; //Mi serve per identificare eventuali sequenze acrobatiche
-    diagonale_s diagonale;
-    diagonale.elementi = (elemento_s*)malloc(nElementi*sizeof(elemento_s));
+diagonale_s creaDiag(elemento_s *vettElementi, int nElementi, diagonale_s diagonale){
+    int count = 0; //Mi serve per identificare eventuali sequenze acrobatiche
+    for(int j=0; j<3; j++){
+        diagonale.acrobatici[j] = 0;
+    }
     diagonale.nElementi = nElementi;
     for(int i=0;i<nElementi;i++){
-        diagonale.elementi[i] = vettElementi[i];
+        strcpy(diagonale.nomiElementi[i], vettElementi[i].nome);
         if(vettElementi[i].tipologia == 2){
             diagonale.acrobatici[0]++;
             diagonale.acrobatici[1]++;
@@ -135,54 +150,192 @@ diagonale_s creaDiag(elemento_s *vettElementi, int nElementi){
         if(count == 2){
             diagonale.sequenza = 1;
         }
+        if(vettElementi[nElementi-1].difficolta >= 8){
+            diagonale.bonus = 1;
+        }
         diagonale.difDiag+=vettElementi[i].difficolta;
         diagonale.valoreDiag+=vettElementi[i].valore;
     }
+    return diagonale;
 }
 
 link new_node(diagonale_s diagonale, link next){
     link node;
-    node = (link)malloc(sizeof(*node));
+    node = (link)malloc(sizeof(struct node));
     node->next = next;
     node->diagonale = diagonale;
     return node;
 }
 
-void nodeInsert(listaDiag_s listaDiag, diagonale_s diagonale){
+void nodeInsert(listaDiag_s *plistaDiag, diagonale_s diagonale){
     link node = new_node(diagonale, NULL);
-    if(listaDiag.head == NULL){
-        listaDiag.head = node;
-        listaDiag.tail = node;
+    if(plistaDiag->head == NULL){
+        plistaDiag->head = node;
+        plistaDiag->tail = node;
     }
     else{
-        listaDiag.tail->next = node;
-        listaDiag.tail = node;
+        plistaDiag->tail->next = node;
+        plistaDiag->tail = node;
     }
-    listaDiag.nDiag++;
+    plistaDiag->nDiag++;
 }
 
 void deallocaLista(listaDiag_s listaDiag){
     link corrente=listaDiag.head, successivo;
     while(corrente!=NULL){
         successivo = corrente->next;
-        free(corrente->diagonale.elementi);
+        free(corrente->diagonale.nomiElementi);
         free(corrente);
         corrente = successivo;
     }
 }
 
-int diagPos_r(elemento_s sol[], elemento_s *vettElementi, int k, int n, int pos, listaDiag_s listaDiag, int cnt){
+int diagPos_r(elemento_s sol[], elemento_s *vettElementi, int k, int n, int pos, listaDiag_s *plistaDiag, int cnt, diagonale_s diagonale){
     if(pos >= k){
-        diagonale_s diagonale = creaDiag(sol, k); //TODO
-        //creaDiagonale
-        nodeInsert(listaDiag,diagonale);
+        diagonale = creaDiag(sol, k, diagonale);
+        if(diagonale.acrobatici[0]==0 || diagonale.difDiag > DD){
+            return cnt;
+        }
+        nodeInsert(plistaDiag,diagonale);
         return cnt+1;
     }
     for(int i=0; i<n; i++){
-        if(accettabile(sol[pos-1], vettElementi[i])){ //TODO
+        if(verificaElem(sol, vettElementi[i], pos, k)){ //TODO controllare efficacia
             sol[pos] = vettElementi[i];
-            cnt = diagPos_r(sol, vettElementi, k, n, pos+1, listaDiag, cnt);
+            cnt = diagPos_r(sol, vettElementi, k, n, pos+1, plistaDiag, cnt, diagonale);
         }
     }
     return cnt;
+}
+
+int verificaElem(elemento_s *sol, elemento_s elementoIns, int dimSol, int dimMax) {
+    if (dimSol == 0) {
+        if (elementoIns.dir_ing != 1 || elementoIns.req_prec != 0 || elementoIns.req_fin != 0) {
+            return 0;
+        }
+    } else if (dimSol == dimMax - 1) {
+        if (elementoIns.req_prec != 1 || (elementoIns.dir_ing != sol[dimSol - 1].dir_usc)) {
+            return 0;
+        }
+    } else {
+        if (sol[dimSol - 1].dir_usc != elementoIns.dir_ing || elementoIns.req_prec == 0 || elementoIns.req_fin == 1) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+programma_s trovaMigliore(listaDiag_s listaDiag){
+    programma_s migliore = programmaInit();
+    link sol[3];
+    trovaMigliore_r(listaDiag,sol,&migliore,3,0);
+    return migliore;
+}
+
+void trovaMigliore_r(listaDiag_s listaDiag,link sol[],programma_s *pmigliore, int k,int pos){
+    link corrente;
+    int diffTot=0;
+    if(pos>=k){
+        if(accettabile(sol)) {
+            if (confrontaMax(sol, *pmigliore)) {
+                aggiornaMigliore(sol, pmigliore);
+            }
+        }
+        return;
+    }
+    for(corrente = listaDiag.head; corrente != NULL; corrente = corrente->next){
+        for(int i=0; i<pos; i++){
+            diffTot+=sol[i]->diagonale.difDiag;
+        }
+        if(diffTot+corrente->diagonale.difDiag <= DP) {
+            sol[pos] = corrente;
+            trovaMigliore_r(listaDiag, sol, pmigliore, k, pos + 1);
+        }
+        diffTot = 0;
+    }
+}
+
+int confrontaMax(link sol[], programma_s migliore){
+    float punteggioSol;
+    punteggioSol = calcolaPunteggioSol(sol);
+    if(punteggioSol<migliore.punteggioProg){
+        return 0;
+    }
+    return 1;
+}
+void aggiornaMigliore(link sol[], programma_s *pmigliore){
+    pmigliore->difProg = sol[0]->diagonale.difDiag+sol[1]->diagonale.difDiag+sol[2]->diagonale.difDiag;
+    pmigliore->diagonali[0] = sol[0]->diagonale;
+    pmigliore->diagonali[1] = sol[1]->diagonale;
+    pmigliore->diagonali[2] = sol[2]->diagonale;
+    pmigliore->punteggioProg=sol[0]->diagonale.valoreDiag+sol[1]->diagonale.valoreDiag;
+    if(pmigliore->diagonali[2].bonus == 1){
+        pmigliore->punteggioProg+=(float)((sol[2]->diagonale.valoreDiag)*1.5);
+        pmigliore->bonus = 1;
+    }
+    else {
+        pmigliore->punteggioProg += sol[2]->diagonale.valoreDiag;
+    }
+}
+int accettabile(link sol[]){
+    int acrobatici = 0, avanti = 0, indietro = 0, flagDueAcrob=0;
+    for(int i=0; i<3; i++){
+        acrobatici += sol[i]->diagonale.acrobatici[0];
+        if(sol[i]->diagonale.sequenza == 1){
+            flagDueAcrob = 1;
+        }
+        avanti += sol[i]->diagonale.acrobatici[1];
+        indietro += sol[i]->diagonale.acrobatici[2];
+    }
+    if(flagDueAcrob == 1 && avanti >= 1 && indietro >= 1 && acrobatici >= 3){
+        return 1;
+    }
+    return 0;
+}
+float calcolaPunteggioSol(link sol[]){
+    float punteggio;
+    punteggio = sol[0]->diagonale.valoreDiag + sol[1]->diagonale.valoreDiag;
+    if(sol[2]->diagonale.bonus == 1){
+        punteggio += (float)((sol[2]->diagonale.valoreDiag) * 1.5);
+    }
+    else{
+        punteggio+= sol[2]->diagonale.valoreDiag;
+    }
+    return punteggio;
+}
+
+programma_s programmaInit(){
+    programma_s programma;
+    programma.punteggioProg = 0;
+    programma.bonus = 0;
+    programma.difProg = 0;
+    return programma;
+}
+
+diagonale_s diagonaleInit(){
+    diagonale_s diagonale;
+    diagonale.valoreDiag=0;
+    diagonale.acrobatici[0]= diagonale.acrobatici[1]=diagonale.acrobatici[2]=0;
+    diagonale.difDiag=0;
+    diagonale.nElementi=0;
+    diagonale.sequenza=0;
+    diagonale.bonus = 0;
+    return diagonale;
+}
+
+void stampaMigliore(programma_s migliore){
+    printf("DD = %d DP = %d\n",DD,DP);
+    printf("TOT = %.3f\n", migliore.punteggioProg);
+    for(int i=0; i<3; i++){
+        if(i==2 && migliore.bonus == 1){
+            printf("DIAG #%d > %.3f * 1.5 (BONUS)\n", i+1, (migliore.diagonali[i].valoreDiag)/1.5);
+        }
+        else {
+            printf("DIAG #%d > %.3f\n", i + 1, migliore.diagonali[i].valoreDiag);
+        }
+        for(int j=0; j<migliore.diagonali[i].nElementi; j++){
+            printf("%s ", migliore.diagonali[i].nomiElementi[j]);
+        }
+        printf("\n");
+    }
 }
