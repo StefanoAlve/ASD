@@ -43,10 +43,9 @@ int calcola_difficolta_attuale(elemento *elementi, int n_elem); // calcola la di
 diagonale* copy_on_vect_and_free_list(link head, int num_diag);
 link new_node(link next, diagonale val);
 link insert_node(link head, diagonale val);
-float conta_punteggio_diag(diagonale diag); // controlla che ci sia almeno un elemento acrobatico
+float conta_punteggio_diag(diagonale diag);
 float calcola_punteggio_potenziale_con_bonus(diagonale *diagonali, int num_diag, int* index_bonus);
 int check_condizioni_programma(diagonale *diag, int n_diag); // controlla che ci sia almeno un elemento acrobatico avanti e uno indietro + almeno due elementi in seq.
-void print_on_file_diag(diagonale* diagonali, int num_diag);
 void freeALL(diagonale *diagonali, int n);
 
 
@@ -62,7 +61,6 @@ int main() {
     head_diag_possibili = conta_diagonali_totali(elementi, head_diag_possibili, DD, n_elementi, MAX_ELEM, &n_diag_possibili);
     printf("\n\nCon le condizioni indicate si possono eseguire %d diagonali possibili.", n_diag_possibili);
     vett_diagonali_possibili = copy_on_vect_and_free_list(head_diag_possibili, n_diag_possibili);
-    print_on_file_diag(vett_diagonali_possibili, n_diag_possibili);
     trova_combinazioni_diagonali_migliori(vett_diagonali_possibili, n_diag_possibili, DP);
     freeALL(vett_diagonali_possibili, n_diag_possibili);
     return 0;
@@ -153,7 +151,7 @@ link disp_rip(elemento *elementi, elemento* sol, link head_diag, int DD, int pos
     return head_diag;
 }
 
-float conta_punteggio_diag(diagonale diag) // controlla che ci sia almeno un elemento acrobatico
+float conta_punteggio_diag(diagonale diag)
 {
     float cont = 0;
     int n = diag.n_elementi;
@@ -202,23 +200,6 @@ diagonale* copy_on_vect_and_free_list(link head, int num_diag)
         free(p);
     }
     return vett_diagonali;
-}
-
-void print_on_file_diag(diagonale* diagonali, int num_diag)
-{
-    int i;
-    FILE *fp = NULL;
-    float punteggio;
-    fp = fopen("test.txt", "w");
-    for(i = 0; i < num_diag; i++)
-    {
-        fprintf(fp, "\n\n");
-        punteggio = conta_punteggio_diag(diagonali[i]);
-        fprintf(fp, "DIAG #%d > %f\n", i, punteggio);
-        for(int j= 0; j < diagonali[i].n_elementi; j++)
-            fprintf(fp, "%s ", diagonali[i].elementi[j].name);
-    }
-    fclose(fp);
 }
 
 

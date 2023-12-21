@@ -1,0 +1,1636 @@
+
+
+DIAG #0 > 2.700000
+front_tuck ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 rondata 
+
+DIAG #1 > 2.500000
+front_tuck ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 ruota 
+
+DIAG #2 > 2.850000
+front_tuck ribaltata_a_2 ribaltata_a_2 rondata back_handspring 
+
+DIAG #3 > 2.650000
+front_tuck ribaltata_a_2 ribaltata_a_2 ruota back_handspring 
+
+DIAG #4 > 3.000000
+front_tuck ribaltata_a_2 rondata back_handspring back_handspring 
+
+DIAG #5 > 2.800000
+front_tuck ribaltata_a_2 ruota back_handspring back_handspring 
+
+DIAG #6 > 3.150000
+front_tuck rondata back_handspring back_handspring back_handspring 
+
+DIAG #7 > 2.950000
+front_tuck ruota back_handspring back_handspring back_handspring 
+
+DIAG #8 > 2.700000
+ribaltata_a_2 front_tuck ribaltata_a_2 ribaltata_a_2 rondata 
+
+DIAG #9 > 2.500000
+ribaltata_a_2 front_tuck ribaltata_a_2 ribaltata_a_2 ruota 
+
+DIAG #10 > 2.850000
+ribaltata_a_2 front_tuck ribaltata_a_2 rondata back_handspring 
+
+DIAG #11 > 2.650000
+ribaltata_a_2 front_tuck ribaltata_a_2 ruota back_handspring 
+
+DIAG #12 > 3.000000
+ribaltata_a_2 front_tuck rondata back_handspring back_handspring 
+
+DIAG #13 > 2.800000
+ribaltata_a_2 front_tuck ruota back_handspring back_handspring 
+
+DIAG #14 > 2.700000
+ribaltata_a_2 ribaltata_a_2 front_tuck ribaltata_a_2 rondata 
+
+DIAG #15 > 2.500000
+ribaltata_a_2 ribaltata_a_2 front_tuck ribaltata_a_2 ruota 
+
+DIAG #16 > 2.850000
+ribaltata_a_2 ribaltata_a_2 front_tuck rondata back_handspring 
+
+DIAG #17 > 2.650000
+ribaltata_a_2 ribaltata_a_2 front_tuck ruota back_handspring 
+
+DIAG #18 > 2.700000
+ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 front_tuck rondata 
+
+DIAG #19 > 2.500000
+ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 front_tuck ruota 
+
+DIAG #20 > 2.700000
+ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 rondata back_tuck 
+
+DIAG #21 > 2.500000
+ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 ruota back_tuck 
+
+DIAG #22 > 3.400000
+ribaltata_a_2 ribaltata_a_2 rondata arabian rondata 
+
+DIAG #23 > 3.200000
+ribaltata_a_2 ribaltata_a_2 rondata arabian ruota 
+
+DIAG #24 > 2.850000
+ribaltata_a_2 ribaltata_a_2 rondata back_tuck back_handspring 
+
+DIAG #25 > 2.850000
+ribaltata_a_2 ribaltata_a_2 rondata back_handspring back_tuck 
+
+DIAG #26 > 3.200000
+ribaltata_a_2 ribaltata_a_2 ruota arabian rondata 
+
+DIAG #27 > 3.000000
+ribaltata_a_2 ribaltata_a_2 ruota arabian ruota 
+
+DIAG #28 > 2.650000
+ribaltata_a_2 ribaltata_a_2 ruota back_tuck back_handspring 
+
+DIAG #29 > 2.650000
+ribaltata_a_2 ribaltata_a_2 ruota back_handspring back_tuck 
+
+DIAG #30 > 3.400000
+ribaltata_a_2 rondata arabian ribaltata_a_2 rondata 
+
+DIAG #31 > 3.200000
+ribaltata_a_2 rondata arabian ribaltata_a_2 ruota 
+
+DIAG #32 > 3.550000
+ribaltata_a_2 rondata arabian rondata back_handspring 
+
+DIAG #33 > 3.350000
+ribaltata_a_2 rondata arabian ruota back_handspring 
+
+DIAG #34 > 3.000000
+ribaltata_a_2 rondata back_tuck back_handspring back_handspring 
+
+DIAG #35 > 3.550000
+ribaltata_a_2 rondata back_handspring arabian rondata 
+
+DIAG #36 > 3.350000
+ribaltata_a_2 rondata back_handspring arabian ruota 
+
+DIAG #37 > 3.000000
+ribaltata_a_2 rondata back_handspring back_tuck back_handspring 
+
+DIAG #38 > 3.000000
+ribaltata_a_2 rondata back_handspring back_handspring back_tuck 
+
+DIAG #39 > 3.200000
+ribaltata_a_2 ruota arabian ribaltata_a_2 rondata 
+
+DIAG #40 > 3.000000
+ribaltata_a_2 ruota arabian ribaltata_a_2 ruota 
+
+DIAG #41 > 3.350000
+ribaltata_a_2 ruota arabian rondata back_handspring 
+
+DIAG #42 > 3.150000
+ribaltata_a_2 ruota arabian ruota back_handspring 
+
+DIAG #43 > 2.800000
+ribaltata_a_2 ruota back_tuck back_handspring back_handspring 
+
+DIAG #44 > 3.350000
+ribaltata_a_2 ruota back_handspring arabian rondata 
+
+DIAG #45 > 3.150000
+ribaltata_a_2 ruota back_handspring arabian ruota 
+
+DIAG #46 > 2.800000
+ribaltata_a_2 ruota back_handspring back_tuck back_handspring 
+
+DIAG #47 > 2.800000
+ribaltata_a_2 ruota back_handspring back_handspring back_tuck 
+
+DIAG #48 > 3.400000
+rondata arabian ribaltata_a_2 ribaltata_a_2 rondata 
+
+DIAG #49 > 3.200000
+rondata arabian ribaltata_a_2 ribaltata_a_2 ruota 
+
+DIAG #50 > 3.550000
+rondata arabian ribaltata_a_2 rondata back_handspring 
+
+DIAG #51 > 3.350000
+rondata arabian ribaltata_a_2 ruota back_handspring 
+
+DIAG #52 > 3.700000
+rondata arabian rondata back_handspring back_handspring 
+
+DIAG #53 > 3.500000
+rondata arabian ruota back_handspring back_handspring 
+
+DIAG #54 > 3.150000
+rondata back_tuck back_handspring back_handspring back_handspring 
+
+DIAG #55 > 3.550000
+rondata back_handspring arabian ribaltata_a_2 rondata 
+
+DIAG #56 > 3.350000
+rondata back_handspring arabian ribaltata_a_2 ruota 
+
+DIAG #57 > 3.700000
+rondata back_handspring arabian rondata back_handspring 
+
+DIAG #58 > 3.500000
+rondata back_handspring arabian ruota back_handspring 
+
+DIAG #59 > 3.150000
+rondata back_handspring back_tuck back_handspring back_handspring 
+
+DIAG #60 > 3.700000
+rondata back_handspring back_handspring arabian rondata 
+
+DIAG #61 > 3.500000
+rondata back_handspring back_handspring arabian ruota 
+
+DIAG #62 > 3.150000
+rondata back_handspring back_handspring back_tuck back_handspring 
+
+DIAG #63 > 3.150000
+rondata back_handspring back_handspring back_handspring back_tuck 
+
+DIAG #64 > 3.200000
+ruota arabian ribaltata_a_2 ribaltata_a_2 rondata 
+
+DIAG #65 > 3.000000
+ruota arabian ribaltata_a_2 ribaltata_a_2 ruota 
+
+DIAG #66 > 3.350000
+ruota arabian ribaltata_a_2 rondata back_handspring 
+
+DIAG #67 > 3.150000
+ruota arabian ribaltata_a_2 ruota back_handspring 
+
+DIAG #68 > 3.500000
+ruota arabian rondata back_handspring back_handspring 
+
+DIAG #69 > 3.300000
+ruota arabian ruota back_handspring back_handspring 
+
+DIAG #70 > 2.950000
+ruota back_tuck back_handspring back_handspring back_handspring 
+
+DIAG #71 > 3.350000
+ruota back_handspring arabian ribaltata_a_2 rondata 
+
+DIAG #72 > 3.150000
+ruota back_handspring arabian ribaltata_a_2 ruota 
+
+DIAG #73 > 3.500000
+ruota back_handspring arabian rondata back_handspring 
+
+DIAG #74 > 3.300000
+ruota back_handspring arabian ruota back_handspring 
+
+DIAG #75 > 2.950000
+ruota back_handspring back_tuck back_handspring back_handspring 
+
+DIAG #76 > 3.500000
+ruota back_handspring back_handspring arabian rondata 
+
+DIAG #77 > 3.300000
+ruota back_handspring back_handspring arabian ruota 
+
+DIAG #78 > 2.950000
+ruota back_handspring back_handspring back_tuck back_handspring 
+
+DIAG #79 > 2.950000
+ruota back_handspring back_handspring back_handspring back_tuck 
+
+DIAG #80 > 2.950000
+front_layout ribaltata_a_2 ribaltata_a_2 rondata 
+
+DIAG #81 > 2.750000
+front_layout ribaltata_a_2 ribaltata_a_2 ruota 
+
+DIAG #82 > 3.100000
+front_layout ribaltata_a_2 rondata back_handspring 
+
+DIAG #83 > 2.900000
+front_layout ribaltata_a_2 ruota back_handspring 
+
+DIAG #84 > 3.250000
+front_layout rondata back_handspring back_handspring 
+
+DIAG #85 > 3.050000
+front_layout ruota back_handspring back_handspring 
+
+DIAG #86 > 4.200000
+front_pike front_tuck ribaltata_a_2 rondata 
+
+DIAG #87 > 4.000000
+front_pike front_tuck ribaltata_a_2 ruota 
+
+DIAG #88 > 4.350000
+front_pike front_tuck rondata back_handspring 
+
+DIAG #89 > 4.150000
+front_pike front_tuck ruota back_handspring 
+
+DIAG #90 > 4.200000
+front_pike ribaltata_a_2 front_tuck rondata 
+
+DIAG #91 > 4.000000
+front_pike ribaltata_a_2 front_tuck ruota 
+
+DIAG #92 > 2.750000
+front_pike ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 
+
+DIAG #93 > 2.700000
+front_pike ribaltata_a_2 ribaltata_a_2 rondata 
+
+DIAG #94 > 2.500000
+front_pike ribaltata_a_2 ribaltata_a_2 ruota 
+
+DIAG #95 > 4.200000
+front_pike ribaltata_a_2 rondata back_tuck 
+
+DIAG #96 > 2.850000
+front_pike ribaltata_a_2 rondata back_handspring 
+
+DIAG #97 > 4.000000
+front_pike ribaltata_a_2 ruota back_tuck 
+
+DIAG #98 > 2.650000
+front_pike ribaltata_a_2 ruota back_handspring 
+
+DIAG #99 > 4.900000
+front_pike rondata arabian rondata 
+
+DIAG #100 > 4.700000
+front_pike rondata arabian ruota 
+
+DIAG #101 > 4.350000
+front_pike rondata back_tuck back_handspring 
+
+DIAG #102 > 4.350000
+front_pike rondata back_handspring back_tuck 
+
+DIAG #103 > 3.000000
+front_pike rondata back_handspring back_handspring 
+
+DIAG #104 > 4.700000
+front_pike ruota arabian rondata 
+
+DIAG #105 > 4.500000
+front_pike ruota arabian ruota 
+
+DIAG #106 > 4.150000
+front_pike ruota back_tuck back_handspring 
+
+DIAG #107 > 4.150000
+front_pike ruota back_handspring back_tuck 
+
+DIAG #108 > 2.800000
+front_pike ruota back_handspring back_handspring 
+
+DIAG #109 > 4.200000
+front_tuck front_pike ribaltata_a_2 rondata 
+
+DIAG #110 > 4.000000
+front_tuck front_pike ribaltata_a_2 ruota 
+
+DIAG #111 > 4.350000
+front_tuck front_pike rondata back_handspring 
+
+DIAG #112 > 4.150000
+front_tuck front_pike ruota back_handspring 
+
+DIAG #113 > 5.450000
+front_tuck front_tuck front_tuck rondata 
+
+DIAG #114 > 5.250000
+front_tuck front_tuck front_tuck ruota 
+
+DIAG #115 > 4.000000
+front_tuck front_tuck ribaltata_a_2 ribaltata_a_2 
+
+DIAG #116 > 3.950000
+front_tuck front_tuck ribaltata_a_2 rondata 
+
+DIAG #117 > 3.750000
+front_tuck front_tuck ribaltata_a_2 ruota 
+
+DIAG #118 > 5.450000
+front_tuck front_tuck rondata back_tuck 
+
+DIAG #119 > 4.100000
+front_tuck front_tuck rondata back_handspring 
+
+DIAG #120 > 5.250000
+front_tuck front_tuck ruota back_tuck 
+
+DIAG #121 > 3.900000
+front_tuck front_tuck ruota back_handspring 
+
+DIAG #122 > 4.200000
+front_tuck ribaltata_a_2 front_pike rondata 
+
+DIAG #123 > 4.000000
+front_tuck ribaltata_a_2 front_pike ruota 
+
+DIAG #124 > 4.000000
+front_tuck ribaltata_a_2 front_tuck ribaltata_a_2 
+
+DIAG #125 > 3.950000
+front_tuck ribaltata_a_2 front_tuck rondata 
+
+DIAG #126 > 3.750000
+front_tuck ribaltata_a_2 front_tuck ruota 
+
+DIAG #127 > 4.000000
+front_tuck ribaltata_a_2 ribaltata_a_2 front_tuck 
+
+DIAG #128 > 2.500000
+front_tuck ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 
+
+DIAG #129 > 2.450000
+front_tuck ribaltata_a_2 ribaltata_a_2 rondata 
+
+DIAG #130 > 2.250000
+front_tuck ribaltata_a_2 ribaltata_a_2 ruota 
+
+DIAG #131 > 4.700000
+front_tuck ribaltata_a_2 rondata arabian 
+
+DIAG #132 > 4.200000
+front_tuck ribaltata_a_2 rondata back_pike 
+
+DIAG #133 > 3.950000
+front_tuck ribaltata_a_2 rondata back_tuck 
+
+DIAG #134 > 2.600000
+front_tuck ribaltata_a_2 rondata back_handspring 
+
+DIAG #135 > 4.500000
+front_tuck ribaltata_a_2 ruota arabian 
+
+DIAG #136 > 4.000000
+front_tuck ribaltata_a_2 ruota back_pike 
+
+DIAG #137 > 3.750000
+front_tuck ribaltata_a_2 ruota back_tuck 
+
+DIAG #138 > 2.400000
+front_tuck ribaltata_a_2 ruota back_handspring 
+
+DIAG #139 > 4.700000
+front_tuck rondata arabian ribaltata_a_2 
+
+DIAG #140 > 4.650000
+front_tuck rondata arabian rondata 
+
+DIAG #141 > 4.450000
+front_tuck rondata arabian ruota 
+
+DIAG #142 > 4.350000
+front_tuck rondata back_pike back_handspring 
+
+DIAG #143 > 5.450000
+front_tuck rondata back_tuck back_tuck 
+
+DIAG #144 > 4.100000
+front_tuck rondata back_tuck back_handspring 
+
+DIAG #145 > 4.850000
+front_tuck rondata back_handspring arabian 
+
+DIAG #146 > 4.350000
+front_tuck rondata back_handspring back_pike 
+
+DIAG #147 > 4.100000
+front_tuck rondata back_handspring back_tuck 
+
+DIAG #148 > 2.750000
+front_tuck rondata back_handspring back_handspring 
+
+DIAG #149 > 4.500000
+front_tuck ruota arabian ribaltata_a_2 
+
+DIAG #150 > 4.450000
+front_tuck ruota arabian rondata 
+
+DIAG #151 > 4.250000
+front_tuck ruota arabian ruota 
+
+DIAG #152 > 4.150000
+front_tuck ruota back_pike back_handspring 
+
+DIAG #153 > 5.250000
+front_tuck ruota back_tuck back_tuck 
+
+DIAG #154 > 3.900000
+front_tuck ruota back_tuck back_handspring 
+
+DIAG #155 > 4.650000
+front_tuck ruota back_handspring arabian 
+
+DIAG #156 > 4.150000
+front_tuck ruota back_handspring back_pike 
+
+DIAG #157 > 3.900000
+front_tuck ruota back_handspring back_tuck 
+
+DIAG #158 > 2.550000
+front_tuck ruota back_handspring back_handspring 
+
+DIAG #159 > 2.950000
+ribaltata_a_2 front_layout ribaltata_a_2 rondata 
+
+DIAG #160 > 2.750000
+ribaltata_a_2 front_layout ribaltata_a_2 ruota 
+
+DIAG #161 > 3.100000
+ribaltata_a_2 front_layout rondata back_handspring 
+
+DIAG #162 > 2.900000
+ribaltata_a_2 front_layout ruota back_handspring 
+
+DIAG #163 > 4.200000
+ribaltata_a_2 front_pike front_tuck rondata 
+
+DIAG #164 > 4.000000
+ribaltata_a_2 front_pike front_tuck ruota 
+
+DIAG #165 > 2.750000
+ribaltata_a_2 front_pike ribaltata_a_2 ribaltata_a_2 
+
+DIAG #166 > 2.700000
+ribaltata_a_2 front_pike ribaltata_a_2 rondata 
+
+DIAG #167 > 2.500000
+ribaltata_a_2 front_pike ribaltata_a_2 ruota 
+
+DIAG #168 > 4.200000
+ribaltata_a_2 front_pike rondata back_tuck 
+
+DIAG #169 > 2.850000
+ribaltata_a_2 front_pike rondata back_handspring 
+
+DIAG #170 > 4.000000
+ribaltata_a_2 front_pike ruota back_tuck 
+
+DIAG #171 > 2.650000
+ribaltata_a_2 front_pike ruota back_handspring 
+
+DIAG #172 > 4.200000
+ribaltata_a_2 front_tuck front_pike rondata 
+
+DIAG #173 > 4.000000
+ribaltata_a_2 front_tuck front_pike ruota 
+
+DIAG #174 > 4.000000
+ribaltata_a_2 front_tuck front_tuck ribaltata_a_2 
+
+DIAG #175 > 3.950000
+ribaltata_a_2 front_tuck front_tuck rondata 
+
+DIAG #176 > 3.750000
+ribaltata_a_2 front_tuck front_tuck ruota 
+
+DIAG #177 > 4.000000
+ribaltata_a_2 front_tuck ribaltata_a_2 front_tuck 
+
+DIAG #178 > 2.500000
+ribaltata_a_2 front_tuck ribaltata_a_2 ribaltata_a_2 
+
+DIAG #179 > 2.450000
+ribaltata_a_2 front_tuck ribaltata_a_2 rondata 
+
+DIAG #180 > 2.250000
+ribaltata_a_2 front_tuck ribaltata_a_2 ruota 
+
+DIAG #181 > 4.700000
+ribaltata_a_2 front_tuck rondata arabian 
+
+DIAG #182 > 4.200000
+ribaltata_a_2 front_tuck rondata back_pike 
+
+DIAG #183 > 3.950000
+ribaltata_a_2 front_tuck rondata back_tuck 
+
+DIAG #184 > 2.600000
+ribaltata_a_2 front_tuck rondata back_handspring 
+
+DIAG #185 > 4.500000
+ribaltata_a_2 front_tuck ruota arabian 
+
+DIAG #186 > 4.000000
+ribaltata_a_2 front_tuck ruota back_pike 
+
+DIAG #187 > 3.750000
+ribaltata_a_2 front_tuck ruota back_tuck 
+
+DIAG #188 > 2.400000
+ribaltata_a_2 front_tuck ruota back_handspring 
+
+DIAG #189 > 2.950000
+ribaltata_a_2 ribaltata_a_2 front_layout rondata 
+
+DIAG #190 > 2.750000
+ribaltata_a_2 ribaltata_a_2 front_layout ruota 
+
+DIAG #191 > 2.750000
+ribaltata_a_2 ribaltata_a_2 front_pike ribaltata_a_2 
+
+DIAG #192 > 2.700000
+ribaltata_a_2 ribaltata_a_2 front_pike rondata 
+
+DIAG #193 > 2.500000
+ribaltata_a_2 ribaltata_a_2 front_pike ruota 
+
+DIAG #194 > 4.000000
+ribaltata_a_2 ribaltata_a_2 front_tuck front_tuck 
+
+DIAG #195 > 2.500000
+ribaltata_a_2 ribaltata_a_2 front_tuck ribaltata_a_2 
+
+DIAG #196 > 2.450000
+ribaltata_a_2 ribaltata_a_2 front_tuck rondata 
+
+DIAG #197 > 2.250000
+ribaltata_a_2 ribaltata_a_2 front_tuck ruota 
+
+DIAG #198 > 2.750000
+ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 front_pike 
+
+DIAG #199 > 2.500000
+ribaltata_a_2 ribaltata_a_2 ribaltata_a_2 front_tuck 
+
+DIAG #200 > 3.200000
+ribaltata_a_2 ribaltata_a_2 rondata arabian 
+
+DIAG #201 > 2.950000
+ribaltata_a_2 ribaltata_a_2 rondata back_layout 
+
+DIAG #202 > 2.700000
+ribaltata_a_2 ribaltata_a_2 rondata back_pike 
+
+DIAG #203 > 2.450000
+ribaltata_a_2 ribaltata_a_2 rondata back_tuck 
+
+DIAG #204 > 3.000000
+ribaltata_a_2 ribaltata_a_2 ruota arabian 
+
+DIAG #205 > 2.750000
+ribaltata_a_2 ribaltata_a_2 ruota back_layout 
+
+DIAG #206 > 2.500000
+ribaltata_a_2 ribaltata_a_2 ruota back_pike 
+
+DIAG #207 > 2.250000
+ribaltata_a_2 ribaltata_a_2 ruota back_tuck 
+
+DIAG #208 > 4.700000
+ribaltata_a_2 rondata arabian front_tuck 
+
+DIAG #209 > 3.200000
+ribaltata_a_2 rondata arabian ribaltata_a_2 
+
+DIAG #210 > 3.150000
+ribaltata_a_2 rondata arabian rondata 
+
+DIAG #211 > 2.950000
+ribaltata_a_2 rondata arabian ruota 
+
+DIAG #212 > 3.100000
+ribaltata_a_2 rondata back_layout back_handspring 
+
+DIAG #213 > 4.200000
+ribaltata_a_2 rondata back_pike back_tuck 
+
+DIAG #214 > 2.850000
+ribaltata_a_2 rondata back_pike back_handspring 
+
+DIAG #215 > 4.700000
+ribaltata_a_2 rondata back_tuck arabian 
+
+DIAG #216 > 4.200000
+ribaltata_a_2 rondata back_tuck back_pike 
+
+DIAG #217 > 3.950000
+ribaltata_a_2 rondata back_tuck back_tuck 
+
+DIAG #218 > 2.600000
+ribaltata_a_2 rondata back_tuck back_handspring 
+
+DIAG #219 > 3.350000
+ribaltata_a_2 rondata back_handspring arabian 
+
+DIAG #220 > 3.100000
+ribaltata_a_2 rondata back_handspring back_layout 
+
+DIAG #221 > 2.850000
+ribaltata_a_2 rondata back_handspring back_pike 
+
+DIAG #222 > 2.600000
+ribaltata_a_2 rondata back_handspring back_tuck 
+
+DIAG #223 > 4.500000
+ribaltata_a_2 ruota arabian front_tuck 
+
+DIAG #224 > 3.000000
+ribaltata_a_2 ruota arabian ribaltata_a_2 
+
+DIAG #225 > 2.950000
+ribaltata_a_2 ruota arabian rondata 
+
+DIAG #226 > 2.750000
+ribaltata_a_2 ruota arabian ruota 
+
+DIAG #227 > 2.900000
+ribaltata_a_2 ruota back_layout back_handspring 
+
+DIAG #228 > 4.000000
+ribaltata_a_2 ruota back_pike back_tuck 
+
+DIAG #229 > 2.650000
+ribaltata_a_2 ruota back_pike back_handspring 
+
+DIAG #230 > 4.500000
+ribaltata_a_2 ruota back_tuck arabian 
+
+DIAG #231 > 4.000000
+ribaltata_a_2 ruota back_tuck back_pike 
+
+DIAG #232 > 3.750000
+ribaltata_a_2 ruota back_tuck back_tuck 
+
+DIAG #233 > 2.400000
+ribaltata_a_2 ruota back_tuck back_handspring 
+
+DIAG #234 > 3.150000
+ribaltata_a_2 ruota back_handspring arabian 
+
+DIAG #235 > 2.900000
+ribaltata_a_2 ruota back_handspring back_layout 
+
+DIAG #236 > 2.650000
+ribaltata_a_2 ruota back_handspring back_pike 
+
+DIAG #237 > 2.400000
+ribaltata_a_2 ruota back_handspring back_tuck 
+
+DIAG #238 > 4.900000
+rondata arabian front_pike rondata 
+
+DIAG #239 > 4.700000
+rondata arabian front_pike ruota 
+
+DIAG #240 > 4.700000
+rondata arabian front_tuck ribaltata_a_2 
+
+DIAG #241 > 4.650000
+rondata arabian front_tuck rondata 
+
+DIAG #242 > 4.450000
+rondata arabian front_tuck ruota 
+
+DIAG #243 > 4.700000
+rondata arabian ribaltata_a_2 front_tuck 
+
+DIAG #244 > 3.200000
+rondata arabian ribaltata_a_2 ribaltata_a_2 
+
+DIAG #245 > 3.150000
+rondata arabian ribaltata_a_2 rondata 
+
+DIAG #246 > 2.950000
+rondata arabian ribaltata_a_2 ruota 
+
+DIAG #247 > 5.400000
+rondata arabian rondata arabian 
+
+DIAG #248 > 4.900000
+rondata arabian rondata back_pike 
+
+DIAG #249 > 4.650000
+rondata arabian rondata back_tuck 
+
+DIAG #250 > 3.300000
+rondata arabian rondata back_handspring 
+
+DIAG #251 > 5.200000
+rondata arabian ruota arabian 
+
+DIAG #252 > 4.700000
+rondata arabian ruota back_pike 
+
+DIAG #253 > 4.450000
+rondata arabian ruota back_tuck 
+
+DIAG #254 > 3.100000
+rondata arabian ruota back_handspring 
+
+DIAG #255 > 3.250000
+rondata back_layout back_handspring back_handspring 
+
+DIAG #256 > 4.900000
+rondata back_pike arabian rondata 
+
+DIAG #257 > 4.700000
+rondata back_pike arabian ruota 
+
+DIAG #258 > 4.350000
+rondata back_pike back_tuck back_handspring 
+
+DIAG #259 > 4.350000
+rondata back_pike back_handspring back_tuck 
+
+DIAG #260 > 3.000000
+rondata back_pike back_handspring back_handspring 
+
+DIAG #261 > 4.700000
+rondata back_tuck arabian ribaltata_a_2 
+
+DIAG #262 > 4.650000
+rondata back_tuck arabian rondata 
+
+DIAG #263 > 4.450000
+rondata back_tuck arabian ruota 
+
+DIAG #264 > 4.350000
+rondata back_tuck back_pike back_handspring 
+
+DIAG #265 > 5.450000
+rondata back_tuck back_tuck back_tuck 
+
+DIAG #266 > 4.100000
+rondata back_tuck back_tuck back_handspring 
+
+DIAG #267 > 4.850000
+rondata back_tuck back_handspring arabian 
+
+DIAG #268 > 4.350000
+rondata back_tuck back_handspring back_pike 
+
+DIAG #269 > 4.100000
+rondata back_tuck back_handspring back_tuck 
+
+DIAG #270 > 2.750000
+rondata back_tuck back_handspring back_handspring 
+
+DIAG #271 > 4.850000
+rondata back_handspring arabian front_tuck 
+
+DIAG #272 > 3.350000
+rondata back_handspring arabian ribaltata_a_2 
+
+DIAG #273 > 3.300000
+rondata back_handspring arabian rondata 
+
+DIAG #274 > 3.100000
+rondata back_handspring arabian ruota 
+
+DIAG #275 > 3.250000
+rondata back_handspring back_layout back_handspring 
+
+DIAG #276 > 4.350000
+rondata back_handspring back_pike back_tuck 
+
+DIAG #277 > 3.000000
+rondata back_handspring back_pike back_handspring 
+
+DIAG #278 > 4.850000
+rondata back_handspring back_tuck arabian 
+
+DIAG #279 > 4.350000
+rondata back_handspring back_tuck back_pike 
+
+DIAG #280 > 4.100000
+rondata back_handspring back_tuck back_tuck 
+
+DIAG #281 > 2.750000
+rondata back_handspring back_tuck back_handspring 
+
+DIAG #282 > 3.500000
+rondata back_handspring back_handspring arabian 
+
+DIAG #283 > 3.250000
+rondata back_handspring back_handspring back_layout 
+
+DIAG #284 > 3.000000
+rondata back_handspring back_handspring back_pike 
+
+DIAG #285 > 2.750000
+rondata back_handspring back_handspring back_tuck 
+
+DIAG #286 > 4.700000
+ruota arabian front_pike rondata 
+
+DIAG #287 > 4.500000
+ruota arabian front_pike ruota 
+
+DIAG #288 > 4.500000
+ruota arabian front_tuck ribaltata_a_2 
+
+DIAG #289 > 4.450000
+ruota arabian front_tuck rondata 
+
+DIAG #290 > 4.250000
+ruota arabian front_tuck ruota 
+
+DIAG #291 > 4.500000
+ruota arabian ribaltata_a_2 front_tuck 
+
+DIAG #292 > 3.000000
+ruota arabian ribaltata_a_2 ribaltata_a_2 
+
+DIAG #293 > 2.950000
+ruota arabian ribaltata_a_2 rondata 
+
+DIAG #294 > 2.750000
+ruota arabian ribaltata_a_2 ruota 
+
+DIAG #295 > 5.200000
+ruota arabian rondata arabian 
+
+DIAG #296 > 4.700000
+ruota arabian rondata back_pike 
+
+DIAG #297 > 4.450000
+ruota arabian rondata back_tuck 
+
+DIAG #298 > 3.100000
+ruota arabian rondata back_handspring 
+
+DIAG #299 > 5.000000
+ruota arabian ruota arabian 
+
+DIAG #300 > 4.500000
+ruota arabian ruota back_pike 
+
+DIAG #301 > 4.250000
+ruota arabian ruota back_tuck 
+
+DIAG #302 > 2.900000
+ruota arabian ruota back_handspring 
+
+DIAG #303 > 3.050000
+ruota back_layout back_handspring back_handspring 
+
+DIAG #304 > 4.700000
+ruota back_pike arabian rondata 
+
+DIAG #305 > 4.500000
+ruota back_pike arabian ruota 
+
+DIAG #306 > 4.150000
+ruota back_pike back_tuck back_handspring 
+
+DIAG #307 > 4.150000
+ruota back_pike back_handspring back_tuck 
+
+DIAG #308 > 2.800000
+ruota back_pike back_handspring back_handspring 
+
+DIAG #309 > 4.500000
+ruota back_tuck arabian ribaltata_a_2 
+
+DIAG #310 > 4.450000
+ruota back_tuck arabian rondata 
+
+DIAG #311 > 4.250000
+ruota back_tuck arabian ruota 
+
+DIAG #312 > 4.150000
+ruota back_tuck back_pike back_handspring 
+
+DIAG #313 > 5.250000
+ruota back_tuck back_tuck back_tuck 
+
+DIAG #314 > 3.900000
+ruota back_tuck back_tuck back_handspring 
+
+DIAG #315 > 4.650000
+ruota back_tuck back_handspring arabian 
+
+DIAG #316 > 4.150000
+ruota back_tuck back_handspring back_pike 
+
+DIAG #317 > 3.900000
+ruota back_tuck back_handspring back_tuck 
+
+DIAG #318 > 2.550000
+ruota back_tuck back_handspring back_handspring 
+
+DIAG #319 > 4.650000
+ruota back_handspring arabian front_tuck 
+
+DIAG #320 > 3.150000
+ruota back_handspring arabian ribaltata_a_2 
+
+DIAG #321 > 3.100000
+ruota back_handspring arabian rondata 
+
+DIAG #322 > 2.900000
+ruota back_handspring arabian ruota 
+
+DIAG #323 > 3.050000
+ruota back_handspring back_layout back_handspring 
+
+DIAG #324 > 4.150000
+ruota back_handspring back_pike back_tuck 
+
+DIAG #325 > 2.800000
+ruota back_handspring back_pike back_handspring 
+
+DIAG #326 > 4.650000
+ruota back_handspring back_tuck arabian 
+
+DIAG #327 > 4.150000
+ruota back_handspring back_tuck back_pike 
+
+DIAG #328 > 3.900000
+ruota back_handspring back_tuck back_tuck 
+
+DIAG #329 > 2.550000
+ruota back_handspring back_tuck back_handspring 
+
+DIAG #330 > 3.300000
+ruota back_handspring back_handspring arabian 
+
+DIAG #331 > 3.050000
+ruota back_handspring back_handspring back_layout 
+
+DIAG #332 > 2.800000
+ruota back_handspring back_handspring back_pike 
+
+DIAG #333 > 2.550000
+ruota back_handspring back_handspring back_tuck 
+
+DIAG #334 > 4.450000
+front_layout front_pike rondata 
+
+DIAG #335 > 4.250000
+front_layout front_pike ruota 
+
+DIAG #336 > 4.250000
+front_layout front_tuck ribaltata_a_2 
+
+DIAG #337 > 4.200000
+front_layout front_tuck rondata 
+
+DIAG #338 > 4.000000
+front_layout front_tuck ruota 
+
+DIAG #339 > 4.250000
+front_layout ribaltata_a_2 front_tuck 
+
+DIAG #340 > 2.750000
+front_layout ribaltata_a_2 ribaltata_a_2 
+
+DIAG #341 > 2.700000
+front_layout ribaltata_a_2 rondata 
+
+DIAG #342 > 2.500000
+front_layout ribaltata_a_2 ruota 
+
+DIAG #343 > 4.950000
+front_layout rondata arabian 
+
+DIAG #344 > 4.450000
+front_layout rondata back_pike 
+
+DIAG #345 > 4.200000
+front_layout rondata back_tuck 
+
+DIAG #346 > 2.850000
+front_layout rondata back_handspring 
+
+DIAG #347 > 4.750000
+front_layout ruota arabian 
+
+DIAG #348 > 4.250000
+front_layout ruota back_pike 
+
+DIAG #349 > 4.000000
+front_layout ruota back_tuck 
+
+DIAG #350 > 2.650000
+front_layout ruota back_handspring 
+
+DIAG #351 > 4.450000
+front_pike front_layout rondata 
+
+DIAG #352 > 4.250000
+front_pike front_layout ruota 
+
+DIAG #353 > 4.250000
+front_pike front_pike ribaltata_a_2 
+
+DIAG #354 > 4.200000
+front_pike front_pike rondata 
+
+DIAG #355 > 4.000000
+front_pike front_pike ruota 
+
+DIAG #356 > 5.500000
+front_pike front_tuck front_tuck 
+
+DIAG #357 > 4.000000
+front_pike front_tuck ribaltata_a_2 
+
+DIAG #358 > 3.950000
+front_pike front_tuck rondata 
+
+DIAG #359 > 3.750000
+front_pike front_tuck ruota 
+
+DIAG #360 > 4.250000
+front_pike ribaltata_a_2 front_pike 
+
+DIAG #361 > 4.000000
+front_pike ribaltata_a_2 front_tuck 
+
+DIAG #362 > 2.500000
+front_pike ribaltata_a_2 ribaltata_a_2 
+
+DIAG #363 > 2.450000
+front_pike ribaltata_a_2 rondata 
+
+DIAG #364 > 2.250000
+front_pike ribaltata_a_2 ruota 
+
+DIAG #365 > 4.700000
+front_pike rondata arabian 
+
+DIAG #366 > 4.450000
+front_pike rondata back_layout 
+
+DIAG #367 > 4.200000
+front_pike rondata back_pike 
+
+DIAG #368 > 3.950000
+front_pike rondata back_tuck 
+
+DIAG #369 > 2.600000
+front_pike rondata back_handspring 
+
+DIAG #370 > 4.500000
+front_pike ruota arabian 
+
+DIAG #371 > 4.250000
+front_pike ruota back_layout 
+
+DIAG #372 > 4.000000
+front_pike ruota back_pike 
+
+DIAG #373 > 3.750000
+front_pike ruota back_tuck 
+
+DIAG #374 > 2.400000
+front_pike ruota back_handspring 
+
+DIAG #375 > 4.950000
+front_tuck double_front_tuck rondata 
+
+DIAG #376 > 4.750000
+front_tuck double_front_tuck ruota 
+
+DIAG #377 > 4.250000
+front_tuck front_layout ribaltata_a_2 
+
+DIAG #378 > 4.200000
+front_tuck front_layout rondata 
+
+DIAG #379 > 4.000000
+front_tuck front_layout ruota 
+
+DIAG #380 > 5.500000
+front_tuck front_pike front_tuck 
+
+DIAG #381 > 4.000000
+front_tuck front_pike ribaltata_a_2 
+
+DIAG #382 > 3.950000
+front_tuck front_pike rondata 
+
+DIAG #383 > 3.750000
+front_tuck front_pike ruota 
+
+DIAG #384 > 5.500000
+front_tuck front_tuck front_pike 
+
+DIAG #385 > 5.250000
+front_tuck front_tuck front_tuck 
+
+DIAG #386 > 3.750000
+front_tuck front_tuck ribaltata_a_2 
+
+DIAG #387 > 3.700000
+front_tuck front_tuck rondata 
+
+DIAG #388 > 3.500000
+front_tuck front_tuck ruota 
+
+DIAG #389 > 4.250000
+front_tuck ribaltata_a_2 front_layout 
+
+DIAG #390 > 4.000000
+front_tuck ribaltata_a_2 front_pike 
+
+DIAG #391 > 3.750000
+front_tuck ribaltata_a_2 front_tuck 
+
+DIAG #392 > 2.250000
+front_tuck ribaltata_a_2 ribaltata_a_2 
+
+DIAG #393 > 2.200000
+front_tuck ribaltata_a_2 rondata 
+
+DIAG #394 > 2.000000
+front_tuck ribaltata_a_2 ruota 
+
+DIAG #395 > 4.450000
+front_tuck rondata arabian 
+
+DIAG #396 > 4.950000
+front_tuck rondata double_back_tuck 
+
+DIAG #397 > 4.200000
+front_tuck rondata back_layout 
+
+DIAG #398 > 3.950000
+front_tuck rondata back_pike 
+
+DIAG #399 > 3.700000
+front_tuck rondata back_tuck 
+
+DIAG #400 > 2.350000
+front_tuck rondata back_handspring 
+
+DIAG #401 > 4.250000
+front_tuck ruota arabian 
+
+DIAG #402 > 4.750000
+front_tuck ruota double_back_tuck 
+
+DIAG #403 > 4.000000
+front_tuck ruota back_layout 
+
+DIAG #404 > 3.750000
+front_tuck ruota back_pike 
+
+DIAG #405 > 3.500000
+front_tuck ruota back_tuck 
+
+DIAG #406 > 2.150000
+front_tuck ruota back_handspring 
+
+DIAG #407 > 3.500000
+ribaltata_a_2 double_front_tuck ribaltata_a_2 
+
+DIAG #408 > 3.450000
+ribaltata_a_2 double_front_tuck rondata 
+
+DIAG #409 > 3.250000
+ribaltata_a_2 double_front_tuck ruota 
+
+DIAG #410 > 4.250000
+ribaltata_a_2 front_layout front_tuck 
+
+DIAG #411 > 2.750000
+ribaltata_a_2 front_layout ribaltata_a_2 
+
+DIAG #412 > 2.700000
+ribaltata_a_2 front_layout rondata 
+
+DIAG #413 > 2.500000
+ribaltata_a_2 front_layout ruota 
+
+DIAG #414 > 4.250000
+ribaltata_a_2 front_pike front_pike 
+
+DIAG #415 > 4.000000
+ribaltata_a_2 front_pike front_tuck 
+
+DIAG #416 > 2.500000
+ribaltata_a_2 front_pike ribaltata_a_2 
+
+DIAG #417 > 2.450000
+ribaltata_a_2 front_pike rondata 
+
+DIAG #418 > 2.250000
+ribaltata_a_2 front_pike ruota 
+
+DIAG #419 > 4.250000
+ribaltata_a_2 front_tuck front_layout 
+
+DIAG #420 > 4.000000
+ribaltata_a_2 front_tuck front_pike 
+
+DIAG #421 > 3.750000
+ribaltata_a_2 front_tuck front_tuck 
+
+DIAG #422 > 2.250000
+ribaltata_a_2 front_tuck ribaltata_a_2 
+
+DIAG #423 > 2.200000
+ribaltata_a_2 front_tuck rondata 
+
+DIAG #424 > 2.000000
+ribaltata_a_2 front_tuck ruota 
+
+DIAG #425 > 3.500000
+ribaltata_a_2 ribaltata_a_2 double_front_tuck 
+
+DIAG #426 > 2.750000
+ribaltata_a_2 ribaltata_a_2 front_layout 
+
+DIAG #427 > 2.500000
+ribaltata_a_2 ribaltata_a_2 front_pike 
+
+DIAG #428 > 2.250000
+ribaltata_a_2 ribaltata_a_2 front_tuck 
+
+DIAG #429 > 2.950000
+ribaltata_a_2 rondata arabian 
+
+DIAG #430 > 4.450000
+ribaltata_a_2 rondata double_back_layout 
+
+DIAG #431 > 3.450000
+ribaltata_a_2 rondata double_back_tuck 
+
+DIAG #432 > 2.700000
+ribaltata_a_2 rondata back_layout 
+
+DIAG #433 > 2.450000
+ribaltata_a_2 rondata back_pike 
+
+DIAG #434 > 2.200000
+ribaltata_a_2 rondata back_tuck 
+
+DIAG #435 > 2.750000
+ribaltata_a_2 ruota arabian 
+
+DIAG #436 > 4.250000
+ribaltata_a_2 ruota double_back_layout 
+
+DIAG #437 > 3.250000
+ribaltata_a_2 ruota double_back_tuck 
+
+DIAG #438 > 2.500000
+ribaltata_a_2 ruota back_layout 
+
+DIAG #439 > 2.250000
+ribaltata_a_2 ruota back_pike 
+
+DIAG #440 > 2.000000
+ribaltata_a_2 ruota back_tuck 
+
+DIAG #441 > 4.950000
+rondata arabian front_layout 
+
+DIAG #442 > 4.700000
+rondata arabian front_pike 
+
+DIAG #443 > 4.450000
+rondata arabian front_tuck 
+
+DIAG #444 > 2.950000
+rondata arabian ribaltata_a_2 
+
+DIAG #445 > 2.900000
+rondata arabian rondata 
+
+DIAG #446 > 2.700000
+rondata arabian ruota 
+
+DIAG #447 > 4.950000
+rondata double_back_tuck back_tuck 
+
+DIAG #448 > 3.600000
+rondata double_back_tuck back_handspring 
+
+DIAG #449 > 4.950000
+rondata back_layout arabian 
+
+DIAG #450 > 4.450000
+rondata back_layout back_pike 
+
+DIAG #451 > 4.200000
+rondata back_layout back_tuck 
+
+DIAG #452 > 2.850000
+rondata back_layout back_handspring 
+
+DIAG #453 > 4.700000
+rondata back_pike arabian 
+
+DIAG #454 > 4.450000
+rondata back_pike back_layout 
+
+DIAG #455 > 4.200000
+rondata back_pike back_pike 
+
+DIAG #456 > 3.950000
+rondata back_pike back_tuck 
+
+DIAG #457 > 2.600000
+rondata back_pike back_handspring 
+
+DIAG #458 > 4.450000
+rondata back_tuck arabian 
+
+DIAG #459 > 4.950000
+rondata back_tuck double_back_tuck 
+
+DIAG #460 > 4.200000
+rondata back_tuck back_layout 
+
+DIAG #461 > 3.950000
+rondata back_tuck back_pike 
+
+DIAG #462 > 3.700000
+rondata back_tuck back_tuck 
+
+DIAG #463 > 2.350000
+rondata back_tuck back_handspring 
+
+DIAG #464 > 3.100000
+rondata back_handspring arabian 
+
+DIAG #465 > 4.600000
+rondata back_handspring double_back_layout 
+
+DIAG #466 > 3.600000
+rondata back_handspring double_back_tuck 
+
+DIAG #467 > 2.850000
+rondata back_handspring back_layout 
+
+DIAG #468 > 2.600000
+rondata back_handspring back_pike 
+
+DIAG #469 > 2.350000
+rondata back_handspring back_tuck 
+
+DIAG #470 > 4.750000
+ruota arabian front_layout 
+
+DIAG #471 > 4.500000
+ruota arabian front_pike 
+
+DIAG #472 > 4.250000
+ruota arabian front_tuck 
+
+DIAG #473 > 2.750000
+ruota arabian ribaltata_a_2 
+
+DIAG #474 > 2.700000
+ruota arabian rondata 
+
+DIAG #475 > 2.500000
+ruota arabian ruota 
+
+DIAG #476 > 4.750000
+ruota double_back_tuck back_tuck 
+
+DIAG #477 > 3.400000
+ruota double_back_tuck back_handspring 
+
+DIAG #478 > 4.750000
+ruota back_layout arabian 
+
+DIAG #479 > 4.250000
+ruota back_layout back_pike 
+
+DIAG #480 > 4.000000
+ruota back_layout back_tuck 
+
+DIAG #481 > 2.650000
+ruota back_layout back_handspring 
+
+DIAG #482 > 4.500000
+ruota back_pike arabian 
+
+DIAG #483 > 4.250000
+ruota back_pike back_layout 
+
+DIAG #484 > 4.000000
+ruota back_pike back_pike 
+
+DIAG #485 > 3.750000
+ruota back_pike back_tuck 
+
+DIAG #486 > 2.400000
+ruota back_pike back_handspring 
+
+DIAG #487 > 4.250000
+ruota back_tuck arabian 
+
+DIAG #488 > 4.750000
+ruota back_tuck double_back_tuck 
+
+DIAG #489 > 4.000000
+ruota back_tuck back_layout 
+
+DIAG #490 > 3.750000
+ruota back_tuck back_pike 
+
+DIAG #491 > 3.500000
+ruota back_tuck back_tuck 
+
+DIAG #492 > 2.150000
+ruota back_tuck back_handspring 
+
+DIAG #493 > 2.900000
+ruota back_handspring arabian 
+
+DIAG #494 > 4.400000
+ruota back_handspring double_back_layout 
+
+DIAG #495 > 3.400000
+ruota back_handspring double_back_tuck 
+
+DIAG #496 > 2.650000
+ruota back_handspring back_layout 
+
+DIAG #497 > 2.400000
+ruota back_handspring back_pike 
+
+DIAG #498 > 2.150000
+ruota back_handspring back_tuck 
+
+DIAG #499 > 4.500000
+front_layout front_layout 
+
+DIAG #500 > 4.250000
+front_layout front_pike 
+
+DIAG #501 > 4.000000
+front_layout front_tuck 
+
+DIAG #502 > 2.500000
+front_layout ribaltata_a_2 
+
+DIAG #503 > 2.450000
+front_layout rondata 
+
+DIAG #504 > 2.250000
+front_layout ruota 
+
+DIAG #505 > 5.000000
+front_pike double_front_tuck 
+
+DIAG #506 > 4.250000
+front_pike front_layout 
+
+DIAG #507 > 4.000000
+front_pike front_pike 
+
+DIAG #508 > 3.750000
+front_pike front_tuck 
+
+DIAG #509 > 2.250000
+front_pike ribaltata_a_2 
+
+DIAG #510 > 2.200000
+front_pike rondata 
+
+DIAG #511 > 2.000000
+front_pike ruota 
+
+DIAG #512 > 5.750000
+front_tuck double_front_layout 
+
+DIAG #513 > 4.750000
+front_tuck double_front_tuck 
+
+DIAG #514 > 4.000000
+front_tuck front_layout 
+
+DIAG #515 > 3.750000
+front_tuck front_pike 
+
+DIAG #516 > 3.500000
+front_tuck front_tuck 
+
+DIAG #517 > 2.000000
+front_tuck ribaltata_a_2 
+
+DIAG #518 > 1.950000
+front_tuck rondata 
+
+DIAG #519 > 1.750000
+front_tuck ruota 
+
+DIAG #520 > 6.750000
+ribaltata_a_2 triple_front_tuck 
+
+DIAG #521 > 4.250000
+ribaltata_a_2 double_front_layout 
+
+DIAG #522 > 3.250000
+ribaltata_a_2 double_front_tuck 
+
+DIAG #523 > 2.500000
+ribaltata_a_2 front_layout 
+
+DIAG #524 > 2.250000
+ribaltata_a_2 front_pike 
+
+DIAG #525 > 2.000000
+ribaltata_a_2 front_tuck 
+
+DIAG #526 > 2.700000
+rondata arabian 
+
+DIAG #527 > 8.200000
+rondata back_layout_double_twist 
+
+DIAG #528 > 6.200000
+rondata triple_back_tuck 
+
+DIAG #529 > 4.200000
+rondata double_back_layout 
+
+DIAG #530 > 3.200000
+rondata double_back_tuck 
+
+DIAG #531 > 2.450000
+rondata back_layout 
+
+DIAG #532 > 2.200000
+rondata back_pike 
+
+DIAG #533 > 1.950000
+rondata back_tuck 
+
+DIAG #534 > 2.500000
+ruota arabian 
+
+DIAG #535 > 8.000000
+ruota back_layout_double_twist 
+
+DIAG #536 > 6.000000
+ruota triple_back_tuck 
+
+DIAG #537 > 4.000000
+ruota double_back_layout 
+
+DIAG #538 > 3.000000
+ruota double_back_tuck 
+
+DIAG #539 > 2.250000
+ruota back_layout 
+
+DIAG #540 > 2.000000
+ruota back_pike 
+
+DIAG #541 > 1.750000
+ruota back_tuck 
+
+DIAG #542 > 2.250000
+front_layout 
+
+DIAG #543 > 2.000000
+front_pike 
+
+DIAG #544 > 1.750000
+front_tuck 
