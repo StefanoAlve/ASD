@@ -4,6 +4,7 @@
 #define MAXC 100
 #define DD 10
 #define DP 20
+#define DBG 0
 typedef struct{
     char nome[MAXC];
     int tipologia;
@@ -46,13 +47,12 @@ typedef struct{
 int leggiElementi(elemento_s** pVettElementi);
 void sequenzaMax(elemento_s *vettElementi, int nElem);
 listaDiag_s diagonaliPossibili(elemento_s *vettElementi, int nElem);
-void deallocaAll(programma_s programma);
 void nodeInsert(listaDiag_s *plistaDiag, diagonale_s diagonale);
-void deallocaLista(listaDiag_s listaDiag);
 listaDiag_s listaInit();
+void stampaDiag(diagonale_s diagonale);
 int diagPos_r(elemento_s sol[], elemento_s *vettElementi, int k, int n, int pos, listaDiag_s *plistaDiag, int cnt, diagonale_s diagonale);
 diagonale_s creaDiag(elemento_s *vettElementi, int nElementi, diagonale_s diagonale);
-int verificaElem(elemento_s *sol, elemento_s elementoIns, int dimSol, int dimMax);
+int verificaElem(elemento_s *sol, elemento_s elementoIns, int pos, int dimMax);
 programma_s trovaMigliore(listaDiag_s listaDiag);
 void trovaMigliore_r(listaDiag_s listaDiag,link sol[],programma_s *pmigliore, int k,int pos);
 int confrontaMax(link sol[], programma_s migliore);
@@ -62,6 +62,8 @@ float calcolaPunteggioSol(link sol[]);
 programma_s programmaInit();
 diagonale_s diagonaleInit();
 void stampaMigliore(programma_s migliore);
+void deallocaLista(listaDiag_s listaDiag);
+void deallocaAll(listaDiag_s listaDiag, elemento_s *vettElementi);
 
 int main() {
     elemento_s *vettElementi;
@@ -104,20 +106,24 @@ void sequenzaMax(elemento_s *vettElementi, int nElem){
     listaDiag = diagonaliPossibili(vettElementi,nElem);
     migliore = trovaMigliore(listaDiag);
     stampaMigliore(migliore);
+    deallocaAll(listaDiag, vettElementi);
 }
 
-void deallocaAll(programma_s programma){ //TODO
-    //Dealloca elementi
+void deallocaAll(listaDiag_s listaDiag, elemento_s *vettElementi){
+    deallocaLista(listaDiag);
+    free(vettElementi);
 }
 
-listaDiag_s diagonaliPossibili(elemento_s *vettElementi, int nElem){
+listaDiag_s diagonaliPossibili(elemento_s *vettElementi, int nElem) {
     listaDiag_s listaDiag = listaInit();
     elemento_s sol[5];
     diagonale_s diagonale = diagonaleInit();
-    for (int i = 5; i >= 1; i--) {
-        listaDiag.nDiag += diagPos_r(sol, vettElementi, i, nElem, 0, &listaDiag, 0, diagonale);
+    for (int i = 1; i <= 5; i++) {
+        listaDiag.nDiag = listaDiag.nDiag + diagPos_r(sol, vettElementi, i, nElem, 0, &listaDiag, 0, diagonale);
     }
-    printf("\n%d\n", listaDiag.nDiag);
+    #if DBG
+    printf("DIAGONALI POSSIBILI: %d\n", listaDiag.nDiag);
+    #endif
     return listaDiag;
 }
 
@@ -184,7 +190,6 @@ void deallocaLista(listaDiag_s listaDiag){
     link corrente=listaDiag.head, successivo;
     while(corrente!=NULL){
         successivo = corrente->next;
-        free(corrente->diagonale.nomiElementi);
         free(corrente);
         corrente = successivo;
     }
@@ -196,11 +201,14 @@ int diagPos_r(elemento_s sol[], elemento_s *vettElementi, int k, int n, int pos,
         if(diagonale.acrobatici[0]==0 || diagonale.difDiag > DD){
             return cnt;
         }
+        #if DBG
+        stampaDiag(diagonale);
+        #endif
         nodeInsert(plistaDiag,diagonale);
         return cnt+1;
     }
     for(int i=0; i<n; i++){
-        if(verificaElem(sol, vettElementi[i], pos, k)){ //TODO controllare efficacia
+        if(verificaElem(sol, vettElementi[i], pos, k)){
             sol[pos] = vettElementi[i];
             cnt = diagPos_r(sol, vettElementi, k, n, pos+1, plistaDiag, cnt, diagonale);
         }
@@ -208,17 +216,17 @@ int diagPos_r(elemento_s sol[], elemento_s *vettElementi, int k, int n, int pos,
     return cnt;
 }
 
-int verificaElem(elemento_s *sol, elemento_s elementoIns, int dimSol, int dimMax) {
-    if (dimSol == 0) {
-        if (elementoIns.dir_ing != 1 || elementoIns.req_prec != 0 || elementoIns.req_fin != 0) {
+int verificaElem(elemento_s *sol, elemento_s elementoIns, int pos, int dimMax) {
+    if (pos == 0) {
+        if (elementoIns.dir_ing != 1 || elementoIns.req_prec != 0 || (elementoIns.req_fin != 0 && dimMax > 1)) {
             return 0;
         }
-    } else if (dimSol == dimMax - 1) {
-        if (elementoIns.req_prec != 1 || (elementoIns.dir_ing != sol[dimSol - 1].dir_usc)) {
+    } else if (pos == dimMax-1) {
+        if (elementoIns.dir_ing != sol[pos - 1].dir_usc) {
             return 0;
         }
     } else {
-        if (sol[dimSol - 1].dir_usc != elementoIns.dir_ing || elementoIns.req_prec == 0 || elementoIns.req_fin == 1) {
+        if (sol[pos - 1].dir_usc != elementoIns.dir_ing || elementoIns.req_fin == 1) {
             return 0;
         }
     }
@@ -328,7 +336,7 @@ void stampaMigliore(programma_s migliore){
     printf("TOT = %.3f\n", migliore.punteggioProg);
     for(int i=0; i<3; i++){
         if(i==2 && migliore.bonus == 1){
-            printf("DIAG #%d > %.3f * 1.5 (BONUS)\n", i+1, (migliore.diagonali[i].valoreDiag)/1.5);
+            printf("DIAG #%d > %.3f * 1.5 (BONUS)\n", i+1, migliore.diagonali[i].valoreDiag);
         }
         else {
             printf("DIAG #%d > %.3f\n", i + 1, migliore.diagonali[i].valoreDiag);
@@ -338,4 +346,17 @@ void stampaMigliore(programma_s migliore){
         }
         printf("\n");
     }
+}
+
+void stampaDiag(diagonale_s diagonale){
+    printf("Esercizi: ");
+    for(int i=0; i<diagonale.nElementi; i++){
+        printf("%s ", diagonale.nomiElementi[i]);
+    }
+    printf("\n");
+    printf("DIFFICOLTA': %d\n",diagonale.difDiag);
+    printf("NUMERO ACROBATICI: %d, AVANTI: %d, INDIETRO: %d\n", diagonale.acrobatici[0],diagonale.acrobatici[1], diagonale.acrobatici[2]);
+    printf("SEQUENZA: %d\n", diagonale.sequenza);
+    printf("VALORE: %.2f\n", diagonale.valoreDiag);
+    printf("BONUS: %d\n\n", diagonale.bonus);
 }
