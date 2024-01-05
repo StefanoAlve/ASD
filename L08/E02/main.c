@@ -10,7 +10,7 @@ int main() {
     grafoInit(nArchi*2); //Suppongo che ogni arco colleghi due vertici distinti
     riempiGrafo(pGrafo, nomeFile);
     menu(pGrafo);
-    //TODO deallocazione
+    distruggiGrafo(pGrafo);
     return 0;
 }
 
