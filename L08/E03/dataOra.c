@@ -2,13 +2,20 @@
 
 dataOra_s leggiDataOra(FILE *fp){
     dataOra_s dataOra;
-    scanf("%d/%d/%d %d:%d", &dataOra.data.anno, &dataOra.data.mese, &dataOra.data.giorno, &dataOra.ora.ore, &dataOra.ora.minuti);
+    if(fp!=stdin) {
+        fscanf(fp, "%d/%d/%d %d:%d", &dataOra.data.anno, &dataOra.data.mese, &dataOra.data.giorno, &dataOra.ora.ore,
+               &dataOra.ora.minuti);
+    }
+    else{
+        fscanf(fp, "%d/%d/%d", &dataOra.data.anno, &dataOra.data.mese, &dataOra.data.giorno);
+        dataOra.ora.ore = dataOra.ora.minuti = 0;
+    }
     return dataOra;
 }
-int confrontaDate(data_s d1, data_s d2){
+int confrontaDate(dataOra_s d1, dataOra_s d2){
     int data1, data2;
-    data1 = d1.giorno+d1.mese*100+d1.anno*10000;
-    data2 = d2.giorno+d2.mese*100+d2.anno*10000;
+    data1 = d1.data.giorno+d1.data.mese*100+d1.data.anno*10000;
+    data2 = d2.data.giorno+d2.data.mese*100+d2.data.anno*10000;
     if(data1>data2){
         return 1;
     }else if(data1 == data2){
@@ -16,10 +23,10 @@ int confrontaDate(data_s d1, data_s d2){
     }
     return -1;
 }
-int confrontaOre(ora_s h1, ora_s h2){
+int confrontaOre(dataOra_s D1, dataOra_s D2){
     int ora1, ora2;
-    ora1 = h1.ore*3600 + h1.minuti*60;
-    ora2 = h2.ore*3600 + h2.minuti*60;
+    ora1 = D1.ora.ore*3600 + D1.ora.minuti*60;
+    ora2 = D2.ora.ore*3600 + D2.ora.minuti*60;
     if(ora1>ora2){
         return 1;
     }else if(ora1 == ora2){
@@ -29,13 +36,13 @@ int confrontaOre(ora_s h1, ora_s h2){
 }
 int confrontaDateOre(dataOra_s dH1, dataOra_s dH2){
     int flag1, flag2;
-    flag1 = confrontaDate(dH1.data, dH2.data);
+    flag1 = confrontaDate(dH1, dH2);
     if(flag1 > 0){
         return 1;
     }else if(flag1<0) {
         return -1;
     }
-    flag2 = confrontaOre(dH1.ora, dH2.ora);
+    flag2 = confrontaOre(dH1, dH2);
     if(flag2 > 0){
         return 1;
     }else if(flag2 == 0){
