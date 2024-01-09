@@ -1,4 +1,5 @@
 #include "collezioneTitoli.h"
+static void inOrder(link root);
 
 typedef struct node *link;
 struct node{
@@ -87,4 +88,8 @@ void listaFree(link head){
 void deallocaCollezioneT(pCollezioneT collezioneT){
     listaFree(collezioneT->head);
     free(collezioneT);
+}
+
+pBSTquot cercaBST(link node){
+    return node->bstQuot;
 }

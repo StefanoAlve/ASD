@@ -81,6 +81,7 @@ void menu(pCollezioneT collezioneT, comando_e comando){
     link x;
     dQuot_s quot;
     int cmd;
+    float soglia, rapporto;
     switch(comando){
         case leggiFile_e:
             deallocaCollezioneT(collezioneT);
@@ -110,7 +111,16 @@ void menu(pCollezioneT collezioneT, comando_e comando){
             printf("Inserisci il titolo: ");
             scanf("%s", titolo);
             x = ricercaTitolo(collezioneT,titolo);
-            //ribilanciaBST(x);
+            rapporto = mostraRapporto(mostraRoot(cercaBST(x)));
+            printf("Il rapporto iniziale vale: %.2f\n", rapporto);
+            printf("Inserisci la soglia:");
+            scanf("%f",&soglia);
+            if(rapporto >= soglia) {
+                BSTbalance(cercaBST(x));
+                printf("L'albero e' stato ribilanciato, il rapporto attualmente vale: %.2f\n", mostraRapporto(mostraRoot(cercaBST(x))));
+            }else{
+                printf("Il rapporto non supera la soglia inserita\n");
+            }
             break;
         case fine_e:
             deallocaCollezioneT(collezioneT);

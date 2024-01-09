@@ -5,19 +5,18 @@ int menu(pgrafo_s pGrafo);
 int main(int argc, char** argv) {
     //TODO inserire argv argc
     int nArchi, flag = 0;
-    arco_s *vettArchi;
     pgrafo_s pGrafo;
-    //if(argc == 2) {
-        nArchi = contaArchi("grafo.txt");
+    if(argc == 2) {
+        nArchi = contaArchi(argv[1]);
         pGrafo = grafoInit(nArchi * 2); //Suppongo che ogni arco colleghi due vertici distinti
-        GraphLoad(pGrafo, "grafo.txt");
+        GraphLoad(pGrafo, argv[1]);
         printf("\nAttualmente la matrice delle adiacenze e' cosi' composta:");
         print_matrix(pGrafo);
         flag = menu(pGrafo);
         distruggiGrafo(pGrafo, flag);
-    //}else{
-        //printf("\nErrore nell'esecuzione del programma, inserisci il nome del file all'apertura.");
-    //}
+    }else{
+        printf("\nErrore nell'esecuzione del programma, inserisci il nome del file all'apertura.");
+    }
     return 0;
 }
 
@@ -49,7 +48,6 @@ int menu(pgrafo_s pGrafo){
         printf("--------------------------------------------------------\n\n");
         printf("Inserire comando:");
         scanf("%d", &comando);
-        //TODO Inserire Controllo su input
         switch(comando){
             case 1:
                 elencaAlfabetico(pGrafo);

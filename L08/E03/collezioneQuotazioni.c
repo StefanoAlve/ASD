@@ -1,7 +1,12 @@
 #include "collezioneQuotazioni.h"
 
 static linkB insertR(linkB root, dataOra_s d, dQuot_s quot, linkB z);
-static linkB newNodeB(dataOra_s d, dQuot_s quot, linkB l, linkB r);
+static linkB newNodeB(dataOra_s d, linkB padre, int nElem, dQuot_s quot, linkB l, linkB r);
+static linkB balanceR(linkB h, linkB z);
+static linkB partR(linkB h, int r);
+static linkB rotL(linkB h);
+static linkB rotR(linkB h);
+
 
 struct BSTquot_s{
     linkB root;
@@ -10,7 +15,7 @@ struct BSTquot_s{
 
 pBSTquot bstInit(){
     pBSTquot x = (pBSTquot)malloc(sizeof(*x));
-    x->root=x->z=NULL;
+    x->root=(x->z= newNodeB(dataMin(),NULL,0,quotNULL(),NULL,NULL));
     return x;
 }
 
@@ -146,22 +151,27 @@ void BSTinsert(pBSTquot bst, dataOra_s d, dQuot_s quot){
 }
 static linkB insertR(linkB root, dataOra_s d, dQuot_s quot, linkB z){
     if(root==z){
-        return newNodeB(d,quot,z,z);
+        return newNodeB(d,z,0,quot,z,z);
     }
     if(confrontaDate(d, root->dataOra) < 0){
         root->l = insertR(root->l, d, quot, z);
+        root->l->p = root;
     }else{
         root->r = insertR(root->r, d, quot, z);
+        root->r->p = root;
     }
+    root->nElem++;
     return root;
 }
 
-static linkB newNodeB(dataOra_s d, dQuot_s quot, linkB l, linkB r){
+static linkB newNodeB(dataOra_s d, linkB padre, int nElem, dQuot_s quot, linkB l, linkB r){
     linkB x = (linkB)malloc(sizeof(*x));
     x->dataOra = d;
     x->dQuot = quot;
     x->l = l;
     x->r = r;
+    x->nElem = nElem;
+    x->p = padre;
     return x;
 }
 
@@ -195,4 +205,98 @@ dQuot_s initQuotaMax(){
     dQuot_s x;
     x.dQuot = 0;
     return x;
+}
+
+float mostraRapporto(linkB head){
+    return altezzaAlberoMassima(head)/altezzaAlberoMinima(head);
+}
+
+linkB mostraRoot(pBSTquot bst){
+    return bst->root;
+}
+
+void BSTbalance(pBSTquot bst){
+    bst->root = balanceR(bst->root, bst->z);
+}
+
+static linkB balanceR(linkB h, linkB z){
+    int r;
+    if(h==z){
+        return z;
+    }
+    r = (h->nElem+1)/2-1;
+    h=partR(h,r);
+    h->l=balanceR(h->l,z);
+    h->r=balanceR(h->r,z);
+    return h;
+}
+
+static linkB partR(linkB h, int r){
+    int t = h->l->nElem;
+    if(t>r){
+        h->l = partR(h->l, r);
+        h = rotR(h);
+    }
+    if(t<r){
+        h->r = partR(h->r, r-t-1);
+        h = rotL(h);
+    }
+    return h;
+}
+
+static linkB rotL(linkB h){
+    linkB x = h->r;
+    h->r = x->l;
+    x->r->p = h;
+    x->r = h;
+    x->p = h->p;
+    h->p = x;
+    x->nElem = h->nElem;
+    h->nElem = 1;
+    h->nElem += (h->l) ? h->l->nElem : 0;
+    h->nElem += (h->r) ? h->r->nElem : 0;
+    return x;
+}
+static linkB rotR(linkB h){
+    linkB x = h->r;
+    h->r = x->l;
+    x->l->p = h;
+    x->l = h;
+    x->p = h->p;
+    h->p = x;
+    x->nElem = h->nElem;
+    h->nElem = 1;
+    h->nElem += (h->l) ? h->l->nElem : 0;
+    h->nElem += (h->r) ? h->r->nElem : 0;
+    return x;
+}
+
+float altezzaAlberoMassima(linkB head){
+    return altezzaAlberoMassimaR(head);
+}
+float altezzaAlberoMinima(linkB head){
+    return altezzaAlberoMinimaR(head);
+}
+float altezzaAlberoMassimaR(linkB head){
+    float h1, h2;
+    if (head == NULL)
+        return 0;
+    if (head->l==NULL && head->r==NULL)
+        return 1;
+    h1 = altezzaAlberoMassimaR(head->l);
+    h2 = altezzaAlberoMassimaR(head->r);
+    if (h1 > h2)
+        return h1 + 1;
+    return h2 + 1;
+}
+float altezzaAlberoMinimaR(linkB head){
+    float h1, h2;
+    if (head == NULL) return 0;
+    if (head->l==NULL && head->r==NULL)
+        return 1;
+    h1 = altezzaAlberoMinimaR(head->l);
+    h2 = altezzaAlberoMinimaR(head->r);
+    if (h1 <= h2)
+        return h1 + 1;
+    return h2 + 1;
 }

@@ -11,6 +11,7 @@ link newNode(pTitolo titolo, pBSTquot bstQuot, link next);
 void nodeInsertSorted(pCollezioneT collezioneT, pBSTquot bstQuot, pTitolo titolo);
 link ricercaTitolo(pCollezioneT collezioneT, char titolo[]);
 dQuot_s cercaQuota(link node);
+pBSTquot cercaBST(link node);
 void minMaxSearch(link node, int cmd);
 void listaFree(link head);
 void deallocaCollezioneT(pCollezioneT collezioneT);
