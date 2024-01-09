@@ -16,7 +16,13 @@ ST STInit(int n){
     return sTable;
 }
 void STfree(ST sTable){
+    for(int i=0; i<sTable->nVert;i++){
+        free(sTable->vettElab[i]);
+    }
     free(sTable->vettElab);
+    for(int i=0; i<sTable->nVert;i++){
+        free(sTable->vettReti[i]);
+    }
     free(sTable->vettReti);
     free(sTable);
 }

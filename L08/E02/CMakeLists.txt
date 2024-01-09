@@ -8,4 +8,4 @@ add_executable(E02 main.c
         grafo.h
         st.c
         st.h
-        ../../L07/E02/main.c)
+)

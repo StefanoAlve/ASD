@@ -21,6 +21,11 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
+			"path" : "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeMinGWFindMake.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
 			"path" : "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeSystemSpecificInitialize.cmake"
 		},
 		{
@@ -300,6 +305,21 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
+			"path" : "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeFindCodeBlocks.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeExtraGeneratorDetermineCompilerMacrosAndIncludeDirs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/ProcessorCount.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
 			"path" : "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeCInformation.cmake"
 		},
 		{
@@ -434,8 +454,8 @@
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "C:/ASD/L09/E01/cmake-build-debug",
-		"source" : "C:/ASD/L09/E01"
+		"build" : "C:/ASD/L07/E02/cmake-build-debug",
+		"source" : "C:/ASD/L07/E02"
 	},
 	"version" : 
 	{
