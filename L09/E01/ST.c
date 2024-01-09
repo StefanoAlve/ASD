@@ -11,20 +11,20 @@ ST STInit(int n){
     sTable->nVert = 0;
     return sTable;
 }
-void STfree(ST sTable){ //TODO
+void STfree(ST sTable){
     for(int i=0; i<sTable->nVert;i++){
         free(sTable->vett[i]);
     }
     free(sTable->vett);
     free(sTable);
 }
-int STcount(ST sTable){ //TODO
+int STcount(ST sTable){
     return sTable->nVert;
 }
-void STprint(ST sTable, int index){ //TODO
+void STprint(ST sTable, int index){
     printf("%s", sTable->vett[index]);
 }
-int STgetIndex(ST sTable, char name[MAXC]){ //TODO
+int STgetIndex(ST sTable, char name[]){
     int i;
     for(i=0; i< sTable->nVert; i++){
         if(strcmp(name, sTable->vett[i]) == 0){
@@ -33,7 +33,9 @@ int STgetIndex(ST sTable, char name[MAXC]){ //TODO
     }
     return -1;
 }
-int STinsert(ST sTable, char name[MAXC]){ //TODO
+int STinsert(ST sTable, char name[]){
     int n = sTable->nVert;
     sTable->vett[n] = strdup(name);
+    sTable->nVert++;
+    return sTable->nVert-1; //ritorna l'indice a cui è stato inserito il vertice
 }

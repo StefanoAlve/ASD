@@ -11,7 +11,7 @@ ST STInit(int n);
 void STfree(ST sTable);
 int STcount(ST sTable);
 void STprint(ST sTable, int index);
-int STgetIndex(ST sTable, char name[MAXC]);
-int STinsert(ST sTable, char name[MAXC]);
+int STgetIndex(ST sTable, char name[]);
+int STinsert(ST sTable, char name[]);
 
 #endif //E01_ST_H

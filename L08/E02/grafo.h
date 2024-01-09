@@ -8,11 +8,6 @@ struct node{
     int flusso;
     link next;
 };
-typedef struct{
-    int v1;
-    int v2;
-    int flusso;
-}arco_s;
 int** mInit(int r, int c, int val);
 void listaInit(int n, pgrafo_s pGrafo);
 pgrafo_s grafoInit(int n);
