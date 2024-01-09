@@ -67,6 +67,12 @@ build CMakeFiles/E02.dir/st.c.obj: C_COMPILER__E02_unscanned_Debug C$:/ASD/L08/E
   OBJECT_DIR = CMakeFiles\E02.dir
   OBJECT_FILE_DIR = CMakeFiles\E02.dir
 
+build CMakeFiles/E02.dir/C_/ASD/L07/E02/main.c.obj: C_COMPILER__E02_unscanned_Debug C$:/ASD/L07/E02/main.c || cmake_object_order_depends_target_E02
+  DEP_FILE = CMakeFiles\E02.dir\C_\ASD\L07\E02\main.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\E02.dir
+  OBJECT_FILE_DIR = CMakeFiles\E02.dir\C_\ASD\L07\E02
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target E02
@@ -75,7 +81,7 @@ build CMakeFiles/E02.dir/st.c.obj: C_COMPILER__E02_unscanned_Debug C$:/ASD/L08/E
 #############################################
 # Link the executable E02.exe
 
-build E02.exe: C_EXECUTABLE_LINKER__E02_Debug CMakeFiles/E02.dir/main.c.obj CMakeFiles/E02.dir/grafo.c.obj CMakeFiles/E02.dir/st.c.obj
+build E02.exe: C_EXECUTABLE_LINKER__E02_Debug CMakeFiles/E02.dir/main.c.obj CMakeFiles/E02.dir/grafo.c.obj CMakeFiles/E02.dir/st.c.obj CMakeFiles/E02.dir/C_/ASD/L07/E02/main.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\E02.dir
