@@ -1,35 +1,43 @@
 #include <stdio.h>
 #include "grafo.h"
 int contaArchi(char nomeFile[]);
-void menu(pgrafo_s pGrafo);
-int main() {
+int menu(pgrafo_s pGrafo);
+int main(int argc, char** argv) {
     //TODO inserire argv argc
-    int nArchi;
+    int nArchi, flag = 0;
+    arco_s *vettArchi;
     pgrafo_s pGrafo;
-    nArchi = contaArchi(nomeFile);
-    grafoInit(nArchi*2); //Suppongo che ogni arco colleghi due vertici distinti
-    riempiGrafo(pGrafo, nomeFile);
-    menu(pGrafo);
-    distruggiGrafo(pGrafo);
+    //if(argc == 2) {
+        nArchi = contaArchi("grafo.txt");
+        pGrafo = grafoInit(nArchi * 2); //Suppongo che ogni arco colleghi due vertici distinti
+        GraphLoad(pGrafo, "grafo.txt");
+        printf("\nAttualmente la matrice delle adiacenze e' cosi' composta:");
+        print_matrix(pGrafo);
+        flag = menu(pGrafo);
+        distruggiGrafo(pGrafo, flag);
+    //}else{
+        //printf("\nErrore nell'esecuzione del programma, inserisci il nome del file all'apertura.");
+    //}
     return 0;
 }
 
 int contaArchi(char nomeFile[]){
     FILE *fp;
-    int nArchi = 0;
+    int nArchi = 0, x;
+    char buff[MAXC];
     fp=fopen(nomeFile, "r");
     if(fp==NULL){
         printf("Errore apertura file!\n");
         exit(1);
     }
-    while(fscanf(fp,"%*s %*s %*s %*s %*d") == 5){
+    while(fscanf(fp,"%s %s %s %s %d", buff,buff,buff,buff,&x) == 5){
         nArchi++;
     }
     fclose(fp);
     return nArchi;
 }
 
-void menu(pgrafo_s pGrafo){
+int menu(pgrafo_s pGrafo){
     int comando, flag = 0, scelta = 0;
     char elab1[MAXC], elab2[MAXC], elab3[MAXC];
     do{
@@ -41,6 +49,7 @@ void menu(pgrafo_s pGrafo){
         printf("--------------------------------------------------------\n\n");
         printf("Inserire comando:");
         scanf("%d", &comando);
+        //TODO Inserire Controllo su input
         switch(comando){
             case 1:
                 elencaAlfabetico(pGrafo);
@@ -71,7 +80,7 @@ void menu(pgrafo_s pGrafo){
                 }
                 break;
             case 3:
-                generaListaAdiac(pGrafo);
+                GRAPHloadListAdj(pGrafo);
                 flag = 1;
                 break;
             case 4:
@@ -82,4 +91,5 @@ void menu(pgrafo_s pGrafo){
                 break;
         }
     }while(comando != 4);
+    return flag;
 }

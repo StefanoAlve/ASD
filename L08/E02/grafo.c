@@ -32,62 +32,117 @@ pgrafo_s grafoInit(int n){
     grafo = (pgrafo_s)malloc(sizeof(struct grafo_s));
     grafo->mAdiac = mInit(n,n, 0);
     grafo->tabSimboli = STInit(n);
+    grafo->sentinella = newNode(-1, -1, NULL);
     grafo->nVertici = 0;
     grafo->nArchi = n/2;
     return grafo;
 }
 
-void riempiGrafo(pgrafo_s pGrafo, char nomeFile[]){
-    FILE *fp;
-    fp=fopen(nomeFile, "r");
-    char elab1[MAXC], rete1[MAXC], elab2[MAXC], rete2[MAXC];
-    int flusso, iV1, iV2, iR1, iR2;
-    arco_s *vettArchi = (arco_s*)malloc(pGrafo->nArchi*sizeof(arco_s)); //TODO deallocare
-    if(fp==NULL){
-        printf("Errore nell'apertura del file!\n");
-        exit(1);
+void GraphLoad(pgrafo_s G, char *filename){
+    char id_elab1[MAXC], id_elab2[MAXC],id_rete1[MAXC],id_rete2[MAXC];
+    int wt, E = 0;
+    FILE *fp = fopen(filename, "r");
+    if(fp != NULL)
+    {
+        while(fscanf(fp, "%s %s %s %s %d", id_elab1, id_rete1, id_elab2, id_rete2, &wt) == 5){
+            GRAPHinsertE(G, id_elab1, id_rete1, id_elab2, id_rete2, wt);
+            E++;
+        }
+        STprint(G->tabSimboli);
+        G->nArchi = E;
+        G->nVertici = STcount(G->tabSimboli);
     }
-    while(fscanf(fp, "%s %s %s %s %d", elab1,rete1,elab2,rete2,&flusso) == 5){
-        iV1 = STsearchIndexElab(pGrafo->tabSimboli, elab1);
-        if(iV1 == -1){
-            STinsertElab(pGrafo->tabSimboli, elab1, STcount(pGrafo->tabSimboli)+1);
-            iV1 = STcount(pGrafo->tabSimboli);
-        }
-        iV2 = STsearchIndexElab(pGrafo->tabSimboli, elab2);
-        if(iV2 == -1){
-            STinsertElab(pGrafo->tabSimboli, elab2, STcount(pGrafo->tabSimboli)+1);
-            iV2 = STcount(pGrafo->tabSimboli);
-        }
-        pGrafo->mAdiac[iV1][iV2] = flusso;
-        pGrafo->mAdiac[iV2][iV1] = flusso;
-        iR1 = STsearchIndexReti(pGrafo->tabSimboli, rete1);
-        if(iR1 == -1){
-            STinsertElab(pGrafo->tabSimboli, rete1, STcount(pGrafo->tabSimboli)+1);
-        }
-        iR2 = STsearchIndexReti(pGrafo->tabSimboli, rete2);
-        if(iR2 == -1){
-            STinsertElab(pGrafo->tabSimboli, rete2, STcount(pGrafo->tabSimboli)+1);
-        }
-    }
-    generaArchi(pGrafo,vettArchi);
+    else
+        printf("\nErrore nella lettura del file");
     fclose(fp);
 }
 
-void distruggiGrafo(pgrafo_s pGrafo){
-    freeM(pGrafo->mAdiac);
-    free(pGrafo->tabSimboli);
-    freeL(pGrafo->listAdiac);
+
+void distruggiGrafo(pgrafo_s pGrafo, int flag){
+    freeM(pGrafo);
+    if(flag) {
+        freeL(pGrafo);
+    }
+    STfree(pGrafo->tabSimboli);
     free(pGrafo);
 }
-void elencaAlfabetico(pgrafo_s pGrafo){ //TODO
-
+void elencaAlfabetico(pgrafo_s pGrafo){
+    int *vett = (int*)malloc(pGrafo->nVertici * sizeof(int)), i, j, v = pGrafo->nVertici;
+    STsort(pGrafo->tabSimboli, vett);
+    for(i = 0; i < v; i++)
+    {
+        printf("\n\nVertice %d): ", i+1);
+        STprintName(pGrafo->tabSimboli, vett[i]); printf("\n");
+        for(j = 0; j < v; j++)
+        {
+            if(pGrafo->mAdiac[vett[i]][vett[j]] != 0)
+            {
+                STprintName(pGrafo->tabSimboli, vett[j]);
+                printf("- ");
+            }
+        }
+    }
+    free(vett);
 }
-int verificaAdiacCoppM(pgrafo_s pGrafo, char v1[MAXC], char v2[MAXC], char v3[MAXC]){ //TODO
 
+void GRAPHinsertE(pgrafo_s G, char* id_elab1, char* id_rete1, char* id_elab2, char* id_rete2, int wt)
+{
+    int id1, id2;
+    id1 = STgetIndex(G->tabSimboli, id_elab1, id_rete1);
+    id2 = STgetIndex(G->tabSimboli, id_elab2, id_rete2);
+    if(id1 == -1)
+        id1 = STinsert(G->tabSimboli, id_elab1, id_rete1);
+    if(id2 == -1)
+        id2 = STinsert(G->tabSimboli, id_elab2, id_rete2);
+    if(G->mAdiac[id1][id2] == 0) G->nArchi++; // aggiungo il nuovo arco se il peso precedente era zero nella matrice di adiacenza
+    G->mAdiac[id1][id2] = wt;
+    G->mAdiac[id2][id1] = wt;
 }
-int verificaAdiacCoppL(pgrafo_s pGrafo, char v1[MAXC], char v2[MAXC], char v3[MAXC]){ //TODO
 
+void verificaAdiacCoppM(pgrafo_s pGrafo, char v1[MAXC], char v2[MAXC], char v3[MAXC]){
+    int id1, id2, id3, flag = 0;
+    id1 = STgetIndex(pGrafo->tabSimboli,v1,"");
+    id2 = STgetIndex(pGrafo->tabSimboli,v2,"");
+    id3 = STgetIndex(pGrafo->tabSimboli,v3,"");
+    if(id1 >= 0 && id2 >= 0 && id3>=0)
+        if(pGrafo->mAdiac[id1][id2] != 0 && pGrafo->mAdiac[id1][id3] != 0 && pGrafo->mAdiac[id2][id3] != 0)
+            flag = 1;
+    if(flag)
+        printf("\nI vertici %s, %s, %s formano un sottografo completo.\n", v1, v2, v3);
+    else
+        printf("\nI vertici %s, %s, %s non formano un sottografo completo.\n", v1, v2, v3);
 }
+
+void verificaAdiacCoppL(pgrafo_s pGrafo, char v1[MAXC], char v2[MAXC], char v3[MAXC]){
+    int id1, id2, id3, flag1 =0, flag2 = 0, flag3 = 0;
+    link x, y, z;
+    id1 = STgetIndex(pGrafo->tabSimboli, v1, "");
+    id2 = STgetIndex(pGrafo->tabSimboli, v2, "");
+    id3 = STgetIndex(pGrafo->tabSimboli, v3, "");
+    if(id1 >= 0 && id2 >= 0 && id3>=0)
+    {
+        x = pGrafo->listAdiac[id1];
+        y = pGrafo->listAdiac[id2];
+        while(x!= pGrafo->sentinella){
+            if(x->vertice == id2)
+                flag1 = 1;
+            if(x->vertice == id3)
+                flag2 = 1;
+            x = x->next;
+        }
+        while(y != pGrafo->sentinella && !flag3)
+        {
+            if(y->vertice == id3)
+                flag3 = 1;
+            y = y->next;
+        }
+        if(flag1*flag2*flag3 > 0)
+            printf("\nI vertici %s, %s, %s formano un sottografo completo.\n", v1, v2, v3);
+        else
+            printf("\nI vertici %s, %s, %s non formano un sottografo completo.\n", v1, v2, v3);
+    }
+}
+
 link newNode(int vertice, int flusso, link next){
     link x = (link)malloc(sizeof(*x));
     x->vertice = vertice;
@@ -95,35 +150,56 @@ link newNode(int vertice, int flusso, link next){
     x->next = next;
     return x;
 }
-arco_s creaArco(int v1,int v2, int flusso){
-    arco_s arco;
-    arco.v1=v1;
-    arco.v2=v2;
-    arco.flusso=flusso;
-    return arco;
+void print_matrix(pgrafo_s G){
+    int i, j, v = G->nVertici;
+    printf("\n");
+    for(i = 0; i < v; i++)
+    {
+        for(j =0 ; j < v; j++)
+            printf(" %d ", G->mAdiac[i][j]);
+        printf("\n");
+    }
 }
-void generaArchi(pgrafo_s pGrafo, arco_s *vettArchi){
-    int i, j, E=0;
-    for(i=0; i<pGrafo->nVertici; i++){
-        for(j=i+1;j<pGrafo->nVertici;j++){
-            if(pGrafo->mAdiac[i][j] != 0){
-                vettArchi[E++] = creaArco(i,j,pGrafo->mAdiac[i][j]);
+void freeM(pgrafo_s pGrafo){
+    for(int i = 0; i<pGrafo->nVertici; i++)
+        free(pGrafo->mAdiac[i]);
+    free(pGrafo->mAdiac);
+}
+void freeL(pgrafo_s pGrafo){
+    link x;
+    for(int i=0; i<pGrafo->nVertici; i++) {
+        while (pGrafo->listAdiac[i] != pGrafo->sentinella) {
+            x = pGrafo->listAdiac[i];
+            pGrafo->listAdiac[i] = pGrafo->listAdiac[i]->next;
+            free(x);
+        }
+    }
+    free(pGrafo->listAdiac);
+}
+
+void GRAPHloadListAdj(pgrafo_s G){
+    int v = G->nVertici, i, j;
+    listaInit(G->nVertici,G);
+    for(i = 0; i < v; i++)
+    {
+        for(j = 0; j < v; j++)
+        {
+            if(G->mAdiac[i][j]!=0){
+                G->listAdiac[i] = newNode(j, G->mAdiac[i][j], G->listAdiac[i]);
             }
         }
     }
-    pGrafo->nArchi = E;
-}
-void insertE(pgrafo_s pGrafo, arco_s arco){
-    int v1=arco.v1, v2=arco.v2, flusso = arco.flusso;
-    pGrafo->listAdiac[v1] = newNode(v2, flusso, pGrafo->listAdiac[v1]);
-    pGrafo->listAdiac[v2] = newNode(v1, flusso, pGrafo->listAdiac[v2]);
-}
-void generaListaAdiac(pgrafo_s pGrafo, arco_s* vettArchi){
-    listaInit(pGrafo->nVertici, pGrafo);
-    for(int i=0; i<pGrafo->nArchi; i++){
-        insertE(pGrafo, vettArchi[i]);
-    }
-}
 
-void freeM(int** M); //TODO
-void freeL(link* head); //TODO
+    link x;
+    for(i = 0; i < v; i++)
+    {
+        printf("\n-Vertex %d:\n", i);
+        x = G->listAdiac[i];
+        while(x!= G->sentinella)
+        {
+            printf("id: %d; w:%d - ", x->vertice, x->flusso);
+            x = x->next;
+        }
+    }
+    printf("\n");
+}

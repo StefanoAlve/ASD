@@ -16,15 +16,15 @@ typedef struct{
 int** mInit(int r, int c, int val);
 void listaInit(int n, pgrafo_s pGrafo);
 pgrafo_s grafoInit(int n);
-void riempiGrafo(pgrafo_s pGrafo, char nomeFile[]);
-void distruggiGrafo(pgrafo_s pGrafo);
+void GRAPHinsertE(pgrafo_s G, char* id_elab1, char* id_rete1, char* id_elab2, char* id_rete2, int wt);
+void GraphLoad(pgrafo_s G, char *filename);
+void distruggiGrafo(pgrafo_s pGrafo, int flag);
 void elencaAlfabetico(pgrafo_s pGrafo);
-arco_s creaArco(int v1,int v2, int flusso);
-void generaArchi(pgrafo_s pGrafo, arco_s *vettArchi);
 link newNode(int vertice, int flusso, link next);
-void generaListaAdiac(pgrafo_s pGrafo, arco_s* vettArchi);
-int verificaAdiacCoppM(pgrafo_s pGrafo, char v1[MAXC], char v2[MAXC], char v3[MAXC]); //Con matrice
-int verificaAdiacCoppL(pgrafo_s pGrafo, char v1[MAXC], char v2[MAXC], char v3[MAXC]); //Con lista
-void freeM(int** M);
-void freeL(link* head);
+void GRAPHloadListAdj(pgrafo_s G);
+void verificaAdiacCoppM(pgrafo_s pGrafo, char v1[MAXC], char v2[MAXC], char v3[MAXC]); //Con matrice
+void verificaAdiacCoppL(pgrafo_s pGrafo, char v1[MAXC], char v2[MAXC], char v3[MAXC]); //Con lista
+void print_matrix(pgrafo_s G);
+void freeM(pgrafo_s pGrafo);
+void freeL(pgrafo_s pGrafo);
 #endif
