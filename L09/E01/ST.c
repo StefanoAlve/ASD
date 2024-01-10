@@ -39,3 +39,7 @@ int STinsert(ST sTable, char name[]){
     sTable->nVert++;
     return sTable->nVert-1; //ritorna l'indice a cui è stato inserito il vertice
 }
+
+char* STsearchByIndex(ST sTable, int index){
+    return sTable->vett[index];
+}

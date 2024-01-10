@@ -12,9 +12,9 @@ struct node{
 
 void listaInit(Graph grafo);
 void listaFree(Graph grafo);
-Graph grafoInit(int n);
+Graph GRAPHInit(int n);
 void GRAPHfree(Graph grafo);
-void GRAPHload(FILE *fin);
+Graph GRAPHload(FILE *fin);
 void GRAPHstore(Graph grafo, FILE *fout);
 int GRAPHgetIndex(Graph grafo, char name[]);
 void GRAPHinsertE(Graph grafo, int id1, int id2, int peso);

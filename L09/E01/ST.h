@@ -12,6 +12,7 @@ void STfree(ST sTable);
 int STcount(ST sTable);
 void STprint(ST sTable, int index);
 int STgetIndex(ST sTable, char name[]);
+char* STsearchByIndex(ST sTable, int index);
 int STinsert(ST sTable, char name[]);
 
 #endif //E01_ST_H
