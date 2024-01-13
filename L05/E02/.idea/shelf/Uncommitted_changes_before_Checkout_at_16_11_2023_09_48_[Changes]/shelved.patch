@@ -1,0 +1,59 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"CMakePresetLoader\"><![CDATA[{\r\n  \"useNewFormat\": true\r\n}]]></component>\r\n  <component name=\"CMakeReloadState\">\r\n    <option name=\"reloaded\" value=\"true\" />\r\n  </component>\r\n  <component name=\"CMakeRunConfigurationManager\">\r\n    <generated>\r\n      <config projectName=\"E02\" targetName=\"E02\" />\r\n    </generated>\r\n  </component>\r\n  <component name=\"CMakeSettings\">\r\n    <configurations>\r\n      <configuration PROFILE_NAME=\"Debug\" ENABLED=\"true\" CONFIG_NAME=\"Debug\" />\r\n    </configurations>\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"77c22b2c-de00-483f-afe2-396be755db0b\" name=\"Changes\" comment=\"Aggiunta Lab05\">\r\n      <change beforePath=\"$PROJECT_DIR$/cmake-build-debug/.cmake/api/v1/reply/index-2023-11-12T11-46-14-0788.json\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.26.4/CMakeDetermineCompilerABI_C.bin\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.26.4/CMakeDetermineCompilerABI_C.bin\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeConfigureLog.yaml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeConfigureLog.yaml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-Debug-log.txt\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"ClangdSettings\">\r\n    <option name=\"formatViaClangd\" value=\"false\" />\r\n  </component>\r\n  <component name=\"ExecutionTargetManager\" SELECTED_TARGET=\"CMakeBuildProfile:Debug\" />\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$/../..\" value=\"Stefano\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/../..\" />\r\n  </component>\r\n  <component name=\"ProjectApplicationVersion\">\r\n    <option name=\"ide\" value=\"CLion\" />\r\n    <option name=\"majorVersion\" value=\"2023\" />\r\n    <option name=\"minorVersion\" value=\"2.2\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\"><![CDATA[{\r\n  \"associatedIndex\": 6\r\n}]]></component>\r\n  <component name=\"ProjectId\" id=\"2Y4f2st5kgB1rqUmmRKUzKdb8x5\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"RunOnceActivity.cidr.known.project.marker\": \"true\",\r\n    \"WebServerToolWindowFactoryState\": \"false\",\r\n    \"cf.first.check.clang-format\": \"false\",\r\n    \"cidr.known.project.marker\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  }\r\n}]]></component>\r\n  <component name=\"RunManager\">\r\n    <configuration default=\"true\" type=\"CLionExternalRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\">\r\n      <method v=\"2\">\r\n        <option name=\"CLION.EXTERNAL.BUILD\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"E02\" type=\"CMakeRunConfiguration\" factoryName=\"Application\" REDIRECT_INPUT=\"false\" ELEVATE=\"false\" USE_EXTERNAL_CONSOLE=\"false\" EMULATE_TERMINAL=\"false\" PASS_PARENT_ENVS_2=\"true\" PROJECT_NAME=\"E02\" TARGET_NAME=\"E02\" CONFIG_NAME=\"Debug\" RUN_TARGET_PROJECT_NAME=\"E02\" RUN_TARGET_NAME=\"E02\">\r\n      <method v=\"2\">\r\n        <option name=\"com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"77c22b2c-de00-483f-afe2-396be755db0b\" name=\"Changes\" comment=\"\" />\r\n      <created>1699789568165</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1699789568165</updated>\r\n      <workItem from=\"1699789569578\" duration=\"273000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"Aggiunta Lab05\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1699789626051</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699789626051</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"Aggiunta Lab05\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1699789828014</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1699789828014</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"VCPKGProject\">\r\n    <isAutomaticEditVcpkgJson value=\"false\" />\r\n    <isAutomaticCheckingOnLaunch value=\"false\" />\r\n    <isAutomaticFoundErrors value=\"true\" />\r\n    <isAutomaticFoundErrors value=\"true\" />\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"Aggiunta Lab05\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Aggiunta Lab05\" />\r\n  </component>\r\n</project>
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -3,9 +3,9 @@
+   <component name="AutoImportSettings">
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+-  <component name="CMakePresetLoader"><![CDATA[{
+-  "useNewFormat": true
+-}]]></component>
++  <component name="CMakePresetLoader">{
++  &quot;useNewFormat&quot;: true
++}</component>
+   <component name="CMakeReloadState">
+     <option name="reloaded" value="true" />
+   </component>
+@@ -49,9 +49,9 @@
+     <option name="majorVersion" value="2023" />
+     <option name="minorVersion" value="2.2" />
+   </component>
+-  <component name="ProjectColorInfo"><![CDATA[{
+-  "associatedIndex": 6
+-}]]></component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 6
++}</component>
+   <component name="ProjectId" id="2Y4f2st5kgB1rqUmmRKUzKdb8x5" />
+   <component name="ProjectViewState">
+     <option name="hideEmptyMiddlePackages" value="true" />
+@@ -65,16 +65,10 @@
+     "WebServerToolWindowFactoryState": "false",
+     "cf.first.check.clang-format": "false",
+     "cidr.known.project.marker": "true",
+-    "git-widget-placeholder": "main",
+     "vue.rearranger.settings.migration": "true"
+   }
+ }]]></component>
+   <component name="RunManager">
+-    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true">
+-      <method v="2">
+-        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+-      </method>
+-    </configuration>
+     <configuration name="E02" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" EMULATE_TERMINAL="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="E02" TARGET_NAME="E02" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="E02" RUN_TARGET_NAME="E02">
+       <method v="2">
+         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+@@ -90,6 +84,7 @@
+       <option name="presentableId" value="Default" />
+       <updated>1699789568165</updated>
+       <workItem from="1699789569578" duration="273000" />
++      <workItem from="1700124526812" duration="1000" />
+     </task>
+     <task id="LOCAL-00001" summary="Aggiunta Lab05">
+       <option name="closed" value="true" />
