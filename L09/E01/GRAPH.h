@@ -20,4 +20,8 @@ int GRAPHgetIndex(Graph grafo, char name[]);
 void GRAPHinsertE(Graph grafo, int id1, int id2, int peso);
 void GRAPHremoveE(Graph grafo, int id1, int id2);
 void GRAPHedges(Graph grafo, arco_s *archi);
+int GRAPHdfs(Graph grafo, int id);
+// EXTRA FUNCTIONS
+Graph searchForMinCardinality(Graph grafo);
+void GRAPHcamminoMax(Graph G);
 #endif //E01_GRAPH_H
