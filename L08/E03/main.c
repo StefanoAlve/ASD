@@ -96,30 +96,37 @@ void menu(pCollezioneT collezioneT, comando_e comando){
             printf("Inserisci il titolo: ");
             scanf("%s", titolo);
             x = ricercaTitolo(collezioneT,titolo);
-            quot = cercaQuota(x);
-            stampaQuot(quot);
+            if(x!=NULL) {
+                quot = cercaQuota(x);
+                stampaQuot(quot);
+            }
             break;
         case cercaMaxMin_e:
             printf("Inserisci il titolo: ");
             scanf("%s", titolo);
             x = ricercaTitolo(collezioneT,titolo);
-            printf("Inserisci 0 se vuoi cercare tra due date, 1 se vuoi cercare lungo tutto il periodo registrato:");
-            scanf("%d", &cmd);
-            minMaxSearch(x, cmd);
+            if(x!=NULL) {
+                printf("Inserisci 0 se vuoi cercare tra due date, 1 se vuoi cercare lungo tutto il periodo registrato:");
+                scanf("%d", &cmd);
+                minMaxSearch(x, cmd);
+            }
             break;
         case ribilanciaBST_e:
             printf("Inserisci il titolo: ");
             scanf("%s", titolo);
             x = ricercaTitolo(collezioneT,titolo);
-            rapporto = mostraRapporto(mostraRoot(cercaBST(x)));
-            printf("Il rapporto iniziale vale: %.2f\n", rapporto);
-            printf("Inserisci la soglia:");
-            scanf("%f",&soglia);
-            if(rapporto >= soglia) {
-                BSTbalance(cercaBST(x));
-                printf("L'albero e' stato ribilanciato, il rapporto attualmente vale: %.2f\n", mostraRapporto(mostraRoot(cercaBST(x))));
-            }else{
-                printf("Il rapporto non supera la soglia inserita\n");
+            if(x!=NULL) {
+                rapporto = mostraRapporto(mostraRoot(cercaBST(x)));
+                printf("Il rapporto iniziale vale: %.2f\n", rapporto);
+                printf("Inserisci la soglia:");
+                scanf("%f", &soglia);
+                if (rapporto >= soglia) {
+                    BSTbalance(cercaBST(x));
+                    printf("L'albero e' stato ribilanciato, il rapporto attualmente vale: %.2f\n",
+                           mostraRapporto(mostraRoot(cercaBST(x))));
+                } else {
+                    printf("Il rapporto non supera la soglia inserita\n");
+                }
             }
             break;
         case fine_e:

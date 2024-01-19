@@ -3,7 +3,6 @@
 int contaArchi(char nomeFile[]);
 int menu(pgrafo_s pGrafo);
 int main(int argc, char** argv) {
-    //TODO inserire argv argc
     int nArchi, flag = 0;
     pgrafo_s pGrafo;
     if(argc == 2) {
