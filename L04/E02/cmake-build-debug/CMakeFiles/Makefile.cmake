@@ -7,6 +7,10 @@ set(CMAKE_DEPENDS_GENERATOR "MinGW Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
+  "C:/ASD/L04/E02/CMakeLists.txt"
+  "CMakeFiles/3.26.4/CMakeCCompiler.cmake"
+  "CMakeFiles/3.26.4/CMakeRCCompiler.cmake"
+  "CMakeFiles/3.26.4/CMakeSystem.cmake"
   "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeCCompiler.cmake.in"
   "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeCCompilerABI.c"
   "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeCInformation.cmake"
@@ -88,10 +92,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/Platform/Windows.cmake"
   "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/Platform/WindowsPaths.cmake"
   "C:/Users/stefa/AppData/Local/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.26/Modules/ProcessorCount.cmake"
-  "C:/Users/stefa/OneDrive/Desktop/L04/E02/CMakeLists.txt"
-  "CMakeFiles/3.26.4/CMakeCCompiler.cmake"
-  "CMakeFiles/3.26.4/CMakeRCCompiler.cmake"
-  "CMakeFiles/3.26.4/CMakeSystem.cmake"
   )
 
 # The corresponding makefile is:
