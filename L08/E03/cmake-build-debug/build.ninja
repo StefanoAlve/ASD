@@ -55,6 +55,30 @@ build CMakeFiles/E03.dir/main.c.obj: C_COMPILER__E03_unscanned_Debug C$:/ASD/L08
   OBJECT_DIR = CMakeFiles\E03.dir
   OBJECT_FILE_DIR = CMakeFiles\E03.dir
 
+build CMakeFiles/E03.dir/dataOra.c.obj: C_COMPILER__E03_unscanned_Debug C$:/ASD/L08/E03/dataOra.c || cmake_object_order_depends_target_E03
+  DEP_FILE = CMakeFiles\E03.dir\dataOra.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\E03.dir
+  OBJECT_FILE_DIR = CMakeFiles\E03.dir
+
+build CMakeFiles/E03.dir/titolo.c.obj: C_COMPILER__E03_unscanned_Debug C$:/ASD/L08/E03/titolo.c || cmake_object_order_depends_target_E03
+  DEP_FILE = CMakeFiles\E03.dir\titolo.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\E03.dir
+  OBJECT_FILE_DIR = CMakeFiles\E03.dir
+
+build CMakeFiles/E03.dir/collezioneTitoli.c.obj: C_COMPILER__E03_unscanned_Debug C$:/ASD/L08/E03/collezioneTitoli.c || cmake_object_order_depends_target_E03
+  DEP_FILE = CMakeFiles\E03.dir\collezioneTitoli.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\E03.dir
+  OBJECT_FILE_DIR = CMakeFiles\E03.dir
+
+build CMakeFiles/E03.dir/collezioneQuotazioni.c.obj: C_COMPILER__E03_unscanned_Debug C$:/ASD/L08/E03/collezioneQuotazioni.c || cmake_object_order_depends_target_E03
+  DEP_FILE = CMakeFiles\E03.dir\collezioneQuotazioni.c.obj.d
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\E03.dir
+  OBJECT_FILE_DIR = CMakeFiles\E03.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target E03
@@ -63,7 +87,7 @@ build CMakeFiles/E03.dir/main.c.obj: C_COMPILER__E03_unscanned_Debug C$:/ASD/L08
 #############################################
 # Link the executable E03.exe
 
-build E03.exe: C_EXECUTABLE_LINKER__E03_Debug CMakeFiles/E03.dir/main.c.obj
+build E03.exe: C_EXECUTABLE_LINKER__E03_Debug CMakeFiles/E03.dir/main.c.obj CMakeFiles/E03.dir/dataOra.c.obj CMakeFiles/E03.dir/titolo.c.obj CMakeFiles/E03.dir/collezioneTitoli.c.obj CMakeFiles/E03.dir/collezioneQuotazioni.c.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\E03.dir

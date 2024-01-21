@@ -8,6 +8,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "C:/ASD/L09/E01/GRAPH.c" "CMakeFiles/E01.dir/GRAPH.c.obj" "gcc" "CMakeFiles/E01.dir/GRAPH.c.obj.d"
+  "C:/ASD/L09/E01/ST.c" "CMakeFiles/E01.dir/ST.c.obj" "gcc" "CMakeFiles/E01.dir/ST.c.obj.d"
   "C:/ASD/L09/E01/main.c" "CMakeFiles/E01.dir/main.c.obj" "gcc" "CMakeFiles/E01.dir/main.c.obj.d"
   )
 
