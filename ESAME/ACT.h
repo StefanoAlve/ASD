@@ -8,7 +8,7 @@
 typedef struct activities *ACT;
 //Elimino typedef struct attivita perchè è superfluo;
 typedef struct{
-    char nome[20];
+    char nome[MAXC];
     int inizio;
     int durata;
     int valore;
