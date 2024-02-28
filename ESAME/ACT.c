@@ -23,7 +23,7 @@ ACT activityRead(FILE *f){
     }
     for(i=0;i<nP;i++){
         fscanf(f,"%s", tmp);
-        fscanf(f,"%c", &carattere); //Aggiungo la lettura dello spazio dopo la stringa
+        fscanf(f,"%c", &carattere); ///Aggiungo la lettura dello spazio dopo la stringa
         index = ACTfindByName(tmp, elencoAct);
         if(index == -1){
             printf("Attivita' a cui inserire vincoli inesistente!\n");
@@ -31,17 +31,17 @@ ACT activityRead(FILE *f){
         }
         stop=0;
         j=0;
-        k=0; //Aggiungo azzeramento di k
+        k=0; ///Aggiungo azzeramento di k
         while(!stop){
             if(j==2){
                 stop = 1;
             }
             fscanf(f,"%c", &carattere);
-            if(carattere == ' ' || carattere == '\n' || feof(f)){ //Ho dimenticato di inserire il caso in cui la fscanf dovesse incontrare uno spazio e quando il file finisce, li aggiungo.
-                tmp[k] = '\0'; //Ho aggiunto l'inserimento del carattere di terminazione della stringa
-                strcpy(elencoAct->vettAttivita[index].vincoli[j++],tmp); //Nell'esame per una svista non ho usato strcpy, lo inserisco ora
+            if(carattere == ' ' || carattere == '\n' || feof(f)){ ///Ho dimenticato di inserire il caso in cui la fscanf dovesse incontrare uno spazio e quando il file finisce, li aggiungo.
+                tmp[k] = '\0'; ///Ho aggiunto l'inserimento del carattere di terminazione della stringa
+                strcpy(elencoAct->vettAttivita[index].vincoli[j++],tmp); ///Nell'esame per una svista non ho usato strcpy, lo inserisco ora
                 elencoAct->vettAttivita[index].nVin = j;
-                k=0; //Aggiungo l'azzeramento di k
+                k=0; ///Aggiungo l'azzeramento di k
                 if(carattere == '\n' || feof(f)){
                     stop = 1;
                 }
@@ -57,7 +57,7 @@ static ACT ACTinit(int nAtt){
     ACT elencoAct;
     elencoAct = (ACT)malloc(sizeof(*elencoAct));
     elencoAct->vettAttivita = (attivita*)malloc(nAtt*sizeof(attivita));
-    for(int i=0;i<nAtt;i++){ //ho modificato elencoAct->nAtt con nAtt perchè in questo punto elencoAct->nAtt non è ancora stato riempito
+    for(int i=0;i<nAtt;i++){ ///ho modificato elencoAct->nAtt con nAtt perchè in questo punto elencoAct->nAtt non è ancora stato riempito
         elencoAct->vettAttivita[i].nVin = 0;
     }
     elencoAct->nAtt = nAtt;
@@ -82,17 +82,18 @@ int checkSelection(ACT a, char **selected, int nsel){
             index2 = ACTfindByName(selected[j],a);
             //Per verificare la condizione di non intersezione suppongo che le attività non siano ordinate, se fossero ordinate basterebbe controllare la precedente
             if((a->vettAttivita[index1].inizio < a->vettAttivita[index2].inizio && ((a->vettAttivita[index1].inizio + a->vettAttivita[index1].durata) > a->vettAttivita[index2].inizio)) || (a->vettAttivita[index2].inizio < a->vettAttivita[index1].inizio && ((a->vettAttivita[index2].inizio + a->vettAttivita[index2].durata) > a->vettAttivita[index1].inizio))){
+                //Controllo la presenza di un'intersezione tra le attività
                 return 0;
             }
         }
     }
     //Condizione di precedenza, il ragionamento applicato a riguardo è meglio spiegato nella relazione
     for(i=0;i<nsel;i++){
-        cnt=0; //ho spostato l'azzeramento prima dell'if per non creare problemi nel caso in cui non siano presenti dei vincoli
+        cnt=0; ///ho spostato l'azzeramento prima dell'if per non creare problemi nel caso in cui non siano presenti dei vincoli
         index1 = ACTfindByName(selected[i],a);
         if(a->vettAttivita[index1].nVin != 0){ //Se ha requisiti di precedenza
             for(j=0;j<a->vettAttivita[index1].nVin;j++){
-                for(k=0;k<i && cnt < a->vettAttivita[index1].nVin; k++){ //Ho modificato il limite superiore di k perchè deve arrivare a i-1 dato che gli elementi devono precedere l'indice i
+                for(k=0;k<i && cnt < a->vettAttivita[index1].nVin; k++){ ///Ho modificato il limite superiore di k perchè deve arrivare a i-1 dato che gli elementi devono precedere l'indice i
                     if(strcmp(selected[k],a->vettAttivita[index1].vincoli[j]) == 0){
                         cnt++;
                     }
@@ -110,14 +111,14 @@ int bestSelection(ACT a, char **bestNomi, int *pNsel){
     char **sol;
     int i,j, bestProf=0, *mark;
     mark = (int*)calloc(a->nAtt,sizeof(int));
-    for(i=1;i<a->nAtt;i++){ //Ho modificato lo start di i da 0 ad 1 perchè le disposizioni più piccole saranno su un elemento
+    for(i=1;i<a->nAtt;i++){ ///Ho modificato lo start di i da 0 ad 1 perchè le disposizioni più piccole saranno su un elemento
         sol = (char**)malloc(i*sizeof(char*));
         for(j=0;j<i;j++){
-            sol[j] = (char*)malloc(MAXC*sizeof(char)); //Ho modificato i con j
+            sol[j] = (char*)malloc(MAXC*sizeof(char)); ///Ho modificato i con j
         }
         bestSelectionR(a,bestNomi,pNsel,sol,0,i,&bestProf, mark);
         for(j=0;j<i;j++){
-            free(sol[j]); //ho modificato i con j
+            free(sol[j]); ///ho modificato i con j
         }
         free(sol);
     }
@@ -134,8 +135,8 @@ static int calcolaProfitto(char **sol, ACT a, int k){
     return prof;
 }
 
-//MODELLO del calcolo combinatorio modificato da powerset con combinazioni semplici a disposizioni semplici al variare di k, consultare la relazione scritta
-static void bestSelectionR(ACT a, char **bestNomi, int *pNsel, char ** sol, int pos, int k, int *bestProf, int *mark){ //Aggiunta del vettore mark
+///Consultare relazione nella sezione relativa alle modifiche di bestSelection
+static void bestSelectionR(ACT a, char **bestNomi, int *pNsel, char ** sol, int pos, int k, int *bestProf, int *mark){ ///Aggiunta del vettore mark
     int prof,i;
     if(pos>=k) {
         prof = calcolaProfitto(sol,a,k);
@@ -143,15 +144,15 @@ static void bestSelectionR(ACT a, char **bestNomi, int *pNsel, char ** sol, int 
             for(i=0;i<k;i++){
                 strcpy(bestNomi[i],sol[i]);
             }
-            *bestProf = prof; //Ho aggiornato il miglior profitto
+            *bestProf = prof; ///Ho aggiornato il miglior profitto
             *pNsel = k;
         }
         return;
     }
     for(i=0;i<a->nAtt;i++){
         if(mark[i] == 0) {
-            strcpy(sol[pos],a->vettAttivita[i].nome); //Per una svista ho utilizzato -> anche per il campo nome ma in realtà devo utilizzare il punto perchè vettAttivita[i] non è un puntatore a struct ma bensì una struct
-            if(checkSelection(a,sol,pos+1)){ //utilizzo pos+1 per includere anche l'attività appena inserita nel check
+            strcpy(sol[pos],a->vettAttivita[i].nome); ///Per una svista ho utilizzato -> anche per il campo nome ma in realtà devo utilizzare il punto perchè vettAttivita[i] non è un puntatore a struct ma bensì una struct
+            if(checkSelection(a,sol,pos+1)){ ///utilizzo pos+1 per includere anche l'attività appena inserita nel check
                 mark[i] = 1;
                 bestSelectionR(a,bestNomi,pNsel,sol,pos+1,k,bestProf, mark);
                 mark[i] = 0;
@@ -162,10 +163,10 @@ static void bestSelectionR(ACT a, char **bestNomi, int *pNsel, char ** sol, int 
 
 
 static void sortSol(ACT a, char **bestNomi, int nSel){
-    QuickSortModR(bestNomi,0,nSel-1,a); //ho corretto nSel con nSel-1
+    QuickSortModR(bestNomi,0,nSel-1,a); ///ho corretto nSel con nSel-1
 }
 
-static void QuickSortModR(char **bestNomi, int l, int r, ACT a){ //Aggiungo il parametro ACT a per sapere i tempi di inizio legati alle key
+static void QuickSortModR(char **bestNomi, int l, int r, ACT a){ ///Aggiungo il parametro ACT a per sapere i tempi di inizio legati alle key
     int q;
     if(l>=r){
         return;

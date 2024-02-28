@@ -20,7 +20,7 @@ int main() {
 #endif
 #ifdef DBG_VINCOLI
     char **sequenza;
-    sequenza = (char**)malloc(5*sizeof(char*));
+    sequenza = (char**)malloc(3*sizeof(char*));
 
     for(int i=0;i<3;i++){
         sequenza[i] = (char*)malloc(MAXC*sizeof(char));
