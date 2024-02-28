@@ -22,7 +22,7 @@ int main() {
     char **sequenza;
     sequenza = (char**)malloc(5*sizeof(char*));
 
-    for(int i=0;i<5;i++){
+    for(int i=0;i<3;i++){
         sequenza[i] = (char*)malloc(MAXC*sizeof(char));
     }
     strcpy(sequenza[0],"Act1");
