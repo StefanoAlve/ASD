@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define MAXC 21
+#define MAXC 21 //Modifica del numero massimo di caratteri da 20 a 21 per comprenere anche nomi di 20 caratteri + \0
 typedef struct activities *ACT;
 //Elimino typedef struct attivita perchè è superfluo;
 typedef struct{

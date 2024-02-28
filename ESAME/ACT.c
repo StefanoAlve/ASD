@@ -88,7 +88,7 @@ int checkSelection(ACT a, char **selected, int nsel){
     }
     //Condizione di precedenza, il ragionamento applicato a riguardo è meglio spiegato nella relazione
     for(i=0;i<nsel;i++){
-        cnt=0; //Contatore che conta la presenza di un elemento dei requisiti nella sequenza, ho spostato l'azzeramento prima dell'if per non creare problemi nel caso in cui non siano presenti dei vincoli
+        cnt=0; //ho spostato l'azzeramento prima dell'if per non creare problemi nel caso in cui non siano presenti dei vincoli
         index1 = ACTfindByName(selected[i],a);
         if(a->vettAttivita[index1].nVin != 0){ //Se ha requisiti di precedenza
             for(j=0;j<a->vettAttivita[index1].nVin;j++){
