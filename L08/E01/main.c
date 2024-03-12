@@ -65,7 +65,7 @@ void check_condizioni(diagonale diag, int* flag_acrob_avanti,int* flag_acrob_ind
 
 int main() {
     int n_elementi = 0, n_diag_possibili = 0;
-    int DD = 7, DP = 30;
+    int DD = 12, DP = 30;
     elemento* elementi = NULL;
     elementi = leggi_elementi(&n_elementi);
     link head_diag_possibili = NULL;
@@ -281,7 +281,7 @@ void Merge(diagonale *ausiliario, diagonale *diagonali, int l, int r)
 
 void algGreedy(diagonale* diagonali, int num_diag, int DP)
 {
-    int i,j, stop = 0, flag_acrob_avanti = 0, flag_acrob_indietro = 0, flag_double_acrob = 0;
+    int i,j, stop = 0, flag_acrob_avanti = 0, flag_acrob_indietro = 0, flag_double_acrob = 0, bonus = 0;
     int diff_attuale, min_diff = calcola_difficolta_attuale(diagonali[num_diag-1].elementi, diagonali[num_diag-1].n_elementi);
     programma prog;
     prog.diff_tot = 0;
@@ -292,6 +292,7 @@ void algGreedy(diagonale* diagonali, int num_diag, int DP)
     // Iniziamo a cercare quello che potrebbe dare il bonus
     prog.diag3 = diagonali[0];
     if(diagonali[0].elementi[diagonali[0].n_elementi-1].difficolta >= 8){
+        bonus = 1;
         prog.diag3.punteggio_diag = (float)(prog.diag3.punteggio_diag * 1.5);
     }
     prog.punteggio_tot+=prog.diag3.punteggio_diag;
@@ -337,7 +338,11 @@ void algGreedy(diagonale* diagonali, int num_diag, int DP)
         for(j= 0; j < prog.diag2.n_elementi; j++)
             printf("%s ", prog.diag2.elementi[j].name);
 
-        printf("\nDIAG #3 > %.3f\n", prog.diag3.punteggio_diag);
+        printf("\nDIAG #3 > %.3f", prog.diag3.punteggio_diag);
+        if(bonus)
+            printf(" (BONUS)\n");
+        else
+            printf("\n");
         for(j= 0; j < prog.diag3.n_elementi; j++)
             printf("%s ", prog.diag3.elementi[j].name);
     }

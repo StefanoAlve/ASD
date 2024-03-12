@@ -25,7 +25,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeGenericSystem.cmake"
   "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeInitializeConfigs.cmake"
   "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeLanguageInformation.cmake"
-  "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeMinGWFindMake.cmake"
   "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeParseImplicitIncludeInfo.cmake"
   "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeParseImplicitLinkInfo.cmake"
   "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/CMakeParseLibraryArchitecture.cmake"
@@ -90,9 +89,9 @@ set(CMAKE_MAKEFILE_DEPENDS
   "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/Platform/WindowsPaths.cmake"
   "C:/Program Files/JetBrains/CLion 2022.3.2/bin/cmake/win/x64/share/cmake-3.27/Modules/ProcessorCount.cmake"
   "C:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L08/E01/CMakeLists.txt"
-  "CMakeFiles/3.27.0/CMakeCCompiler.cmake"
-  "CMakeFiles/3.27.0/CMakeRCCompiler.cmake"
-  "CMakeFiles/3.27.0/CMakeSystem.cmake"
+  "CMakeFiles/3.27.8/CMakeCCompiler.cmake"
+  "CMakeFiles/3.27.8/CMakeRCCompiler.cmake"
+  "CMakeFiles/3.27.8/CMakeSystem.cmake"
   )
 
 # The corresponding makefile is:
@@ -103,10 +102,10 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/3.27.0/CMakeSystem.cmake"
-  "CMakeFiles/3.27.0/CMakeCCompiler.cmake"
-  "CMakeFiles/3.27.0/CMakeRCCompiler.cmake"
-  "CMakeFiles/3.27.0/CMakeCCompiler.cmake"
+  "CMakeFiles/3.27.8/CMakeSystem.cmake"
+  "CMakeFiles/3.27.8/CMakeCCompiler.cmake"
+  "CMakeFiles/3.27.8/CMakeRCCompiler.cmake"
+  "CMakeFiles/3.27.8/CMakeCCompiler.cmake"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 

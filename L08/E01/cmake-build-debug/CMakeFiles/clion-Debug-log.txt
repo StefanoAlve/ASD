@@ -14,6 +14,6 @@ CMake Deprecation Warning:
 -- Check for working C compiler: C:/Program Files/JetBrains/CLion 2022.3.2/bin/mingw/bin/gcc.exe - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- Configuring done (3.8s)
--- Generating done (0.0s)
+-- Configuring done (2.5s)
+-- Generating done (0.1s)
 -- Build files have been written to: C:/Users/gianb/Desktop/UNI/ASD/ASD_LAIB/L08/E01/cmake-build-debug
