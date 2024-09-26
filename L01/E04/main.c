@@ -83,7 +83,7 @@ void InitializeOrdinamenti(int n, s_tratta Tratte[], s_Sort *p_ord){
     SortDest(n, p_ord -> DestOrd);
 }
 
-//Aggancia ogni puntatore ad una struct
+//Aggancia ogni puntatore a una struct
 void InitOrd(int n, s_tratta Tratte[], s_tratta *TrattaOrd[]){
     for (int i = 0; i < n; i++){
         TrattaOrd[i] = &Tratte[i];
