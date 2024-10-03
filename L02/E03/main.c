@@ -59,6 +59,7 @@ int main(){
     return 0;
 }
 
+//Apre e legge il file, alloca il vettore delle struct
 int LeggiFile(char nf[MAXN], s_tratta **tratte){
     FILE *fp = fopen(nf, "r");
     if (fp == NULL) exit(1);
@@ -66,6 +67,7 @@ int LeggiFile(char nf[MAXN], s_tratta **tratte){
     s_tratta *vt; //vettore tratte
     fscanf(fp, "%d", &n);
     vt = malloc(n*sizeof *vt);
+    if (vt == NULL) exit(1);
     for (int i = 0; i < n; i++){
         fscanf(fp, "%s %s %s %s %s %s %d", vt[i].codt, vt[i].partenza, vt[i].destinazione, vt[i].data, vt[i].oraP, vt[i].oraA, &vt[i].ritardo);
     }
@@ -74,6 +76,7 @@ int LeggiFile(char nf[MAXN], s_tratta **tratte){
     return n;
 }
 
+//Inizializza la struct dei vettori di puntatori, poi chiama gli ordinamenti
 void InitializeOrdinamenti(int *n, s_tratta *Tratte, s_Sort *p_ord) {
     InitOrd(n, Tratte, &(p_ord->DataOrd));
     InitOrd(n, Tratte, &(p_ord ->CodOrd));
@@ -85,9 +88,11 @@ void InitializeOrdinamenti(int *n, s_tratta *Tratte, s_Sort *p_ord) {
     SortDest(n, p_ord->DestOrd);
 }
 
+//Alloca il vettore di puntatori e li aggancia al vettore di struct Tratte
 void InitOrd(int *n, s_tratta *Tratte, s_tratta ***TrattaOrd){
     s_tratta **vpt; //vettore puntatori tratta
     vpt = malloc(*n*sizeof (s_tratta *));
+    if (vpt == NULL) exit(1);
     for (int i = 0; i < *n; i++){
         vpt[i] = &Tratte[i];
     }
@@ -214,6 +219,7 @@ void SelezionaFunzione(comando_e comando, int *n, int *pfine, s_tratta *Tratte, 
     }
 }
 
+//stampa del contenuto del file a video o su un nuovo file
 void StampaCorse(int *n, s_tratta *Tratte){
     FILE *fp = NULL;
     int scelta;
@@ -235,6 +241,7 @@ void StampaCorse(int *n, s_tratta *Tratte){
     }
 }
 
+//stampa il vettore di puntatori ordinato
 void StampaOrd(int *n, s_tratta **p_Tratte){
     for (int i = 0; i < *n; i++){
         printf("%s %s %s %s %s %s %d\n", p_Tratte[i]->codt, p_Tratte[i]->partenza, p_Tratte[i]->destinazione, p_Tratte[i]->data, p_Tratte[i]->oraP, p_Tratte[i]->oraA, p_Tratte[i]->ritardo);
@@ -288,6 +295,7 @@ void binarySearch(int *n, s_tratta **p_Tratte, char str[MAXN]){
     }
 }
 
+//Libera tutte le strutture dati dinamiche
 void LiberaMem(s_Sort *p_ord, s_tratta *Tratte){
     free(p_ord->PartOrd);
     free(p_ord->DestOrd);
