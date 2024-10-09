@@ -1,60 +1,67 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int majority(int *vett, int len_vett);
+int majority(int *a, int N);
 
-int main() {
-    int *vett, len_vett, num, maj;
+int main(){
+    int n, maj, *vett;
 
-    printf("Inserire la grandezza del vettore: ");
-    scanf("%d", &len_vett); printf("\n");
+    printf("Quanti elementi vuoi inserire nel vettore? :\n");
+    scanf("%d", &n);
+    printf("Inserire uno sotto l'altro i valori:\n");
+    vett = malloc(n*sizeof *vett); //allocazione dinamica vettore
+    for (int i = 0; i < n; i++)
+        scanf("%d", vett+i); //inserimento valori nel vettore
+    maj = majority(vett, n); //chiamata a funzione
+    printf("Elemento maggioritario:\n");
+    if (maj >= 0) printf("%d", maj);
+    else printf("Nessun elemento maggioritario\n");
+    free(vett); //deallocazione memoria
 
-    if (len_vett == 0){
-        printf("Non esiste maggioritario in un vettore vuoto\n");
-        exit(1);
-    }
-    //Allocazione dinamica vettore
-    vett = (int *)malloc(len_vett* sizeof(int));
-
-    for (int i = 0; i<len_vett; i++){
-        printf("Inserire il %d numero del vettore: ",i+1);
-        scanf("%d",&num);
-        printf("\n");
-        vett[i] = num;
-    }
-
-    printf("\n");
-    maj = majority(vett,len_vett);
-    if (maj != -1) printf("Il maggioritario del vettore e' %d\n", maj);
-    else printf("Il vettore non ha maggioritario\n");
-
-    free(vett);
     return 0;
 }
 
-int majority(int *vett, int len_vett){
-    int L_maj, R_maj, Lcont = 0, Rcont = 0, m = len_vett/2;
-    //terminazione quando arrivo al vettore unitario
-    if (len_vett==1){
-        return vett[0];
-    }
+//Funzione ricorsiva: divide il vettore in due e cerca il maggioritario in entrambi;
+//se almeno uno dei 2 esiste, si contano le occorrenze nel vettore di partenza e se
+//supera il controllo viene ritornato
+int majority(int *a, int n){
+    int mdx, msx, cnt = 0;
+    if (n == 1) return a[0]; //condizione di terminazione
 
-    //divisione del vettore in 2 sottovettori
-    L_maj = majority(vett,m);
-    R_maj = majority(vett+m,len_vett-m);
+    //chiamate ricorsive
+    msx = majority(a, n/2);
+    mdx = majority(a+n/2, n-n/2);
 
-    if (L_maj==R_maj){
-        return R_maj; //Se i due maggioritari sono uguali, ne torno uno dei due (torna -1 quando in entrambi non c'è maggioritario)
-    } else { //Entro nell'else quando sicuramente in almeno un sottovettore c'è maggioritario
-        for (int i = 0; i<len_vett; i++){ //Ricerca lineare nel vettore per trovare corrispondenze del maggioritario
-            if (vett[i] == L_maj) Lcont++;
-            if (vett[i] == R_maj) Rcont++;
+    //se è stato trovato un maggioritario nel vettore dx si contano le occorrenze,
+    //se invece nel sx conto le sue occorrenze
+    if (mdx != -1){
+        for (int i = 0; i < n; i++){
+            if (a[i] == mdx) cnt++;
+        }
+        if (cnt > n/2) return mdx;
+        else return -1;
+    } else if (msx != -1){
+        for (int i = 0; i < n; i++){
+            if (a[i] == msx) cnt++;
+        }
+        if (cnt > n/2) return msx;
+        else return -1;
+    } else return -1;
+
+    /*
+     senza ripetizione di codice
+
+     if (mdx == msx){
+        return msx; //Se i due maggioritari sono uguali, ne torno uno dei due (torna -1 quando in entrambi non c'è maggioritario)
+     } else { //Entro nell'else quando sicuramente in almeno un sottovettore c'è maggioritario
+        for (int i = 0; i<n; i++){ //Ricerca lineare nel vettore per trovare corrispondenze del maggioritario
+            if (vett[i] == msx) Lcont++;
+            if (vett[i] == mdx) Rcont++;
         }
         //Controllo che il presunto maggioritario del vettore superi la soglia di m
-        if (Lcont>m) return L_maj;
-        if (Rcont>m) return R_maj;
+        if (Lcont>m) return msx;
+        if (Rcont>m) return mrx;
         return -1;
     }
-
-
+     */
 }
