@@ -14,6 +14,8 @@ typedef struct{
 }s_CanzoniAmico;
 
 int LeggiFile(FILE *fp, s_CanzoniAmico **p_v_CA, char **Canzoni);
+void StampaPlaylist(s_CanzoniAmico *v_CA, int n, char **Canzoni);
+void Dealloc(s_CanzoniAmico *v_CA, int n, char **Canzoni);
 
 int main(){
     FILE *fp = fopen("brani.txt", "r");
@@ -21,7 +23,8 @@ int main(){
     int n_amici;
     char *Canzoni[MAXC]; //vettore statico di puntatori a char, ovvero le canzoni, allocate dinamicamente dopo
     n_amici = LeggiFile(fp, &v_CA, Canzoni);
-
+    StampaPlaylist(v_CA, n_amici, Canzoni);
+    Dealloc(v_CA, n_amici, Canzoni);
 
 
     return 0;
@@ -52,4 +55,26 @@ int LeggiFile(FILE *fp, s_CanzoniAmico **p_v_CA, char **Canzoni){
     *p_v_CA = vca; //aggancio del puntatore al vettore di struct per ritornarlo al main
 
     return numS;
+}
+
+void StampaPlaylist(s_CanzoniAmico *v_CA, int n, char **Canzoni){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
