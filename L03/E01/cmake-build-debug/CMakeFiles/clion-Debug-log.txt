@@ -5,6 +5,6 @@
 -- Check for working C compiler: C:/Program Files/JetBrains/CLion 2023.2.2/bin/mingw/bin/gcc.exe - skipped
 -- Detecting C compile features
 -- Detecting C compile features - done
--- Configuring done (3.6s)
+-- Configuring done (5.2s)
 -- Generating done (0.1s)
 -- Build files have been written to: C:/Users/alebe/Documents/UNI Polito/ASD/L03/E01/cmake-build-debug
