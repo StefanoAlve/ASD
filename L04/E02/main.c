@@ -40,6 +40,10 @@ void EseguiComando(link *ph, comando cmd, int *p_end);
 void AnagScan(Item *p_anag, FILE *fp);
 link InserimentoTastiera(link *ph);
 link InserimentoFile(link *ph);
+void RicercaCodice(link h);
+link ExtrCodice(link *ph);
+link ExtrBirth(link *ph);
+int BirthListExtr(link *px, link *pp, link *ph, char *d1, char *d2);
 
 
 
@@ -151,10 +155,13 @@ void EseguiComando(link *ph, comando cmd, int *p_end){
             *ph = InserimentoFile(ph);
             break;
         case CodSearch:
+            RicercaCodice(*ph);
             break;
         case ExtrCodSearch:
+            *ph = ExtrCodice(ph);
             break;
         case ExtrBSearch:
+            *ph = ExtrBirth(ph);
             break;
         case PrintFile:
             ListFilePrint(*ph);
@@ -223,4 +230,67 @@ link InserimentoFile(link *ph){
 
     fclose(fp);
     return *ph;
+}
+
+void RicercaCodice(link h){
+    char codice[MAXC2];
+    printf("Inserire il codice da ricercare:\n");
+    scanf("%s", codice);
+
+    for (link x = h; x != NULL; x = x->next){
+        if (KEYeq(KEYget2(x->val), codice)){
+            ITEMshowF(x->val, stdout);
+            break;
+        }
+    }
+}
+
+link ExtrCodice(link *ph){
+    char codice[MAXC2];
+    link x, p = NULL;
+    Item tmp;
+    printf("Inserire il codice da ricercare:\n");
+    scanf("%s", codice);
+
+    for (x = *ph; x != NULL; p = x, x = x->next){
+        if (KEYeq(KEYget2(x->val), codice)){
+            tmp = x->val;
+            if (x == *ph) *ph = x->next;
+            else p->next = x->next;
+            free(x);
+            ITEMshowF(tmp, stdout);
+            break;
+        }
+    }
+    return *ph;
+}
+
+link ExtrBirth(link *ph){
+    char d1[MAXC3], d2[MAXC3];
+    int end = 0;
+    link x, p = NULL;
+    printf("Inserire le due date separate da spazio nel formato gg/mm/aaaa :\n");
+    scanf("%s %s", d1, d2);
+
+    for (x = *ph; x != NULL && KEYgeq(d1, KEYget1(x->val)); p = x, x = x->next);
+    while (x != NULL && !end){
+        end = BirthListExtr(&x, &p, ph, d1, d2);
+        x = x->next;
+    }
+    return *ph;
+}
+
+int BirthListExtr(link *px, link *pp, link *ph, char *d1, char *d2){
+    link x = *px;
+    Item  tmp;
+
+    if (KEYgeq(KEYget1(x->val), d1) && KEYgeq(d2, KEYget1(x->val))){
+        tmp = x->val;
+        if (x == *ph) *ph = x->next;
+        else (*pp)->next = x->next;
+        free(x);
+        ITEMshowF(tmp, stdout);
+        return 0;
+    }
+    return 1;
 }
