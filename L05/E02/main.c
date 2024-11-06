@@ -17,9 +17,10 @@ int AcquisisciTessere(tile **Tiles);
 cella **AcquisisciScacchiera(int *r, int *c);
 void RiempiScacchiera(tile *v_tiles, int n_t, cella **m_board, int r, int c);
 void ConfigScacchieraInit(int *mark, cella **m_board, int r, int c);
-void DispSempliciR(cella **m_board, int r, int c, int *mark, tile *v_tiles, int n_t, int *mp, int pos);
+void DispSempliciR(cella **m_board, cella **bestB, int r, int c, int *mark, tile *v_tiles, int n_t, int *mp, int pos);
 int CalcolaPunteggio(cella **m_board, int r, int c, tile *v_tiles, int n_t);
-void StampaBoard(cella **m_board, int r, int c);
+void AggiornaBestBoard(cella **m_board, cella **bestB, int r, int c);
+void StampaSol(cella **bestB, int r, int c);
 
 int main() {
     tile *Tessere;
@@ -28,7 +29,6 @@ int main() {
     cella **Scacchiera = AcquisisciScacchiera(&nr, &nc);
 
     RiempiScacchiera(Tessere, n_tiles, Scacchiera, nr, nc);
-
 
     return 0;
 }
@@ -40,11 +40,11 @@ int AcquisisciTessere(tile **Tiles){
         printf("Errore apertura file tessere\n");
         exit(1);
     }
-    fscanf(fp, "%d", &n);
+    fscanf(fp, "%d ", &n);
     tile *v_tiles = malloc(n*sizeof *v_tiles);
 
     for (int i = 0; i < n; i++){
-        fscanf(fp, "%c %d %c %d", &v_tiles[i].color1, &v_tiles[i].value1, &v_tiles[i].color2, &v_tiles[i].value2);
+        fscanf(fp, "%c %d %c %d ", &v_tiles[i].color1, &v_tiles[i].value1, &v_tiles[i].color2, &v_tiles[i].value2);
     }
 
     fclose(fp);
@@ -75,10 +75,14 @@ cella **AcquisisciScacchiera(int *r, int *c){
 void RiempiScacchiera(tile *v_tiles, int n_t, cella **m_board, int r, int c){
     int *mark = calloc(n_t, sizeof *mark);
     int maxp = 0, pos = 0;
+    cella **bestBoard = malloc(r*sizeof (cella *));
+    for (int i = 0; i < r; i++)
+        bestBoard[i] = malloc(c*sizeof (cella));
+
     ConfigScacchieraInit(mark, m_board, r, c);
-
-    DispSempliciR(m_board, r, c, mark, v_tiles, n_t, &maxp, pos);
-
+    DispSempliciR(m_board, bestBoard, r, c, mark, v_tiles, n_t, &maxp, pos);
+    StampaSol(bestBoard, r, c);
+    printf("Punteggio : %d", maxp);
 }
 
 void ConfigScacchieraInit(int *mark, cella **m_board, int r, int c){
@@ -90,12 +94,11 @@ void ConfigScacchieraInit(int *mark, cella **m_board, int r, int c){
     }
 }
 
-void DispSempliciR(cella **m_board, int r, int c, int *mark, tile *v_tiles, int n_t, int *mp, int pos){
+void DispSempliciR(cella **m_board, cella **bestB, int r, int c, int *mark, tile *v_tiles, int n_t, int *mp, int pos){
     if (pos >= r*c){
         int pt = CalcolaPunteggio(m_board, r, c, v_tiles, n_t);
         if (pt > *mp){
-            StampaBoard(m_board, r, c);
-            printf("......%d\n", pt);
+            AggiornaBestBoard(m_board, bestB, r, c);
             *mp = pt;
         }
         return;
@@ -107,16 +110,16 @@ void DispSempliciR(cella **m_board, int r, int c, int *mark, tile *v_tiles, int 
                 m_board[i_r][i_c].tile = i;
                 m_board[i_r][i_c].oriented = 0;
                 mark[i] = 1;
-                DispSempliciR(m_board, r, c, mark, v_tiles, n_t, mp, pos+1);
+                DispSempliciR(m_board, bestB, r, c, mark, v_tiles, n_t, mp, pos+1);
                 m_board[i_r][i_c].oriented = 1;
-                DispSempliciR(m_board, r, c, mark, v_tiles, n_t, mp, pos+1);
+                DispSempliciR(m_board, bestB, r, c, mark, v_tiles, n_t, mp, pos+1);
                 m_board[i_r][i_c].tile =-1;
                 m_board[i_r][i_c].oriented = -1;
                 mark[i] = 0;
             }
         }
     } else {
-        DispSempliciR(m_board, r, c, mark, v_tiles, n_t, mp, pos+1);
+        DispSempliciR(m_board, bestB, r, c, mark, v_tiles, n_t, mp, pos+1);
     }
 
 }
@@ -189,15 +192,21 @@ int CalcolaPunteggio(cella **m_board, int r, int c, tile *v_tiles, int n_t){
     return sumT;
 }
 
-void StampaBoard(cella **m_board, int r, int c){
+void AggiornaBestBoard(cella **m_board, cella **bestB, int r, int c){
     for (int i = 0; i < r; i++){
         for (int j = 0; j < c; j++){
-            printf("%d/%d ", m_board[i][j].tile, m_board[i][j].oriented);
+            bestB[i][j].tile = m_board[i][j].tile;
+            bestB[i][j].oriented = m_board[i][j].oriented;
+        }
+    }
+}
+
+void StampaSol(cella **bestB, int r, int c){
+    for (int i = 0; i < r; i++){
+        for (int j = 0; j < c; j++){
+            printf("%d/%d ", bestB[i][j].tile, bestB[i][j].oriented);
         }
         printf("\n");
     }
-
-    printf("\n\n\n\n");
 }
-
 
