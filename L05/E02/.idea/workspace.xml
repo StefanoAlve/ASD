@@ -20,11 +20,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77c22b2c-de00-483f-afe2-396be755db0b" name="Changes" comment="dealloc e commenti mancanti">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Testing/Temporary/LastTest.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
-    </list>
+    <list default="true" id="77c22b2c-de00-483f-afe2-396be755db0b" name="Changes" comment="es completo" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,6 +31,7 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
         <entry key="$PROJECT_DIR$/../.." value="Stefano" />
@@ -91,7 +88,7 @@
       <workItem from="1730878841335" duration="11659000" />
       <workItem from="1730894636164" duration="3047000" />
       <workItem from="1730907247233" duration="761000" />
-      <workItem from="1730969237464" duration="2178000" />
+      <workItem from="1730969237464" duration="2382000" />
     </task>
     <task id="LOCAL-00001" summary="Aggiunta Lab05">
       <option name="closed" value="true" />
@@ -133,7 +130,23 @@
       <option name="project" value="LOCAL" />
       <updated>1730908004070</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="es completo">
+      <option name="closed" value="true" />
+      <created>1730975545806</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1730975545806</updated>
+    </task>
+    <task id="LOCAL-00007" summary="es completo">
+      <option name="closed" value="true" />
+      <created>1730975716323</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730975716323</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,7 +162,8 @@
     <MESSAGE value="Aggiunta Lab05" />
     <MESSAGE value="controllare La somma, usare il salvataggio del best, dealloc e commenti" />
     <MESSAGE value="dealloc e commenti mancanti" />
-    <option name="LAST_COMMIT_MESSAGE" value="dealloc e commenti mancanti" />
+    <MESSAGE value="es completo" />
+    <option name="LAST_COMMIT_MESSAGE" value="es completo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
