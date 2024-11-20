@@ -143,6 +143,7 @@ void PGInsertEquip(PG pg, INV inv, char *codice, char *nome){
         i++;
     if (i == MAXEquip) printf("Capienza equipaggiamenti raggiunta\n");
     else x->val.equip->vettEq[i] = &(inv->vettINV[j]);
+
 }
 
 void PGRemoveEquip(PG pg, INV inv, char *codice, char *nome){
