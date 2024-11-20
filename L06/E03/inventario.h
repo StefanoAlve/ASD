@@ -22,7 +22,8 @@ struct wrapperINV{
 INV RiempiInventario(char *nomefile);
 inv_t INVNameSrc(INV inv, char *nome);
 inv_t VoidInv_t();
+int Inv_tCheckVoid(inv_t tmp);
 void INVPrint(inv_t tmp);
-
+void INVLibera(INV inv);
 
 #endif //E03_INVENTARIO_H

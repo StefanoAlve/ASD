@@ -9,6 +9,19 @@ inv_t VoidInv_t(){
     return tmp;
 }
 
+int Inv_tCheckVoid(inv_t tmp){
+    return (tmp.stat.hp == -1);
+}
+
+void INVLibera(INV inv){
+    for (int i = 0; i < inv->maxINV; i++){
+        free(inv->vettINV[i].nome);
+        free(inv->vettINV[i].tipo);
+    }
+    free(inv->vettINV);
+    free(inv);
+}
+
 INV RiempiInventario(char *nomefile){
     FILE *fp = fopen(nomefile, "r");
     if (fp == NULL){
@@ -39,6 +52,10 @@ inv_t INVNameSrc(INV inv, char *nome){
 }
 
 void INVPrint(inv_t tmp){
-    printf("Nome: %s\nTipo: %s\nStatistiche:\n", tmp.nome, tmp.tipo);
-    printf("HP: %d\nMP: %d\nATK: %d\nDEF: %d\nMAG: %d\nSPR: %d\n", tmp.stat.hp, tmp.stat.mp, tmp.stat.atk, tmp.stat.def, tmp.stat.mag, tmp.stat.spr);
+    if (!Inv_tCheckVoid(tmp)){
+        printf("Nome: %s\nTipo: %s\nStatistiche:\n", tmp.nome, tmp.tipo);
+        printf("HP: %d\nMP: %d\nATK: %d\nDEF: %d\nMAG: %d\nSPR: %d\n", tmp.stat.hp, tmp.stat.mp, tmp.stat.atk, tmp.stat.def, tmp.stat.mag, tmp.stat.spr);
+    } else {
+        printf("Oggetto non esistente\n");
+    }
 }

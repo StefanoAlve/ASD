@@ -30,9 +30,18 @@ struct wrapperPG{
 };
 
 link NewNodePG(pg_t val, link next);
+pg_t VoidPg();
+int PgCheckVoid(pg_t tmp);
+void PGLiberaNode(link x);
+void PGLibera(PG pg);
 PG CreaListaPersonaggi(char *nomefile);
-
-
+pg_t PGScan();
+void PGInsert(PG pg, pg_t val);
+void PGRemove(PG pg, char *codice);
+pg_t PGCodSearch(PG pg, char *codice);
+void PGPrint(pg_t tmp);
+void PGInsertEquip(PG pg, INV inv, char *codice, char *nome);
+void PGRemoveEquip(PG pg, INV inv, char *codice, char *nome);
 
 
 #endif //E03_PERSONAGGI_H
