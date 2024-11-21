@@ -41,7 +41,7 @@ void PGLibera(PG pg){
 PG CreaListaPersonaggi(char *nomefile){
     FILE *fp = fopen(nomefile, "r");
     if (fp == NULL){
-        printf("Errore apertura file inventario\n");
+        printf("Errore apertura file personaggi\n");
         return NULL;
     }
     PG wpPG = malloc(sizeof (struct wrapperPG));
@@ -91,7 +91,8 @@ void PGRemove(PG pg, char *codice){
     link t, p;
     for(p = NULL, t = pg->headPG; t != NULL && strcasecmp(t->val.codice, codice) != 0; p = t, t = t->next);
     if (t != NULL){
-        p->next = p->next->next;
+        if (p == NULL) pg->headPG = pg->headPG->next;
+        else p->next = p->next->next;
         PGLiberaNode(t);
     }
 }
@@ -107,19 +108,19 @@ pg_t PGCodSearch(PG pg, char *codice){
 
 void PGPrint(pg_t tmp){
     if (!PgCheckVoid(tmp)){
-        printf("Codice: %s\nNome: %s\nClasse: %s\nEquipaggiamento:\n", tmp.codice, tmp.nome, tmp.classe);
+        printf("\nCodice: %s\nNome: %s\nClasse: %s\nStatistiche Personaggio:\n", tmp.codice, tmp.nome, tmp.classe);
+        printf("HP: %d\nMP: %d\nATK: %d\nDEF: %d\nMAG: %d\nSPR: %d\n", tmp.stat.hp, tmp.stat.mp, tmp.stat.atk, tmp.stat.def, tmp.stat.mag, tmp.stat.spr);
+        printf("Equipaggiamento:\n");
         printf("Oggetto in uso:\n");
         if (tmp.equip->inUso == -1) printf("Nessun oggetto in uso\n");
         else INVPrint(*(tmp.equip->vettEq[tmp.equip->inUso]));
         printf("\nOggetti equipaggiati:\n");
         int i = 0;
         while(tmp.equip->vettEq[i] != NULL){
-            if (i != tmp.equip->inUso){
+            if (i != tmp.equip->inUso)
                 INVPrint(*(tmp.equip->vettEq[i]));
-                i++;
-            }
+            i++;
         }
-        if (i == 0) printf("Nessun altro oggetto equipaggiato\n");
     } else {
         printf("Personaggio non esistente\n");
     }
@@ -128,33 +129,39 @@ void PGPrint(pg_t tmp){
 void PGInsertEquip(PG pg, INV inv, char *codice, char *nome){
     link x;
     int j;
-    for (j = 0; strcasecmp(inv->vettINV[j].nome, nome) != 0 && j < inv->nINV; j++);
+    for (j = 0; j < inv->nINV && strcasecmp(inv->vettINV[j].nome, nome) != 0; j++);
     if (j == inv->nINV){
         printf("Oggetto inesistente\n");
         return;
     }
-    for (x = pg->headPG; strcasecmp(x->val.codice, codice) != 0 && x != NULL; x = x->next);
+    for (x = pg->headPG; x != NULL && strcasecmp(x->val.codice, codice) != 0; x = x->next);
     if (x == NULL){
         printf("Personaggio inesistente\n");
         return;
     }
     int i = 0;
-    while (x->val.equip->vettEq[i] != NULL && i < MAXEquip)
+    while (i < MAXEquip && x->val.equip->vettEq[i] != NULL)
         i++;
     if (i == MAXEquip) printf("Capienza equipaggiamenti raggiunta\n");
-    else x->val.equip->vettEq[i] = &(inv->vettINV[j]);
-
+    else {
+        x->val.equip->vettEq[i] = &(inv->vettINV[j]);
+        printf("Vuoi equipaggiare %s con %s? (y,n)\n", x->val.nome, inv->vettINV[j].nome);
+        char c;
+        scanf(" %c", &c);
+        if (c == 'y' || c == 'Y') x->val.equip->inUso = i;
+        PGPrint(x->val);
+    }
 }
 
 void PGRemoveEquip(PG pg, INV inv, char *codice, char *nome){
     link x;
     int j;
-    for (j = 0; strcasecmp(inv->vettINV[j].nome, nome) != 0 && j < inv->nINV; j++);
+    for (j = 0;j < inv->nINV && strcasecmp(inv->vettINV[j].nome, nome) != 0; j++);
     if (j == inv->nINV){
         printf("Oggetto inesistente\n");
         return;
     }
-    for (x = pg->headPG; strcasecmp(x->val.codice, codice) != 0 && x != NULL; x = x->next);
+    for (x = pg->headPG;x != NULL && strcasecmp(x->val.codice, codice) != 0; x = x->next);
     if (x == NULL){
         printf("Personaggio inesistente\n");
         return;
@@ -163,10 +170,12 @@ void PGRemoveEquip(PG pg, INV inv, char *codice, char *nome){
     for (i = 0; i < MAXEquip; i++){
         if (x->val.equip->vettEq[i] != NULL && strcasecmp(x->val.equip->vettEq[i]->nome, nome) == 0){
             x->val.equip->vettEq[i] = NULL;
+            if (i == x->val.equip->inUso) x->val.equip->inUso = -1;
             break;
         }
     }
     if (i == MAXEquip) printf("Oggetto non equipaggiato a %s (%s)\n", x->val.nome, x->val.codice);
+    else PGPrint(x->val);
 }
 
 

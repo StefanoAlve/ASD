@@ -30,10 +30,10 @@ INV RiempiInventario(char *nomefile){
     }
     INV wpInv = malloc(sizeof (struct wrapperINV));
     wpInv->nINV = 0;
-    fscanf(fp, "%d ", &wpInv->maxINV);
+    fscanf(fp, "%d", &(wpInv->maxINV));
     wpInv->vettINV = malloc(wpInv->maxINV*sizeof (inv_t));
     char nome[MAXC], tipo[MAXC];
-    while(fscanf(fp, "%s %s %d %d %d %d %d %d ", nome, tipo, &wpInv->vettINV[wpInv->nINV].stat.hp, &wpInv->vettINV[wpInv->nINV].stat.mp, &wpInv->vettINV[wpInv->nINV].stat.atk, &wpInv->vettINV[wpInv->nINV].stat.def,&wpInv->vettINV[wpInv->nINV].stat.mag, &wpInv->vettINV[wpInv->nINV].stat.spr) == 8){
+    while(fscanf(fp, "%s %s %d %d %d %d %d %d", nome, tipo, &(wpInv->vettINV[wpInv->nINV].stat.hp), &(wpInv->vettINV[wpInv->nINV].stat.mp), &(wpInv->vettINV[wpInv->nINV].stat.atk), &(wpInv->vettINV[wpInv->nINV].stat.def),&(wpInv->vettINV[wpInv->nINV].stat.mag), &(wpInv->vettINV[wpInv->nINV].stat.spr)) == 8) {
         wpInv->vettINV[wpInv->nINV].nome = strdup(nome);
         wpInv->vettINV[wpInv->nINV].tipo = strdup(tipo);
         wpInv->nINV++;
