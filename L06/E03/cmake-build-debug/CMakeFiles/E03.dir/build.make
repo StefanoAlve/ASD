@@ -82,24 +82,10 @@ CMakeFiles/E03.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/E03.dir/main.c.s"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\main.c" -o CMakeFiles\E03.dir\main.c.s
 
-CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj: CMakeFiles/E03.dir/flags.make
-CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj: C:/Users/alebe/Documents/UNI\ Polito/ASD/L02/E03/main.c
-CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj: CMakeFiles/E03.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj -MF CMakeFiles\E03.dir\C_\Users\alebe\Documents\UNI_Polito\ASD\L02\E03\main.c.obj.d -o CMakeFiles\E03.dir\C_\Users\alebe\Documents\UNI_Polito\ASD\L02\E03\main.c.obj -c "C:\Users\alebe\Documents\UNI Polito\ASD\L02\E03\main.c"
-
-CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.i"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "C:\Users\alebe\Documents\UNI Polito\ASD\L02\E03\main.c" > CMakeFiles\E03.dir\C_\Users\alebe\Documents\UNI_Polito\ASD\L02\E03\main.c.i
-
-CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.s"
-	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "C:\Users\alebe\Documents\UNI Polito\ASD\L02\E03\main.c" -o CMakeFiles\E03.dir\C_\Users\alebe\Documents\UNI_Polito\ASD\L02\E03\main.c.s
-
 CMakeFiles/E03.dir/personaggi.c.obj: CMakeFiles/E03.dir/flags.make
 CMakeFiles/E03.dir/personaggi.c.obj: C:/Users/alebe/Documents/UNI\ Polito/ASD/L06/E03/personaggi.c
 CMakeFiles/E03.dir/personaggi.c.obj: CMakeFiles/E03.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/E03.dir/personaggi.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/E03.dir/personaggi.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/E03.dir/personaggi.c.obj -MF CMakeFiles\E03.dir\personaggi.c.obj.d -o CMakeFiles\E03.dir\personaggi.c.obj -c "C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\personaggi.c"
 
 CMakeFiles/E03.dir/personaggi.c.i: cmake_force
@@ -113,7 +99,7 @@ CMakeFiles/E03.dir/personaggi.c.s: cmake_force
 CMakeFiles/E03.dir/inventario.c.obj: CMakeFiles/E03.dir/flags.make
 CMakeFiles/E03.dir/inventario.c.obj: C:/Users/alebe/Documents/UNI\ Polito/ASD/L06/E03/inventario.c
 CMakeFiles/E03.dir/inventario.c.obj: CMakeFiles/E03.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/E03.dir/inventario.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/E03.dir/inventario.c.obj"
 	C:\PROGRA~1\JETBRA~1\CLION2~1.2\bin\mingw\bin\gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/E03.dir/inventario.c.obj -MF CMakeFiles\E03.dir\inventario.c.obj.d -o CMakeFiles\E03.dir\inventario.c.obj -c "C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\inventario.c"
 
 CMakeFiles/E03.dir/inventario.c.i: cmake_force
@@ -127,7 +113,6 @@ CMakeFiles/E03.dir/inventario.c.s: cmake_force
 # Object files for target E03
 E03_OBJECTS = \
 "CMakeFiles/E03.dir/main.c.obj" \
-"CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj" \
 "CMakeFiles/E03.dir/personaggi.c.obj" \
 "CMakeFiles/E03.dir/inventario.c.obj"
 
@@ -135,14 +120,13 @@ E03_OBJECTS = \
 E03_EXTERNAL_OBJECTS =
 
 E03.exe: CMakeFiles/E03.dir/main.c.obj
-E03.exe: CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj
 E03.exe: CMakeFiles/E03.dir/personaggi.c.obj
 E03.exe: CMakeFiles/E03.dir/inventario.c.obj
 E03.exe: CMakeFiles/E03.dir/build.make
 E03.exe: CMakeFiles/E03.dir/linkLibs.rsp
 E03.exe: CMakeFiles/E03.dir/objects1.rsp
 E03.exe: CMakeFiles/E03.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable E03.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="C:\Users\alebe\Documents\UNI Polito\ASD\L06\E03\cmake-build-debug\CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable E03.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\E03.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

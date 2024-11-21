@@ -1,6 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj"
-  "CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj.d"
   "CMakeFiles/E03.dir/inventario.c.obj"
   "CMakeFiles/E03.dir/inventario.c.obj.d"
   "CMakeFiles/E03.dir/main.c.obj"

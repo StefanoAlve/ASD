@@ -76,9 +76,6 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/alebe/Documents/UNI Polito/ASD/L02/E03/main.c">
-			<Option target="E03"/>
-		</Unit>
 		<Unit filename="C:/Users/alebe/Documents/UNI Polito/ASD/L06/E03/inventario.c">
 			<Option target="E03"/>
 		</Unit>

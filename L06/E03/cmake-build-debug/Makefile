@@ -128,30 +128,6 @@ E03/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\E03.dir\build.make CMakeFiles/E03.dir/build
 .PHONY : E03/fast
 
-C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.obj: C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj
-.PHONY : C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.obj
-
-# target to build an object file
-C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\E03.dir\build.make CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj
-.PHONY : C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.obj
-
-C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.i: C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.i
-.PHONY : C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.i
-
-# target to preprocess a source file
-C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\E03.dir\build.make CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.i
-.PHONY : C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.i
-
-C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.s: C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.s
-.PHONY : C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.s
-
-# target to generate assembly for a file
-C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles\E03.dir\build.make CMakeFiles/E03.dir/C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.s
-.PHONY : C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.c.s
-
 inventario.obj: inventario.c.obj
 .PHONY : inventario.obj
 
@@ -233,9 +209,6 @@ help:
 	@echo ... edit_cache
 	@echo ... rebuild_cache
 	@echo ... E03
-	@echo ... C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.obj
-	@echo ... C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.i
-	@echo ... C_/Users/alebe/Documents/UNI_Polito/ASD/L02/E03/main.s
 	@echo ... inventario.obj
 	@echo ... inventario.i
 	@echo ... inventario.s
