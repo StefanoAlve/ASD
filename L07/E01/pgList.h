@@ -9,7 +9,7 @@
 
 /* ADT di prima classe collezione di personaggi */
 typedef struct pgList_s *pgList_t;
-
+typedef struct PGnode *link;
 /* creatore e distruttore */
 pgList_t pgList_init();
 void pgList_free(pgList_t pgList);
@@ -26,5 +26,7 @@ void pgList_remove(pgList_t pgList, char* cod);
 pg_t *pgList_searchByCode(pgList_t pgList, char* cod);
 
 /* Si possono aggiungere altre funzioni se ritenute necessarie */
+
+link NewNode(pg_t val, link next);
 
 #endif

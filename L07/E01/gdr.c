@@ -110,6 +110,7 @@ int main(int argc, char **argv) {
   } while(!fineProgramma);
 
   pgList_free(pgList);
+  invArray_free(invArray);
 
   return 0;
 }
