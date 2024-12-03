@@ -22,7 +22,6 @@ equipArray_t equipArray_init(){
 }
 
 void equipArray_free(equipArray_t equipArray){
-    free(equipArray->vettEq);
     free(equipArray);
 }
 
@@ -36,9 +35,11 @@ void equipArray_print(FILE *fp, equipArray_t equipArray, invArray_t invArray){
         printf("Nessun oggetto equipaggiato\n");
         return;
     }
-    for (int i = 0; i < n; i++){
-        invArray_printByIndex(fp, invArray, i);
-        printf("\n");
+    for (int i = 0; i < EQUIP_SLOT; i++){
+        if (equipArray->vettEq[i] != -1){
+            invArray_printByIndex(fp, invArray, equipArray->vettEq[i]);
+            printf("\n");
+        }
     }
 }
 
@@ -52,14 +53,16 @@ void equipArray_update(equipArray_t equipArray, invArray_t invArray){
     scanf("%d", &scelta);
     if (scelta){
         if (equipArray->inUso < EQUIP_SLOT){
-            equipArray->vettEq[equipArray->inUso] = indice;
+            int i;
+            for (i = 0; i < EQUIP_SLOT && equipArray->vettEq[i] != -1; i++);
+            equipArray->vettEq[i] = indice;
             equipArray->inUso++;
         }
         else printf("Capienza equipaggiamenti massima raggiunta\n");
     } else {
         int i;
-        for (i = 0; i < equipArray->inUso && equipArray->vettEq[i] != indice; i++);
-        if (i >= equipArray->inUso) printf("Errore: oggetto non equipaggiato\n");
+        for (i = 0; i < EQUIP_SLOT && equipArray->vettEq[i] != indice; i++);
+        if (i >= EQUIP_SLOT) printf("Errore: oggetto non equipaggiato\n");
         else {
             equipArray->vettEq[i] = -1;
             equipArray->inUso--;
